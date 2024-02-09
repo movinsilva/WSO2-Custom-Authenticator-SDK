@@ -4,10 +4,14 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "@brionmario/eslint-plugin": "^0.2.9",
+    "@brionmario/prettier-config": "^0.1.0",
     "@nx/js": "18.0.3",
-    "nx": "18.0.3"
+    "eslint": "^8.56.0",
+    "nx": "18.0.3",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
   },
   "workspaces": [
     "packages/*"
