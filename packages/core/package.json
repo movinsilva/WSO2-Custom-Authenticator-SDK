@@ -1,0 +1,13 @@
+{
+  "name": "asgardeo-core",
+  "version": "1.0.0",
+  "description": "asgardeo js framework agnostic core",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix"
+  },
+  "author": "",
+  "license": "ISC"
+}
