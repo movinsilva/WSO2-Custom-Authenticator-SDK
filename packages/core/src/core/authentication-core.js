@@ -15,16 +15,18 @@ const authorize = async () => {
     );
 
     // Disable certificate verification for the duration of this request
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     const response = await fetch(request);
 
-   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+   //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
 
     if (response.ok) {
       const responseObject = await response.json();
+      console.log('response obj frm core: ', responseObject.toString());
       return responseObject.toString();
     }
+    console.log(response.ok, 'response obj frm core: ', response);
     // exception to be implemented
   } catch (error) {
     // exception to be implemented
