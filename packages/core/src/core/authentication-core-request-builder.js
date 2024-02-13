@@ -62,6 +62,4 @@ const authenticateRequestBuilder = (authnUri, flowId, authenticatorType, authent
   return new Request(authnUri, requestOptions);
 };
 
-
-
 export { authenticateRequestBuilder, authorizeRequestBuilder };

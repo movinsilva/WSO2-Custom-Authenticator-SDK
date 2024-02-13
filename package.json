@@ -10,12 +10,18 @@
     "@nx/eslint": "^18.0.3",
     "@nx/js": "18.0.3",
     "@nx/rollup": "^18.0.3",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "eslint": "~8.48.0",
     "nx": "18.0.3",
     "prettier": "^3.2.5",
+    "rollup": "^4.10.0",
+    "rollup-plugin-dts": "^6.1.0",
     "typescript": "^5.3.3"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "packages/sample-apps/*"
   ]
 }
