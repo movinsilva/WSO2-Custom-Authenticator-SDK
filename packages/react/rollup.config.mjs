@@ -8,6 +8,13 @@ import packageJson from "./package.json" assert { type: "json" };
 export default [
   {
     input: "src/index.ts",
+    external: ["react", "react-dom"],
+    onwarn: function (warning, warn) {
+      // Suppress this error message... there are hundreds of them
+      if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+      // Use default for everything else
+      warn(warning);
+    },
     output: [
       {
         file: packageJson.main,
@@ -25,6 +32,17 @@ export default [
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
     ],
+    build: {
+      chunkSizeWarningLimit: 100,
+      rollupOptions: {
+        onwarn(warning, warn) {
+          if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return
+          }
+          warn(warning)
+        }
+      }
+    }
   },
   {
     input: "dist/esm/types/index.d.ts",

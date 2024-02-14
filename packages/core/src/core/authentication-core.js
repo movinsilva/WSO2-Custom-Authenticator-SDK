@@ -15,12 +15,12 @@ const authorize = async () => {
     );
 
     // Disable certificate verification for the duration of this request
-    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     const response = await fetch(request);
 
-   //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
-
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+    console.log('response obj frm core: ', response);
     if (response.ok) {
       const responseObject = await response.json();
       console.log('response obj frm core: ', responseObject.toString());
@@ -49,13 +49,13 @@ const authenticate = async (flowId, authenticatorType, authenticatorParameters) 
       authenticatorType,
       authenticatorParameters,
     );
-      console.log('auth request', request);
+    console.log('auth request', request);
 
     // Disable certificate verification for the duration of this request
-    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const response = await fetch(request);
 
-    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     console.log('auth response', response);
 
     if (response.ok) {

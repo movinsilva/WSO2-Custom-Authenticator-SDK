@@ -1,6 +1,6 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import dts from "rollup-plugin-dts";
+import dts from 'rollup-plugin-dts';
 
 export default [
   {
@@ -14,7 +14,7 @@ export default [
       },
       {
         file: 'dist/esm/index.js',
-        format: "esm",
+        format: 'esm',
         sourcemap: true,
       },
     ],
@@ -22,5 +22,5 @@ export default [
       nodeResolve(),
       commonjs(),
     ],
-  }
+  },
 ];

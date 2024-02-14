@@ -1,7 +1,6 @@
 import { AuthenticationCoreConfig } from '../core/authentication-core-config.js';
 import dataLayer from './data-layer.js';
 
-
 /**
  * Sets the authentication configuration.
  * @param {string} baseUrl - The base URL of the authentication server.
