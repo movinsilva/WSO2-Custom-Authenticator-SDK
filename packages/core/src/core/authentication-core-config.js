@@ -29,4 +29,8 @@ export class AuthenticationCoreConfig {
   getRedirectUri() {
     return this.redirectUri;
   }
+
+  getBrandingUrl() {
+    return `${this.baseUrl}/api/server/v1/branding-preference`;
+  }
 }

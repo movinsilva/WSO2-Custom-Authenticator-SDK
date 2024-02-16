@@ -1,17 +1,25 @@
 // THis is temporary file to test the build process
 
-import authConfig from './data/config-data.js';
-import { authenticate } from './core/authentication-core.js';
+import {authConfig} from './data/config-data.js';
+import { authenticate, authorize } from './core/authentication-core.js';
+import branding from './branding/branding.js';
 
-authConfig('https://localhost:9443', 'CtYxaqN68OXg0a1sWrLcfARALxIa', 'openid internal_login', 'http://localhost:8080');
+authConfig('https://localhost:9443', 'CtYxaqN68OXg0a1sWrLcfARALxIa', 'openid internal_login', 'http://localhost:5173/');
 
 const test = async () => {
   console.log('test');
-  const response1 = await authenticate('908b60c9-fe96-419a-82b2-0323a98baada', { authenticatorId: 'QmFzaWNBdXRoZW50aWNhdG9yOkxPQ0FM' }, {
+  const resp = await authorize();
+  console.log("authorize resp: ", resp);
+  const response1 = await authenticate({
     username: 'admin',
-    password: 'admin1',
+    password: 'admin',
   });
-  console.log(response1);
+  console.log("authenticate resp: ", response1);
 };
 
-test();
+const brandingTest = async () => {
+  const data = await branding();
+  console.log('branding data: ', data.preference.theme.DARK);
+}
+
+brandingTest();

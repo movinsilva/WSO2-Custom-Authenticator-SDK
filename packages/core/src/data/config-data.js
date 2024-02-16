@@ -13,4 +13,12 @@ const authConfig = (baseUrl, clientId, scope, redirectUri) => {
   dataLayer.set('authConfig', config);
 };
 
-export default authConfig;
+const flowConfig = (flowId, authenticatorType) => {
+  const config = {
+    flowId: flowId,
+    authenticatorType: authenticatorType,
+  };
+  dataLayer.set('flowConfig', config);
+}
+
+export {authConfig, flowConfig};

@@ -1,1 +1,1 @@
-export { default as BasicAuthenticationForm } from "./basic-authentication";
+export { default as SignIn } from "./signin";

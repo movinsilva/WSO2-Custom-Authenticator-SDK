@@ -4,5 +4,13 @@
   "nxCloudAccessToken": "MDQ4MjE4ZTAtNWM0OS00YjRlLWE3NzgtOGVlMGI2YjIzNTg4fHJlYWQtd3JpdGU=",
   "plugins": [
    
-  ]
+  ],
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ]
+    }
+  }
 }

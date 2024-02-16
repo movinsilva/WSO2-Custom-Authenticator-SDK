@@ -1,5 +1,6 @@
-import { authorizeRequestBuilder, authenticateRequestBuilder } from './authentication-core-request-builder.js';
+import { authorizeRequestBuilder, authenticateRequestBuilder, tokenRequestBuilder } from './authentication-core-request-builder.js';
 import dataLayer from '../data/data-layer.js';
+import { flowConfig } from '../data/config-data.js';
 
 /**
  * Authorizes the request by sending an authorization request to the server.
@@ -15,16 +16,16 @@ const authorize = async () => {
     );
 
     // Disable certificate verification for the duration of this request
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+   // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
     const response = await fetch(request);
 
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     console.log('response obj frm core: ', response);
     if (response.ok) {
       const responseObject = await response.json();
-      console.log('response obj frm core: ', responseObject.toString());
-      return responseObject.toString();
+      flowConfig(responseObject.flowId, responseObject.nextStep.authenticators);
+      return responseObject;
     }
     console.log(response.ok, 'response obj frm core: ', response);
     // exception to be implemented
@@ -41,27 +42,28 @@ const authorize = async () => {
  * @param {object} authenticatorParameters - The parameters required for authentication.
  * @returns {Promise<string>} A promise that resolves to the response from the server as a string.
  */
-const authenticate = async (flowId, authenticatorType, authenticatorParameters) => {
+const authenticate = async (authenticatorParameters) => {
+  console.log("\ndataLayer.get('flowConfig').nextStep.authenticators,: " , dataLayer.get('flowConfig').authenticatorType[0].authenticatorId,)
   try {
     const request = authenticateRequestBuilder(
       dataLayer.get('authConfig').getAuthnUrl(),
-      flowId,
-      authenticatorType,
+      dataLayer.get('flowConfig').flowId,
+      dataLayer.get('flowConfig').authenticatorType[0].authenticatorId,
       authenticatorParameters,
     );
     console.log('auth request', request);
 
     // Disable certificate verification for the duration of this request
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const response = await fetch(request);
 
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     console.log('auth response', response);
 
     if (response.ok) {
       const responseObject = await response.json();
       console.log('response obj: ', responseObject);
-      return responseObject.toString();
+      return responseObject;
     }
 
     console.log('response failed', await response.json());
@@ -71,5 +73,30 @@ const authenticate = async (flowId, authenticatorType, authenticatorParameters) 
     console.error(error);
   }
 };
+
+const getAccessToken = async (code) => {
+  try {
+    const request = tokenRequestBuilder(
+      code,
+      dataLayer.get('authConfig').getClientId(),
+      dataLayer.get('authConfig').getRedirectUri()
+    )
+
+    // Disable certificate verification for the duration of this request
+    //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    const response = await fetch(request);
+
+    if(response.ok) {
+      const responseObject = await response.json();
+      console.log('data', responseObject);
+      return responseObject;
+    
+    }
+    console.log('response failed', await response.json());
+
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export { authorize, authenticate };

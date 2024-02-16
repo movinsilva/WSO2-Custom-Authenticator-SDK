@@ -39,11 +39,11 @@ const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectUri) => 
  * @param {object} authenticatorAuthParams - The authenticator authentication parameters.
  * @returns {Request} - The authentication request.
  */
-const authenticateRequestBuilder = (authnUri, flowId, authenticatorType, authenticatorAuthParams) => {
+const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authenticatorAuthParams) => {
   const authBody = {
     flowId,
     selectedAuthenticator: {
-      authenticatorId: authenticatorType.authenticatorId,
+      authenticatorId: authenticatorId,
       params: authenticatorAuthParams,
     },
   };
@@ -62,4 +62,26 @@ const authenticateRequestBuilder = (authnUri, flowId, authenticatorType, authent
   return new Request(authnUri, requestOptions);
 };
 
-export { authenticateRequestBuilder, authorizeRequestBuilder };
+const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
+  const formBody = new URLSearchParams();
+  formBody.append('code', code);
+  formBody.append('client_id', clientId);
+  formBody.append('grant_type', 'authorization_code');
+  formBody.append('redirect_uri', redirectUri);
+
+  const headers = {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  };
+
+  const requestOptions = {
+    body: formBody.toString(),
+    headers,
+    method: 'POST',
+  };
+
+  return new Request(tokenUri, requestOptions);
+
+}
+
+export { authenticateRequestBuilder, authorizeRequestBuilder, tokenRequestBuilder };

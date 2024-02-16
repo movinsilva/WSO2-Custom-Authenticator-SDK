@@ -8,6 +8,7 @@
     "dist"
   ],
   "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c"
@@ -15,15 +16,20 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@brionmario/stylelint-config": "^0.1.0",
     "@types/react": "^18.2.55",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "rollup-plugin-scss": "^4.0.0",
+    "sass": "^1.70.0",
+    "stylelint": "^16.2.1"
   },
   "dependencies": {
-    "@oxygen-ui/react": "^1.10.0"
+    "@oxygen-ui/react": "^1.10.0",
+    "asgardeo-core": "*"
   },
   "peer-dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-}
+  }
 }

@@ -1,1 +1,1 @@
-export { default as authConfig } from './config-data.js';
+export { authConfig, flowConfig } from './config-data.js';
