@@ -26,7 +26,6 @@ const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectUri) => 
     method: 'POST',
   };
 
-  console.log('\n\n AUTH', requestOptions, authorizeUri);
   return new Request(authorizeUri, requestOptions);
 };
 
@@ -43,7 +42,7 @@ const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authentic
   const authBody = {
     flowId,
     selectedAuthenticator: {
-      authenticatorId: authenticatorId,
+      authenticatorId,
       params: authenticatorAuthParams,
     },
   };
@@ -81,7 +80,6 @@ const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
   };
 
   return new Request(tokenUri, requestOptions);
-
-}
+};
 
 export { authenticateRequestBuilder, authorizeRequestBuilder, tokenRequestBuilder };

@@ -15,10 +15,10 @@ const authConfig = (baseUrl, clientId, scope, redirectUri) => {
 
 const flowConfig = (flowId, authenticatorType) => {
   const config = {
-    flowId: flowId,
-    authenticatorType: authenticatorType,
+    authenticatorType,
+    flowId,
   };
   dataLayer.set('flowConfig', config);
-}
+};
 
-export {authConfig, flowConfig};
+export { authConfig, flowConfig };

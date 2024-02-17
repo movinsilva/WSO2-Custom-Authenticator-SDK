@@ -1,5 +1,5 @@
- import { SignIn } from "asgardeo-react";
-//import { SignIn } from "../../../react/src/index.ts";
+ //import { SignIn } from "asgardeo-react";
+import { SignIn } from "../../../react/src/index.ts";
 function App() {
 
   // const config = {
