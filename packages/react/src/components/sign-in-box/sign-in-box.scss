@@ -3,17 +3,14 @@
 }
 
 .sign-in-box-node {
+  max-width: 500px;
   .oxygen-sign-in {
-    display: flex;
-    flex-flow: column nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    text-align: left;
+    padding: 32px;
+    margin: 0 auto;
 
     .oxygen-sign-in-box {
       padding: 32px;
-      width: 350px;
+      width: 380px;
     }
 
     .oxygen-sign-in-logo {
@@ -51,8 +48,6 @@
       margin-top: 16px;
 
       .oxygen-button {
-        background: var(--oxygen-palette-common-white);
-        color: var(--oxygen-palette-common-black);
         width: 100%;
         display: flex;
         align-items: center;
@@ -126,6 +121,10 @@
     .MuiInputBase-input {
       text-align: center;
     }
+
+    input{
+      padding: 16px 4px;
+  }
   }
 }
 

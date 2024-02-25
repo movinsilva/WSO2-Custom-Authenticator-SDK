@@ -1,10 +1,10 @@
 // THis is temporary file to test the build process
 
-import { authConfig } from './data/config-data.js';
+import { setAuthConfig } from './data/config-data.js';
 import { authenticate, authorize } from './core/authentication-core.js';
 import branding from './branding/branding.js';
 
-authConfig('https://localhost:9443', 'CtYxaqN68OXg0a1sWrLcfARALxIa', 'openid internal_login', 'http://localhost:5173/');
+setAuthConfig('https://localhost:9443', 'CtYxaqN68OXg0a1sWrLcfARALxIa', 'openid internal_login', 'http://localhost:5173/');
 
 // eslint-disable-next-line no-unused-vars
 const test = async () => {

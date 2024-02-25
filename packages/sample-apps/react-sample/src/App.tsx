@@ -1,5 +1,7 @@
  //import { SignIn } from "asgardeo-react";
 import { SignIn } from "../../../react/src/index.ts";
+import { useAuthentication } from "../../../react/src/components/asgardeo-provider/asgardeo-provider.tsx"; 
+import { AuthenticatedComponent } from "../../../react/src/components/authenticated-component/authenticated-component.tsx";
 function App() {
 
   // const config = {
@@ -23,7 +25,10 @@ function App() {
   return (
     <>
       <div style={{fontSize: '2rem'}}>Hello! Welcome to the sample app!</div>
-      <SignIn config={config} />
+      <SignIn/>
+      <AuthenticatedComponent>
+        <div style={{fontSize: '2rem'}}>AuthenticatedComponent: You are authenticated!</div>
+      </AuthenticatedComponent>
     </>
   )
 }

@@ -13,7 +13,7 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
 
   return (
     <div className="basic-auth-fragment">
-      <Typography align="center" className="oxygen-sign-in-header" variant="h4">
+      <Typography align="center" className="oxygen-sign-in-header ui header" variant="h4">
         Sign in
       </Typography>
       <TextField
@@ -24,7 +24,7 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
         name="text"
         value={username}
         placeholder="Enter your Username"
-        className="non-interactive"
+        className="ui input"
         onChange={(e) => setUsername(e.target.value)}
       />
       <TextField
@@ -36,23 +36,24 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
         type="password"
         value={password}
         placeholder="Enter your password"
-        className="non-interactive"
+        className="input"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <FormGroup className="non-interactive">
-        <FormControlLabel control={<Checkbox color="secondary" />} label="Remember me on this computer" />
+      <FormGroup className="">
+        <FormControlLabel
+          control={<Checkbox color="secondary" />}
+          label="Remember me on this computer"
+        />
       </FormGroup>
       <Button
         color="primary"
         variant="contained"
-        className="oxygen-sign-in-cta non-interactive"
+        className="oxygen-sign-in-cta ui primary button"
         type="submit"
         fullWidth
-        onClick={() => {
-          handleAuthenticate(username, password);
-        }}
+        onClick={() => { handleAuthenticate(username, password); }}
       >
-        Submit
+        Sign In
       </Button>
     </div>
   );

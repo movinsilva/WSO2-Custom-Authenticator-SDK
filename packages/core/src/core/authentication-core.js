@@ -1,6 +1,6 @@
 import { authorizeRequestBuilder, authenticateRequestBuilder, tokenRequestBuilder } from './authentication-core-request-builder.js';
 import dataLayer from '../data/data-layer.js';
-import { flowConfig } from '../data/config-data.js';
+import { flowConfig, getAuthConfig } from '../data/config-data.js';
 
 /**
  * Authorizes the request by sending an authorization request to the server.
@@ -8,11 +8,12 @@ import { flowConfig } from '../data/config-data.js';
  */
 const authorize = async () => {
   try {
+    const authConfigObject = getAuthConfig();
     const request = authorizeRequestBuilder(
-      dataLayer.get('authConfig').getAuthorizeUrl(),
-      dataLayer.get('authConfig').getClientId(),
-      dataLayer.get('authConfig').getScope(),
-      dataLayer.get('authConfig').getRedirectUri(),
+      authConfigObject.getAuthorizeUrl(),
+      authConfigObject.getClientId(),
+      authConfigObject.getScope(),
+      authConfigObject.getRedirectUri(),
     );
 
     // Disable certificate verification for the duration of this request
@@ -42,8 +43,9 @@ const authorize = async () => {
  */
 const authenticate = async (authenticatorParameters) => {
   try {
+    const authConfigObject = getAuthConfig();
     const request = authenticateRequestBuilder(
-      dataLayer.get('authConfig').getAuthnUrl(),
+      authConfigObject.getAuthnUrl(),
       dataLayer.get('flowConfig').flowId,
       dataLayer.get('flowConfig').authenticatorType[0].authenticatorId,
       authenticatorParameters,
@@ -58,6 +60,9 @@ const authenticate = async (authenticatorParameters) => {
 
     if (response.ok) {
       const responseObject = await response.json();
+      if (responseObject.flowStatus === 'INCOMPLETE') {
+        flowConfig(responseObject.flowId, responseObject.nextStep.authenticators);
+      }
       return responseObject;
     }
 

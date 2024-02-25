@@ -1,1 +1,3 @@
-export { authConfig, flowConfig } from './config-data.js';
+export {
+  setAuthConfig, flowConfig, setAuthState, getAuthState,
+} from './config-data.js';

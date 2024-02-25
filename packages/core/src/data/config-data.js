@@ -8,9 +8,16 @@ import dataLayer from './data-layer.js';
  * @param {string} scope - The scope of the authentication.
  * @param {string} redirectUri - The redirect URI for authentication.
  */
-const authConfig = (baseUrl, clientId, scope, redirectUri) => {
+const setAuthConfig = (baseUrl, clientId, scope, redirectUri) => {
   const config = new AuthenticationCoreConfig(baseUrl, clientId, scope, redirectUri);
   dataLayer.set('authConfig', config);
+};
+
+const getAuthConfig = () => {
+  const {
+    baseUrl, clientId, scope, redirectUri,
+  } = dataLayer.get('authConfig');
+  return new AuthenticationCoreConfig(baseUrl, clientId, scope, redirectUri);
 };
 
 const flowConfig = (flowId, authenticatorType) => {
@@ -21,4 +28,12 @@ const flowConfig = (flowId, authenticatorType) => {
   dataLayer.set('flowConfig', config);
 };
 
-export { authConfig, flowConfig };
+const setAuthState = (state) => {
+  dataLayer.set('authState', state);
+};
+
+const getAuthState = () => dataLayer.get('authState');
+
+export {
+  setAuthConfig, getAuthConfig, flowConfig, setAuthState, getAuthState,
+};
