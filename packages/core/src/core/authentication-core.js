@@ -1,19 +1,19 @@
 import { authorizeRequestBuilder, authenticateRequestBuilder, tokenRequestBuilder } from './authentication-core-request-builder.js';
 import dataLayer from '../data/data-layer.js';
 import { flowConfig, getAuthConfig } from '../data/config-data.js';
+import { AuthenticationCoreConfig } from './authentication-core-config.js';
 
 /**
  * Authorizes the request by sending an authorization request to the server.
  * @returns {Promise<string>} A promise that resolves to the response from the server as a string.
  */
-const authorize = async () => {
+const authorize = async (baseUrl, clientId, scope, redirectUri) => {
   try {
-    const authConfigObject = getAuthConfig();
     const request = authorizeRequestBuilder(
-      authConfigObject.getAuthorizeUrl(),
-      authConfigObject.getClientId(),
-      authConfigObject.getScope(),
-      authConfigObject.getRedirectUri(),
+      AuthenticationCoreConfig.getAuthorizeUrl(baseUrl),
+      clientId,
+      scope,
+      redirectUri
     );
 
     // Disable certificate verification for the duration of this request
@@ -24,7 +24,6 @@ const authorize = async () => {
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     if (response.ok) {
       const responseObject = await response.json();
-      flowConfig(responseObject.flowId, responseObject.nextStep.authenticators);
       return responseObject;
     }
     // exception to be implemented
@@ -41,13 +40,12 @@ const authorize = async () => {
  * @param {object} authenticatorParameters - The parameters required for authentication.
  * @returns {Promise<string>} A promise that resolves to the response from the server as a string.
  */
-const authenticate = async (authenticatorParameters) => {
+const authenticate = async (baseUrl, flowId, authenticatorId, authenticatorParameters) => {
   try {
-    const authConfigObject = getAuthConfig();
     const request = authenticateRequestBuilder(
-      authConfigObject.getAuthnUrl(),
-      dataLayer.get('flowConfig').flowId,
-      dataLayer.get('flowConfig').authenticatorType[0].authenticatorId,
+      AuthenticationCoreConfig.getAuthnUrl(baseUrl),
+      flowId,
+      authenticatorId,
       authenticatorParameters,
     );
     console.log('auth request', request);
@@ -60,9 +58,6 @@ const authenticate = async (authenticatorParameters) => {
 
     if (response.ok) {
       const responseObject = await response.json();
-      if (responseObject.flowStatus === 'INCOMPLETE') {
-        flowConfig(responseObject.flowId, responseObject.nextStep.authenticators);
-      }
       return responseObject;
     }
 
@@ -73,12 +68,15 @@ const authenticate = async (authenticatorParameters) => {
   }
 };
 
-const getAccessToken = async (code) => {
+const getAccessToken = async (baseUrl, code, clientId, redirectUri) => {
+
+  console.log('getAccessToken',baseUrl, code, clientId, redirectUri);
   try {
     const request = tokenRequestBuilder(
+      AuthenticationCoreConfig.getTokenUrl(baseUrl),
       code,
-      dataLayer.get('authConfig').getClientId(),
-      dataLayer.get('authConfig').getRedirectUri(),
+      clientId,
+      redirectUri
     );
 
     // Disable certificate verification for the duration of this request
@@ -87,7 +85,7 @@ const getAccessToken = async (code) => {
 
     if (response.ok) {
       const responseObject = await response.json();
-      console.log('data', responseObject);
+      console.log('token data: ', responseObject);
       return responseObject;
     }
     console.log('response failed', await response.json());

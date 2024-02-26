@@ -10,6 +10,8 @@ import { BrandingPreferenceAPIResponseInterface, PredefinedThemes } from '../mod
 import { LIGHT_THEME } from './light-theme';
 import { generateAsgardeoTheme } from './theme';
 import { BrandingPreferenceMeta } from './branding-preference-meta';
+import { AuthenticationConfig } from '../models/auth';
+import { getAuthConfig } from '../utils/config-data-layer';
 
 /**
  * Props interface for the Branding preference provider.
@@ -23,7 +25,8 @@ export const BrandingPreferenceProvider: FunctionComponent<BrandingPreferencePro
 
   useEffect(() => {
     try {
-      branding().then((response: any) => {
+      const config: AuthenticationConfig = getAuthConfig();
+      branding(config.baseUrl).then((response: any) => {
         console.log('branding preference resp: ', response);
         const resp = response as BrandingPreferenceAPIResponseInterface;
         if (resp?.preference?.configs?.isBrandingEnabled) {

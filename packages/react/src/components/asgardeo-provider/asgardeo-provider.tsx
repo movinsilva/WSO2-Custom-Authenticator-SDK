@@ -1,17 +1,17 @@
 import React, {
   createContext, useState, useContext, FunctionComponent, PropsWithChildren,
 } from 'react';
-import {
-  getAuthState, setAuthConfig, setAuthState, branding,
+import { branding
 } from 'asgardeo-core';
-import { AuthConfig, AuthContext, Config } from '../../models/auth';
+import { AuthConfig, AuthContext, AuthenticationConfig, Config } from '../../models/auth';
 import { BrandingPreferenceProvider } from '../../customization/branding-preference-provider';
+import { setAuthConfig, getAuthState, setAuthState } from '../../utils/config-data-layer';
 
 // Create a context for the provider
 export const MyProviderContext = createContext<AuthContext | undefined>(undefined);
 
 // Create the provider component
-export const AuthProvider: FunctionComponent<PropsWithChildren<Config>> = (
+export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (
   props: PropsWithChildren<Config>,
 ) => {
   const {
@@ -20,7 +20,8 @@ export const AuthProvider: FunctionComponent<PropsWithChildren<Config>> = (
     }, customization,
   } = props;
 
-  setAuthConfig(baseUrl, clientId, scope, redirectUri);
+  const config: AuthenticationConfig ={ baseUrl, clientId, redirectUri, scope };
+  setAuthConfig(config);
 
   const currentAuthState = getAuthState();
   const effectiveAuthState = currentAuthState || false;
@@ -28,7 +29,7 @@ export const AuthProvider: FunctionComponent<PropsWithChildren<Config>> = (
 
   let styles = customization;
   if (!customization) {
-    styles = branding();
+    styles = branding(baseUrl);
   }
   const [customizationOptions, setCustomizationOptions] = useState(styles);
 

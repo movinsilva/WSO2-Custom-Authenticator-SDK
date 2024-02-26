@@ -53,6 +53,7 @@ export interface AuthorizeApiResponseInterface {
   flowType: string;
   links: Link[];
   nextStep: AuthStep;
+  authData?: AuthData;
 }
 
 export interface AuthStep {
@@ -76,4 +77,15 @@ export interface Link {
   href: string;
   method: string;
   name: string;
+}
+
+export interface AuthenticationConfig {
+  baseUrl: string;
+  clientId: string;
+  redirectUri: string;
+  scope: string;
+}
+
+export interface AuthData {
+  code: string;
 }

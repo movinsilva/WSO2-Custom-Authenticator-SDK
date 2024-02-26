@@ -1,36 +1,18 @@
 export class AuthenticationCoreConfig {
-  constructor(baseUrl, clientId, scope, redirectUri) {
-    this.baseUrl = baseUrl;
-    this.clientId = clientId;
-    this.scope = scope;
-    this.redirectUri = redirectUri;
+
+  static getAuthorizeUrl(baseUrl) {
+    return `${baseUrl}/oauth2/authorize`;
   }
 
-  getAuthorizeUrl() {
-    return `${this.baseUrl}/oauth2/authorize`;
+  static getAuthnUrl(baseUrl) {
+    return `${baseUrl}/oauth2/authn`;
   }
 
-  getAuthnUrl() {
-    return `${this.baseUrl}/oauth2/authn`;
+  static getTokenUrl(baseUrl) {
+    return `${baseUrl}/oauth2/token`;
   }
 
-  getTokenUrl() {
-    return `${this.baseUrl}/oauth2/token`;
-  }
-
-  getClientId() {
-    return this.clientId;
-  }
-
-  getScope() {
-    return this.scope;
-  }
-
-  getRedirectUri() {
-    return this.redirectUri;
-  }
-
-  getBrandingUrl() {
-    return `${this.baseUrl}/api/server/v1/branding-preference`;
+  static getBrandingUrl(baseUrl) {
+    return `${baseUrl}/api/server/v1/branding-preference`;
   }
 }

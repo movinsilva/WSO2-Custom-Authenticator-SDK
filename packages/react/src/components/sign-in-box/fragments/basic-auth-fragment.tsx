@@ -16,6 +16,7 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
       <Typography align="center" className="oxygen-sign-in-header ui header" variant="h4">
         Sign in
       </Typography>
+      
       <TextField
         required
         fullWidth
