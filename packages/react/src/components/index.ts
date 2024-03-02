@@ -1,3 +1,3 @@
 export { default as SignIn } from './signin';
-export { AuthenticatedComponent } from './authenticated-component';
-export { AsgardeoProvider } from './asgardeo-provider';
+export { SignedIn, SignedOut } from './control-components';
+export { AsgardeoProvider, useAuthentication } from './asgardeo-provider';

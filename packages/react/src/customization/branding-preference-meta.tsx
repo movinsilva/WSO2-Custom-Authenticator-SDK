@@ -7,17 +7,17 @@ import { isEmpty } from '../utils/common';
  */
 export class BrandingPreferenceMeta {
   /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     */
-  private constructor() { }
+   * Private constructor to avoid object instantiation from outside
+   * the class.
+   */
+  private constructor() {}
 
   /* eslint-disable max-len */
   /**
-     * Get the theme skeleton.
-     * @param theme - Theme Config.
-     * @returns Theme Skeleton
-     */
+   * Get the theme skeleton.
+   * @param theme - Theme Config.
+   * @returns Theme Skeleton
+   */
   public static getThemeSkeleton(theme: BrandingPreferenceThemeInterface) {
     if (!theme) {
       return;
@@ -40,11 +40,13 @@ export class BrandingPreferenceMeta {
       : 'inherit';
 
     return `
-        ${theme[theme.activeTheme].typography.font.importURL
+        ${
+  theme[theme.activeTheme].typography.font.importURL
     ? `@import url(${theme[theme.activeTheme].typography.font.importURL});`
-    : ''}
+    : ''
+}
 
-        .sign-in-box-node {
+        .sign-in-box-node, .asgardeo {
         --asg-colors-primary-main: ${theme[theme.activeTheme].colors.primary.main};
         --asg-colors-secondary-main: ${theme[theme.activeTheme].colors.secondary.main};
         --asg-colors-background-body-main: ${theme[theme.activeTheme].colors.background?.body?.main};

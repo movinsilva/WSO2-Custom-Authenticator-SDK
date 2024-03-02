@@ -5,68 +5,78 @@ import { branding } from 'asgardeo-core';
 import merge from 'lodash.merge';
 import { ThemeProvider } from '@oxygen-ui/react';
 import { Helmet } from 'react-helmet';
-import { BrandingPreferenceContext } from './branding-preference-context';
-import { BrandingPreferenceAPIResponseInterface, PredefinedThemes } from '../models/branding-preferences';
+import { BrandingPreferenceContext, BrandingPreferenceContextProps } from './branding-preference-context';
+import { BrandingPreferenceAPIResponseInterface } from '../models/branding-preferences';
 import { LIGHT_THEME } from './light-theme';
 import { generateAsgardeoTheme } from './theme';
 import { BrandingPreferenceMeta } from './branding-preference-meta';
 import { AuthenticationConfig } from '../models/auth';
-import { getAuthConfig } from '../utils/config-data-layer';
+import { DataLayer } from '../utils/data-layer';
 
 /**
  * Props interface for the Branding preference provider.
  */
-export type BrandingPreferenceProviderProps = PropsWithChildren;
+interface BrandingPreferenceProviderProps {
+  brandingProps?: Partial<BrandingPreferenceAPIResponseInterface>;
+}
 
-export const BrandingPreferenceProvider: FunctionComponent<BrandingPreferenceProviderProps> = (props: BrandingPreferenceProviderProps): ReactElement => {
-  const { children } = props;
+// eslint-disable-next-line max-len
+const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPreferenceProviderProps>> = (
+  props: PropsWithChildren<BrandingPreferenceProviderProps>,
+): ReactElement => {
+  const { children, brandingProps } = props;
+  const dataLayer = DataLayer.getInstance();
 
-  const [brandingPreference, setBrandingPreference] = useState<BrandingPreferenceAPIResponseInterface>();
+  // eslint-disable-next-line max-len
+  const [brandingPreference, setBrandingPreference] = useState<Partial<BrandingPreferenceAPIResponseInterface>>();
+
+  const contextValues: BrandingPreferenceContextProps = useMemo(() => {
+    if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
+      return { brandingPreference: undefined };
+    }
+
+    return { brandingPreference };
+  }, [brandingPreference]);
 
   useEffect(() => {
     try {
-      const config: AuthenticationConfig = getAuthConfig();
+      const config: AuthenticationConfig = dataLayer.getAuthConfig();
       branding(config.baseUrl).then((response: any) => {
-        console.log('branding preference resp: ', response);
-        const resp = response as BrandingPreferenceAPIResponseInterface;
+        const resp: BrandingPreferenceAPIResponseInterface = response;
         if (resp?.preference?.configs?.isBrandingEnabled) {
-          console.log('theme is predefined');
-          setBrandingPreference(resp);
+          setBrandingPreference(merge(resp, brandingProps));
         } else {
-          console.log('theme is not predefined');
+          console.log('Branding is not enabled');
           // to do - this has to change: merge with passed object
           setBrandingPreference(merge(resp, LIGHT_THEME) as BrandingPreferenceAPIResponseInterface);
         }
       });
     } catch (error) {
-      console.error('Error while fetching branding preferences: ', error);
+      throw new Error('Error while fetching branding preferences');
     }
   }, []);
 
-  useEffect(() => {
-    console.log('Effective branding preference: ', brandingPreference, '\n _theme: ', _theme ? 'theme' : 'no theme');
-  }, [brandingPreference]);
-
-  const _theme: string = useMemo(
-    () => BrandingPreferenceMeta.getThemeSkeleton(brandingPreference?.preference?.theme),
-    [brandingPreference?.preference?.theme],
-  );
+  const theme: string | undefined = useMemo(() => {
+    if (brandingPreference?.preference?.theme) {
+      return BrandingPreferenceMeta.getThemeSkeleton(brandingPreference.preference.theme);
+    }
+  }, [brandingPreference?.preference?.theme]);
 
   const injectBrandingCSSSkeleton = () => {
+    // eslint-disable-next-line max-len
     if (!brandingPreference?.preference?.theme || !brandingPreference?.preference?.configs?.isBrandingEnabled) {
       return;
     }
 
-    return <style type="text/css">{ _theme }</style>;
+    return <style type="text/css">{theme}</style>;
   };
 
   return (
-    <BrandingPreferenceContext.Provider value={{ brandingPreference }}>
-      <Helmet>
-        { injectBrandingCSSSkeleton() }
-      </Helmet>
+    <BrandingPreferenceContext.Provider value={contextValues}>
+      {/* to do - whether to use helmet or not */}
+      {injectBrandingCSSSkeleton()}
       <ThemeProvider
-        theme={generateAsgardeoTheme(brandingPreference)}
+        theme={generateAsgardeoTheme(contextValues)}
         defaultMode="light"
         modeStorageKey="myaccount-oxygen-mode"
       >
@@ -75,3 +85,5 @@ export const BrandingPreferenceProvider: FunctionComponent<BrandingPreferencePro
     </BrandingPreferenceContext.Provider>
   );
 };
+
+export default BrandingPreferenceProvider;

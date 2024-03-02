@@ -17,6 +17,7 @@ export class IdentityAppsError {
      * @param {string} description - Description of the error.
      * @param {number | string} traceId - Trace ID of the error.
      */
+  // eslint-disable-next-line max-len
   constructor(code: number | string, description: string, message?: string, traceId?: number | string) {
     this.code = code;
     this.description = description;

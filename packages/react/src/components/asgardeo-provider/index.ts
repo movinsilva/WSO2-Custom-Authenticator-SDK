@@ -1,1 +1,1 @@
-export {AsgardeoProvider} from './asgardeo-provider';
+export { AsgardeoProvider, useAuthentication } from './asgardeo-provider';

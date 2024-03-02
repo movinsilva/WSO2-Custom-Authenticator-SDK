@@ -1,13 +1,6 @@
 import { Button, TextField, Typography } from '@oxygen-ui/react';
 import React, { ReactElement, useRef, useState } from 'react';
-import { IdentifiableComponentInterface } from '../../../models/auth';
-
-/**
- * Proptypes for the TOTP fragment component.
- */
-export interface TOTPFragmentPropsInterface extends IdentifiableComponentInterface {
-  handleAuthenticateTotp: Function
-}
+import { SignInFragmentPropsInterface } from '../../../models/auth';
 
 /**
  * TOTP fragment login option component with input fields.
@@ -15,9 +8,9 @@ export interface TOTPFragmentPropsInterface extends IdentifiableComponentInterfa
  * @param props - Props injected to the component.
  * @returns TOTP fragment login option as a React component.
  */
-const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
+const TOTPFragment = (props: SignInFragmentPropsInterface): ReactElement => {
   const {
-    handleAuthenticateTotp,
+    handleAuthenticate,
     'data-componentid': componentId,
   } = props;
 
@@ -55,7 +48,8 @@ const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
   };
 
   const handleSubmit = () => {
-    handleAuthenticateTotp(totp.join('')); // Pass the TOTP to the handler function when the button is clicked
+    const token = totp.join('');
+    handleAuthenticate({ token });
   };
 
   return (
@@ -93,7 +87,7 @@ const TOTPFragment = (props: TOTPFragmentPropsInterface): ReactElement => {
         Continue
       </Button>
       <Typography align="center" className="oxygen-sign-in-sub-header ui sub header" variant="subtitle2">
-        Haven't setup your TOTP authenticator yet? Contact Support
+        Haven&apos;t setup your TOTP authenticator yet? Contact Support
       </Typography>
     </div>
   );

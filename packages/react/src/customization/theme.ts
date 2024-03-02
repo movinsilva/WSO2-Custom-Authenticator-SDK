@@ -7,6 +7,7 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
   branding: BrandingPreferenceContextProps,
 ) => {
   const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toUpperCase() ?? 'LIGHT';
+  // eslint-disable-next-line max-len
   const brandingTheme: ThemeConfigInterface = branding?.brandingPreference?.preference?.theme[mode as PredefinedThemes];
 
   return extendTheme({

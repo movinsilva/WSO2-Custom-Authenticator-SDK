@@ -1,24 +1,18 @@
 import React, { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 import { useAuthentication } from '../asgardeo-provider/asgardeo-provider';
-
-/**
- * Prop types of the Authenticated component.
- */
-interface AuthenticatedComponentPropsInterface {
-  fallback?: ReactNode;
-}
+import { SignedPropsInterface } from '../../models/auth';
 
 /**
  * This component shows the child component only if the user is authenticated. Otherwise, it shows the placeholder.
  *
- * @param {AuthenticatedComponentPropsInterface} props The props of the component
+ * @param {SignedInPropsInterface} props The props of the component
  * @returns {ReactElement} The authenticated component.
  */
-export const AuthenticatedComponent: FunctionComponent<PropsWithChildren<AuthenticatedComponentPropsInterface>> = (
-  props: PropsWithChildren<AuthenticatedComponentPropsInterface>,
+export const SignedIn: FunctionComponent<PropsWithChildren<SignedPropsInterface>> = (
+  props: PropsWithChildren<SignedPropsInterface>,
 ) => {
   const { fallback, children } = props;
-  const isAuthenticated = useAuthentication();
+  const { isAuthenticated } = useAuthentication();
 
   return (
     <>

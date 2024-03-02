@@ -14,7 +14,9 @@ export type BrandingPreferenceContextProps = {
 /**
  * Context object for managing branding preferences.
  */
-export const BrandingPreferenceContext: Context<BrandingPreferenceContextProps> = createContext<BrandingPreferenceContextProps>({} as BrandingPreferenceContextProps);
+
+// eslint-disable-next-line max-len
+export const BrandingPreferenceContext = createContext<BrandingPreferenceContextProps | undefined>(undefined);
 
 /**
  * Display name for the BrandingPreferenceContext.

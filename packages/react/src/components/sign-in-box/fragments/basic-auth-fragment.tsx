@@ -5,9 +5,23 @@ import FormGroup from '@oxygen-ui/react/FormGroup';
 import TextField from '@oxygen-ui/react/TextField';
 import Typography from '@oxygen-ui/react/Typography';
 import React, { ReactElement, useState } from 'react';
+import { Box } from '@oxygen-ui/react';
+import { IdentifiableComponentInterface, SignInFragmentPropsInterface } from '../../../models/auth';
+
+/**
+ * Proptypes for the Username password fragment component.
+ */
+interface UsernamePasswordFragmentPropsInterface extends IdentifiableComponentInterface {
+  handleAuthenticate: Function
+}
 
 /* eslint-disable-next-line max-len */
-const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Function }): ReactElement => {
+const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement => {
+  const {
+    handleAuthenticate,
+    'data-componentid': componentId,
+    isRetry,
+  } = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -16,7 +30,14 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
       <Typography align="center" className="oxygen-sign-in-header ui header" variant="h4">
         Sign in
       </Typography>
-      
+      {isRetry && (
+      <Box className="oxygen-sign-in-retry-header-box">
+        <Typography className="oxygen-sign-in-error ui sub headerd">
+          Login failed! Please check your username and password and try again
+        </Typography>
+      </Box>
+      )}
+
       <TextField
         required
         fullWidth
@@ -52,7 +73,7 @@ const BasicAuthFragment = ({ handleAuthenticate }: { handleAuthenticate: Functio
         className="oxygen-sign-in-cta ui primary button"
         type="submit"
         fullWidth
-        onClick={() => { handleAuthenticate(username, password); }}
+        onClick={() => { handleAuthenticate({ username, password }); }}
       >
         Sign In
       </Button>

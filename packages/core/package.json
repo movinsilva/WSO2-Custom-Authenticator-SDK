@@ -11,5 +11,8 @@
     "lint:fix": "eslint --ext .js . --fix"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@asgardeo/auth-js": "^5.0.0"
+  }
 }

@@ -1,22 +1,27 @@
-import { AuthenticationCoreConfig } from '../core/authentication-core-config.js';
-import { getAuthConfig } from '../data/config-data.js';
-import dataLayer from '../data/data-layer.js';
+import { getBrandingUrl } from '../utils/url-generator.js';
 
 /**
- * Fetches branding data from the specified URL.
- * @returns {Promise} A promise that resolves to the branding data.
+ * Fetch branding information from the authentication server.
+ *
+ * @param {string} baseUrl - The base URL of the authentication server.
+ * @returns {Promise<object|undefined>} A promise that resolves with the
+ * response object from the authentication server, or an error occurs if
+ * the response is not successful.
  */
-
 const branding = async (baseUrl) => {
   try {
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response = await fetch(AuthenticationCoreConfig.getBrandingUrl(baseUrl));
+    const response = await fetch(getBrandingUrl(baseUrl));
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
-    const data = await response.json();
-    return data;
+
+    if (response.ok) {
+      const responseObject = await response.json();
+      return responseObject;
+    }
+    throw new Error('Branding request failed');
   } catch (error) {
     // handle the error
-    console.error(error);
+    throw new Error('Branding request failed');
   }
 };
 

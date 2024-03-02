@@ -7,7 +7,7 @@
  * @param {string} redirectUri - The redirect URI.
  * @returns {Request} - The authorization request.
  */
-const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectUri) => {
+export const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectUri) => {
   const formBody = new URLSearchParams();
   formBody.append('client_id', clientId);
   formBody.append('scope', scope);
@@ -38,7 +38,8 @@ const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectUri) => 
  * @param {object} authenticatorAuthParams - The authenticator authentication parameters.
  * @returns {Request} - The authentication request.
  */
-const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authenticatorAuthParams) => {
+// eslint-disable-next-line max-len
+export const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authenticatorAuthParams) => {
   const authBody = {
     flowId,
     selectedAuthenticator: {
@@ -61,7 +62,16 @@ const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authentic
   return new Request(authnUri, requestOptions);
 };
 
-const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
+/**
+ * Builds a request for getting an access token.
+ *
+ * @param {string} tokenUri - The token endpoint URI.
+ * @param {string} code - The authorization code received from the authorization server.
+ * @param {string} clientId - The client ID of the application.
+ * @param {string} redirectUri - The URI to redirect to after successful login.
+ * @returns {Request} - The token request.
+ */
+export const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
   const formBody = new URLSearchParams();
   formBody.append('code', code);
   formBody.append('client_id', clientId);
@@ -81,5 +91,3 @@ const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
 
   return new Request(tokenUri, requestOptions);
 };
-
-export { authenticateRequestBuilder, authorizeRequestBuilder, tokenRequestBuilder };

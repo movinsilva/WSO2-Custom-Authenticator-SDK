@@ -1,18 +1,56 @@
-class DataLayer {
-    set(key: string, value: any): void {
-        console.log('session storage: ', typeof sessionStorage);
-        sessionStorage.setItem(key, JSON.stringify(value));
-    }
+import { AuthenticationConfig, Authenticator } from '../models/auth';
 
-    get(key: string): any {
-        const value = sessionStorage.getItem(key);
-        console.log('session storage value: ', value);
-        return value ? JSON.parse(value) : null;
-    }
+export class DataLayer {
+  private static instance: DataLayer;
 
-    remove(key: string): void {
-        sessionStorage.removeItem(key);
+  private constructor() {}
+
+  public static getInstance(): DataLayer {
+    if (!DataLayer.instance) {
+      DataLayer.instance = new DataLayer();
     }
+    return DataLayer.instance;
+  }
+
+  protected set(key: string, value: any): void {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  }
+
+  protected get(key: string): any {
+    const value = sessionStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  }
+
+  protected remove(key: string): void {
+    sessionStorage.removeItem(key);
+  }
+
+  public setAuthConfig = (
+    config: AuthenticationConfig,
+  ): void => {
+    this.set('authConfig', config);
+  };
+
+  public getAuthConfig = (): AuthenticationConfig => {
+    const {
+      baseUrl, clientId, scope, redirectUri,
+    } = this.get('authConfig');
+    const config: AuthenticationConfig = {
+      baseUrl, clientId, scope, redirectUri,
+    };
+    return config;
+  };
+
+  public setFlowConfig = (flowId: string, authenticatorType: Authenticator[]): void => {
+    const config = { flowId, authenticatorType };
+    this.set('flowConfig', config);
+  };
+
+  public getFlowConfig = (): { authenticatorType: Authenticator[], flowId: string } => this.get('flowConfig');
+
+  public setTokens = (tokens: any): void => {
+    this.set('tokens', tokens);
+  };
+
+  public getTokens = (): any => this.get('tokens');
 }
-
-export default new DataLayer();

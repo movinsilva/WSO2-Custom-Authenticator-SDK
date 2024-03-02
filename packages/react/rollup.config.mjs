@@ -33,6 +33,7 @@ export default [
       commonjs(),
       typescript({tsconfig: './tsconfig.json'}),
       scss({
+        input: 'src/components/sign-in-box/sign-in-box.scss',
         output: 'dist/css/style.css',
         failOnError: true,
       }),

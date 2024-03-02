@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { BrandingPreferenceAPIResponseInterface } from './branding-preferences';
 
 export enum FlowStatus {
   DEFAULT = 'DEFAULT', // hasn't started the flow yet
@@ -28,13 +29,13 @@ export interface AuthConfig {
 
 export interface Config {
   config: AuthConfig;
-  customization?: string; // to be changed
+  customization?: Partial<BrandingPreferenceAPIResponseInterface>; // to be changed
 }
 
 export interface AuthContext {
-  customizationOptions: any;
+  customizationOptions?: any;
   isAuthenticated: boolean;
-  setAuthentication: (value: boolean) => void;
+  setAuthentication: (value: boolean, token?: string) => void;
 }
 
 /**
@@ -48,12 +49,12 @@ export interface IdentifiableComponentInterface {
 }
 
 export interface AuthorizeApiResponseInterface {
+  authData?: AuthData;
   flowId: string;
   flowStatus: FlowStatus;
   flowType: string;
   links: Link[];
   nextStep: AuthStep;
-  authData?: AuthData;
 }
 
 export interface AuthStep {
@@ -88,4 +89,19 @@ export interface AuthenticationConfig {
 
 export interface AuthData {
   code: string;
+}
+
+/**
+ * Proptypes for the SignIn fragment component.
+ */
+export interface SignInFragmentPropsInterface extends IdentifiableComponentInterface {
+  handleAuthenticate: Function;
+  isRetry?: boolean;
+}
+
+/*
+  * Proptypes for the signedIn and signedOut component.
+  */
+export interface SignedPropsInterface {
+  fallback?: ReactNode;
 }
