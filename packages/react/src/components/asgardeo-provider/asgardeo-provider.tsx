@@ -8,6 +8,7 @@ import { DataLayer } from '../../utils/data-layer';
 // context for the provider
 export const AsgardeoProviderContext = createContext<AuthContext | undefined>(undefined);
 
+// eslint-disable-next-line
 export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (props: PropsWithChildren<Config>) => {
   const {
     children,

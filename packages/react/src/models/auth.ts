@@ -9,6 +9,8 @@ export enum FlowStatus {
 }
 
 export enum AuthenticatorType {
+  FACEBOOK = 'facebook',
+  GOOGLE = 'Google',
   TOTP = 'TOTP',
   USERNAME_PASSWORD = 'Username & Password',
 }
@@ -71,7 +73,14 @@ export interface Authenticator {
 }
 
 export interface Metadata {
+  additionalData: AdditionalData;
   // to do
+  promptType: string;
+}
+
+export interface AdditionalData {
+  redirectUrl: string,
+  state: string,
 }
 
 export interface Link {
@@ -94,7 +103,8 @@ export interface AuthData {
 /**
  * Proptypes for the SignIn fragment component.
  */
-export interface SignInFragmentPropsInterface extends IdentifiableComponentInterface {
+export interface SignInFragmentPropsInterface {
+  authenticatorId: string;
   handleAuthenticate: Function;
   isRetry?: boolean;
 }
@@ -104,4 +114,9 @@ export interface SignInFragmentPropsInterface extends IdentifiableComponentInter
   */
 export interface SignedPropsInterface {
   fallback?: ReactNode;
+}
+
+export interface LoginOptionFragmentPropsInterface extends IdentifiableComponentInterface {
+  authenticator: string;
+  handleClick: Function;
 }

@@ -1,7 +1,7 @@
 /**
- * Base error class for the identity apps.
+ * Base error class for sdk.
  */
-export class IdentityAppsError {
+class IdentityAppsError {
   public code: number | string;
 
   public description: string;

@@ -165,5 +165,32 @@
   table {
     width: 100%;
     margin-bottom: 10px;
+    
   }
+
+}
+
+.oxygen-sign-in-option {
+
+  
+    background: var(--oxygen-palette-common-white);
+    color: var(--oxygen-palette-common-black);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 1px 0 rgba(0,0,0,.12), 0 1px 1px 0 rgba(0,0,0,.24);
+
+
+  &:not(:last-child) {
+      margin-bottom: 16px;
+  }
+}
+
+.oxygen-sign-in-option-divider {
+  margin-bottom: 16px;
+}
+
+.oxygen-sign-in-option-image {
+  height: 20px;
 }

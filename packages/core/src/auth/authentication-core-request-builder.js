@@ -40,13 +40,23 @@ export const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectU
  */
 // eslint-disable-next-line max-len
 export const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authenticatorAuthParams) => {
-  const authBody = {
-    flowId,
-    selectedAuthenticator: {
-      authenticatorId,
-      params: authenticatorAuthParams,
-    },
-  };
+  let authBody;
+  if (authenticatorAuthParams) {
+    authBody = {
+      flowId,
+      selectedAuthenticator: {
+        authenticatorId,
+        params: authenticatorAuthParams,
+      },
+    };
+  } else {
+    authBody = {
+      flowId,
+      selectedAuthenticator: {
+        authenticatorId,
+      },
+    };
+  }
 
   const formBody = JSON.stringify(authBody);
   const headers = {

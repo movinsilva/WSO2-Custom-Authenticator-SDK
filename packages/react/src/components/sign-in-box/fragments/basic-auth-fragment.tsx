@@ -6,22 +6,11 @@ import TextField from '@oxygen-ui/react/TextField';
 import Typography from '@oxygen-ui/react/Typography';
 import React, { ReactElement, useState } from 'react';
 import { Box } from '@oxygen-ui/react';
-import { IdentifiableComponentInterface, SignInFragmentPropsInterface } from '../../../models/auth';
-
-/**
- * Proptypes for the Username password fragment component.
- */
-interface UsernamePasswordFragmentPropsInterface extends IdentifiableComponentInterface {
-  handleAuthenticate: Function
-}
+import { SignInFragmentPropsInterface } from '../../../models/auth';
 
 /* eslint-disable-next-line max-len */
 const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement => {
-  const {
-    handleAuthenticate,
-    'data-componentid': componentId,
-    isRetry,
-  } = props;
+  const { handleAuthenticate, authenticatorId, isRetry } = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,11 +20,11 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         Sign in
       </Typography>
       {isRetry && (
-      <Box className="oxygen-sign-in-retry-header-box">
-        <Typography className="oxygen-sign-in-error ui sub headerd">
-          Login failed! Please check your username and password and try again
-        </Typography>
-      </Box>
+        <Box className="oxygen-sign-in-retry-header-box">
+          <Typography className="oxygen-sign-in-error ui sub headerd">
+            Login failed! Please check your username and password and try again
+          </Typography>
+        </Box>
       )}
 
       <TextField
@@ -62,10 +51,7 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         onChange={(e) => setPassword(e.target.value)}
       />
       <FormGroup className="">
-        <FormControlLabel
-          control={<Checkbox color="secondary" />}
-          label="Remember me on this computer"
-        />
+        <FormControlLabel control={<Checkbox color="secondary" />} label="Remember me on this computer" />
       </FormGroup>
       <Button
         color="primary"
@@ -73,7 +59,9 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         className="oxygen-sign-in-cta ui primary button"
         type="submit"
         fullWidth
-        onClick={() => { handleAuthenticate({ username, password }); }}
+        onClick={() => {
+          handleAuthenticate({ username, password }, authenticatorId);
+        }}
       >
         Sign In
       </Button>

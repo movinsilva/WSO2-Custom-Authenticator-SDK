@@ -10,17 +10,16 @@ const config = {
   redirectUri: 'https://localhost:5173',
 };
 
+// customization={{
+//   preference: {
+//     theme: {
+//       LIGHT: {loginBox: {background: {backgroundColor: '#a29012'}}},
+//     },
+//   },
+// }}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <AsgardeoProvider
-    config={config}
-    customization={{
-      preference: {
-        theme: {
-          LIGHT: {loginBox: {background: {backgroundColor: '#a29012'}}},
-        },
-      },
-    }}
-  >
+  <AsgardeoProvider config={config}>
     <App />
   </AsgardeoProvider>,
 );
