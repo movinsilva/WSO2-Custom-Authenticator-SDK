@@ -1,6 +1,12 @@
-import {Box, Link, Paper, Grid, Divider, Typography, CircularProgress} from '@oxygen-ui/react';
-import {authorize, authenticate, getAccessToken, requestAccessToken} from 'asgardeo-core';
-import React, {useEffect, useState, ReactElement, useContext, FunctionComponent} from 'react';
+import {
+  Box, Link, Paper, Grid, Divider, Typography, CircularProgress,
+} from '@oxygen-ui/react';
+import {
+  authorize, authenticate, getAccessToken, requestAccessToken,
+} from 'asgardeo-core';
+import React, {
+  useEffect, useState, ReactElement, useContext, FunctionComponent,
+} from 'react';
 import BasicAuthFragment from './fragments/basic-auth-fragment';
 import './sign-in-box.scss';
 import {
@@ -12,11 +18,11 @@ import {
   IdentifiableComponentInterface,
   Metadata,
 } from '../../../models/auth';
-import {AsgardeoProviderContext} from '../../asgardeo-provider/asgardeo-provider';
-import {useBrandingPreference} from '../../branding-preference-provider/branding-preference-context';
-import {BrandingPreferenceInterface} from '../../../models/branding-preferences';
+import { AsgardeoProviderContext } from '../../asgardeo-provider/asgardeo-provider';
+import { useBrandingPreference } from '../../branding-preference-provider/branding-preference-context';
+import { BrandingPreferenceInterface } from '../../../models/branding-preferences';
 import TOTPFragment from './fragments/totp-fragment';
-import {DataLayer} from '../../../utils/data-layer';
+import { DataLayer } from '../../../utils/data-layer';
 import LoginOptionFragment from './fragments/login-option-fragment';
 
 /**
@@ -56,7 +62,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       const state = url.searchParams.get('state');
 
       // Send the 'code' and 'state' to the parent window and close the current window (popup)
-      window.opener.postMessage({code, state}, config.redirectUri);
+      window.opener.postMessage({ code, state }, config.redirectUri);
       window.close();
     }
 
@@ -138,15 +144,15 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       );
 
       // Add an event listener to the window to capture the message from the popup
-      window.addEventListener('message', event => {
+      window.addEventListener('message', (event) => {
         // Check the origin of the message to ensure it's from the popup window
         if (event.origin !== config.redirectUri) return;
 
-        const {code, state} = event.data;
+        const { code, state } = event.data;
 
         if (code && state) {
           dataLayer.setFlowConfig(flowConfig.flowId, resp.nextStep.authenticators);
-          handleAuthenticate({code, state}, resp.nextStep.authenticators[0].authenticatorId);
+          handleAuthenticate({ code, state }, resp.nextStep.authenticators[0].authenticatorId);
         }
       });
     } else if (metaData.promptType === 'USER_PROMPT') {
@@ -176,7 +182,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       if (authenticators.length > 1) {
         isMultipleAuthenticators = true;
       }
-      authenticators.forEach(authenticator => {
+      authenticators.forEach((authenticator) => {
         if (authenticator.authenticator === AuthenticatorType.USERNAME_PASSWORD) {
           usernamePassword = true;
           usernamePasswordID = authenticator.authenticatorId;
@@ -207,8 +213,8 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
           )}
 
           {/* If multiple options are available, then render the relevant compact fragments */}
-          {isMultipleAuthenticators &&
-            authenticators.map(authenticator => {
+          {isMultipleAuthenticators
+            && authenticators.map((authenticator) => {
               if (authenticator.authenticator !== AuthenticatorType.USERNAME_PASSWORD) {
                 return (
                   <LoginOptionFragment
@@ -253,7 +259,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
         </Box>
       )}
       {flowStatus === FlowStatus.SUCCESS_COMPLETED && (
-        <div style={{padding: '1rem', backgroundColor: 'white'}}>Successfully Authenticated</div>
+        <div style={{ padding: '1rem', backgroundColor: 'white' }}>Successfully Authenticated</div>
       )}
     </div>
   );
