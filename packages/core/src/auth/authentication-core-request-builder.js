@@ -38,7 +38,6 @@ export const authorizeRequestBuilder = (authorizeUri, clientId, scope, redirectU
  * @param {object} authenticatorAuthParams - The authenticator authentication parameters.
  * @returns {Request} - The authentication request.
  */
-// eslint-disable-next-line max-len
 export const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, authenticatorAuthParams) => {
   let authBody;
   if (authenticatorAuthParams) {

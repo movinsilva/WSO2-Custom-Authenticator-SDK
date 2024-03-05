@@ -1,3 +1,4 @@
+import configureAuthClient from 'asgardeo-core';
 import { AuthenticationConfig, Authenticator } from '../models/auth';
 
 export class DataLayer {

@@ -1,13 +1,12 @@
 import { Theme } from '@oxygen-ui/react';
 import { extendTheme } from '@oxygen-ui/react/theme';
 import { PredefinedThemes, ThemeConfigInterface } from '../models/branding-preferences';
-import { BrandingPreferenceContextProps } from './branding-preference-context';
+import { BrandingPreferenceContextProps } from '../components/branding-preference-provider/branding-preference-context';
 
-export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme = (
+const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme = (
   branding: BrandingPreferenceContextProps,
 ) => {
   const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toUpperCase() ?? 'LIGHT';
-  // eslint-disable-next-line max-len
   const brandingTheme: ThemeConfigInterface = branding?.brandingPreference?.preference?.theme[mode as PredefinedThemes];
 
   return extendTheme({
@@ -136,3 +135,5 @@ export const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) =
     },
   });
 };
+
+export default generateAsgardeoTheme;

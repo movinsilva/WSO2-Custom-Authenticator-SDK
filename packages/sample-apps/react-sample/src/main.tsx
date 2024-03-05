@@ -8,6 +8,8 @@ const config = {
   clientId: '4qrmXXQ9_QFaYCmUrBRYsnwiSgga',
   scope: 'openid internal_login',
   redirectUri: 'https://localhost:5173',
+  signInRedirectURL: 'https://localhost:5173',
+  signOutRedirectURL: 'https://localhost:5173',
 };
 
 // customization={{

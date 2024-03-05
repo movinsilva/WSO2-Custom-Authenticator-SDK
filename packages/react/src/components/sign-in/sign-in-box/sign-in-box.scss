@@ -2,14 +2,18 @@
   --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed var(--oxygen-palette-divider);
 }
 
+.circular-progress {
+  margin: 2rem;
+}
+
 .sign-in-box-node {
-  max-width: 500px;
+  
   .oxygen-sign-in {
-    padding: 32px;
+    padding: 12px 32px;
     margin: 0 auto;
 
     .oxygen-sign-in-box {
-      padding: 32px;
+      padding: 26px 32px;
       width: 380px;
     }
 
@@ -194,3 +198,5 @@
 .oxygen-sign-in-option-image {
   height: 20px;
 }
+
+

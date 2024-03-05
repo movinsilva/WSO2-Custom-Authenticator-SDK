@@ -1,0 +1,16 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: 2rem;
+}
+
+.authenticatedComponent {
+    padding: 1rem;
+     margin: 1rem;
+     border: 1px solid blue;
+}

@@ -4,14 +4,13 @@ import React, {
 import { branding } from 'asgardeo-core';
 import merge from 'lodash.merge';
 import { ThemeProvider } from '@oxygen-ui/react';
-import { Helmet } from 'react-helmet';
 import { BrandingPreferenceContext, BrandingPreferenceContextProps } from './branding-preference-context';
-import { BrandingPreferenceAPIResponseInterface } from '../models/branding-preferences';
-import { LIGHT_THEME } from './light-theme';
-import { generateAsgardeoTheme } from './theme';
-import { BrandingPreferenceMeta } from './branding-preference-meta';
-import { AuthenticationConfig } from '../models/auth';
-import { DataLayer } from '../utils/data-layer';
+import { BrandingPreferenceAPIResponseInterface } from '../../models/branding-preferences';
+import LIGHT_THEME from '../../customization/light-theme';
+import generateAsgardeoTheme from '../../customization/theme';
+import BrandingPreferenceMeta from '../../customization/branding-preference-meta';
+import { AuthenticationConfig } from '../../models/auth';
+import { DataLayer } from '../../utils/data-layer';
 
 /**
  * Props interface for the Branding preference provider.
@@ -20,14 +19,12 @@ interface BrandingPreferenceProviderProps {
   brandingProps?: Partial<BrandingPreferenceAPIResponseInterface>;
 }
 
-// eslint-disable-next-line max-len
 const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPreferenceProviderProps>> = (
   props: PropsWithChildren<BrandingPreferenceProviderProps>,
 ): ReactElement => {
   const { children, brandingProps } = props;
   const dataLayer = DataLayer.getInstance();
 
-  // eslint-disable-next-line max-len
   const [brandingPreference, setBrandingPreference] = useState<Partial<BrandingPreferenceAPIResponseInterface>>();
 
   const contextValues: BrandingPreferenceContextProps = useMemo(() => {
@@ -46,7 +43,6 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));
         } else {
-          console.log('Branding is not enabled');
           // to do - this has to change: merge with passed object
           setBrandingPreference(merge(resp, LIGHT_THEME) as BrandingPreferenceAPIResponseInterface);
         }
@@ -60,12 +56,12 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
     if (brandingPreference?.preference?.theme) {
       return BrandingPreferenceMeta.getThemeSkeleton(brandingPreference.preference.theme);
     }
+    return undefined;
   }, [brandingPreference?.preference?.theme]);
 
   const injectBrandingCSSSkeleton = () => {
-    // eslint-disable-next-line max-len
     if (!brandingPreference?.preference?.theme || !brandingPreference?.preference?.configs?.isBrandingEnabled) {
-      return;
+      return null;
     }
 
     return <style type="text/css">{theme}</style>;

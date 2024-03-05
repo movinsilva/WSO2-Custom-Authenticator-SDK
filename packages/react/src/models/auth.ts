@@ -98,6 +98,7 @@ export interface AuthenticationConfig {
 
 export interface AuthData {
   code: string;
+  session_state: string;
 }
 
 /**

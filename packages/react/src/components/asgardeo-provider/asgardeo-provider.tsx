@@ -1,19 +1,23 @@
 import React, {
-  createContext, useState, useContext, FunctionComponent, PropsWithChildren,
+  createContext, useState, useContext, FunctionComponent, PropsWithChildren, useMemo,
 } from 'react';
+// import {configureAuthClient} from 'asgardeo-core';
 import { AuthContext, AuthenticationConfig, Config } from '../../models/auth';
-import BrandingPreferenceProvider from '../../customization/branding-preference-provider';
+import BrandingPreferenceProvider from '../branding-preference-provider/branding-preference-provider';
 import { DataLayer } from '../../utils/data-layer';
+import SessionStore from '../../utils/session-store';
+import Store from '../../models';
+import { CryptoUtils } from '../../models/auth-js';
+import SPACryptoUtils from '../../utils/crypto-utils';
 
-// context for the provider
+// context for the AsgardeoProvider
 export const AsgardeoProviderContext = createContext<AuthContext | undefined>(undefined);
 
-// eslint-disable-next-line
 export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (props: PropsWithChildren<Config>) => {
   const {
     children,
     config: {
-      clientId, baseUrl, scope, redirectUri, fallback,
+      clientId, baseUrl, scope, redirectUri,
     },
     customization,
   } = props;
@@ -27,6 +31,11 @@ export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (p
 
   const dataLayer = DataLayer.getInstance();
   dataLayer.setAuthConfig(config);
+
+  // const store: Store = new SessionStore();
+  // const spaUtils: CryptoUtils = new SPACryptoUtils();
+
+  // configureAuthClient(config, store, spaUtils);
   // to do - temporary to remove tokens
   dataLayer.setTokens('');
   const tokens = dataLayer.getTokens();
@@ -37,8 +46,8 @@ export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (p
   /**
    * Sets the authentication status and access token.
    *
-   * @param {boolean} value - The authentication status to set. If true, the user is considered authenticated.
-   * @param {string} [token] - The access token to set. If not provided, the access token is set to an empty string.
+   * @param {boolean} value - Authentication status to set.
+   * @param {string} [token] - Access token to set.
    */
   const setAuthentication = (value: boolean, token?: string) => {
     setIsAuthenticated(value);
@@ -47,11 +56,14 @@ export const AsgardeoProvider: FunctionComponent<PropsWithChildren<Config>> = (p
   };
 
   // Value object to be passed to the AsgardeoProvider
-  const value = {
-    isAuthenticated,
-    setAuthentication,
-    accessToken,
-  };
+  const value = useMemo(
+    () => ({
+      isAuthenticated,
+      setAuthentication,
+      accessToken,
+    }),
+    [isAuthenticated, setAuthentication, accessToken],
+  );
 
   // Render the provider with the value object and the wrapped components
   return (

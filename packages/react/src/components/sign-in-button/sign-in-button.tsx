@@ -1,6 +1,6 @@
-import { Button } from '@oxygen-ui/react';
+import { Box, Button } from '@oxygen-ui/react';
 import React, { useState } from 'react';
-import SignInBox from '../sign-in-box/sign-in-box';
+import SignInBox from '../sign-in/sign-in-box/sign-in-box';
 
 const SignInButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -13,8 +13,6 @@ const SignInButton = () => {
     setModalVisible(false);
   };
 
-  console.log('modal visible: ', modalVisible);
-
   return (
     <div className="asgardeo" style={{ padding: '2rem' }}>
       <Button className="ui button primary" onClick={openModal}>
@@ -22,7 +20,7 @@ const SignInButton = () => {
       </Button>
 
       {modalVisible && (
-        <div
+        <Box
           style={{
             position: 'fixed',
             top: '50%',
@@ -33,11 +31,11 @@ const SignInButton = () => {
           }}
         >
           <SignInBox />
-        </div>
+        </Box>
       )}
 
       {modalVisible && (
-        <div
+        <Box
           style={{
             position: 'fixed',
             top: 0,

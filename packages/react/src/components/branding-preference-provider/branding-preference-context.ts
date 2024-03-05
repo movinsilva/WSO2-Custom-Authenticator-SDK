@@ -1,5 +1,5 @@
-import { Context, createContext, useContext } from 'react';
-import { BrandingPreferenceAPIResponseInterface } from '../models/branding-preferences';
+import { createContext, useContext } from 'react';
+import { BrandingPreferenceAPIResponseInterface } from '../../models/branding-preferences';
 
 /**
  * Props interface for BrandingPreferenceContext.
@@ -15,7 +15,6 @@ export type BrandingPreferenceContextProps = {
  * Context object for managing branding preferences.
  */
 
-// eslint-disable-next-line max-len
 export const BrandingPreferenceContext = createContext<BrandingPreferenceContextProps | undefined>(undefined);
 
 /**
@@ -29,7 +28,7 @@ BrandingPreferenceContext.displayName = 'BrandingPreferenceContext';
  * @returns {BrandingPreferenceContextProps} The branding preferences from the context.
  */
 export function useBrandingPreference(): BrandingPreferenceContextProps {
-  const context = useContext(BrandingPreferenceContext);
+  const context = useContext(BrandingPreferenceContext) as BrandingPreferenceContextProps;
 
   if (!context) {
     throw new Error('useBrandingPreference must be used within a BrandingPreferenceProvider');

@@ -5,14 +5,14 @@ import { isEmpty } from '../utils/common';
 /**
  * Class for the Branding Preference Metadata.
  */
-export class BrandingPreferenceMeta {
+export default class BrandingPreferenceMeta {
   /**
    * Private constructor to avoid object instantiation from outside
    * the class.
    */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  /* eslint-disable max-len */
   /**
    * Get the theme skeleton.
    * @param theme - Theme Config.

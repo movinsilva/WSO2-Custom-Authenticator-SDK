@@ -1,6 +1,6 @@
 import { ThemeConfigInterface } from '../models/branding-preferences';
 
-export const LIGHT_THEME: ThemeConfigInterface = {
+const LIGHT_THEME: ThemeConfigInterface = {
   buttons: {
     externalConnection: {
       base: {
@@ -215,3 +215,5 @@ export const LIGHT_THEME: ThemeConfigInterface = {
     },
   },
 };
+
+export default LIGHT_THEME;
