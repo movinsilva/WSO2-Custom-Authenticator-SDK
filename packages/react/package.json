@@ -24,6 +24,7 @@
     "@types/randombytes": "^2.0.3",
     "@types/react": "^18.2.55",
     "@types/react-helmet": "^6.1.11",
+    "eslint-plugin-typescript-sort-keys": "^3.2.0",
     "rollup-plugin-scss": "^4.0.0",
     "sass": "^1.70.0",
     "stylelint": "^16.2.1"

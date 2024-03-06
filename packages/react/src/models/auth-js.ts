@@ -56,7 +56,7 @@ export interface CryptoUtils<T = any> {
      *
      * @returns Hashed data.
      */
-  hashSha256(data: string): Promise<string | T>;
+  hashSha256(data: string): T;
 
   /**
      * Verify the provided JWT.

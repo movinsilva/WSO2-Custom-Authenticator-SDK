@@ -1,3 +1,5 @@
+import sha256 from 'fast-sha256';
+import { createLocalJWKSet, jwtVerify } from 'jose';
 import { CryptoUtils, JWKInterface } from '../models/auth-js';
 
 // Function to generate random bytes of specified length
@@ -9,10 +11,10 @@ function randombytes(length: number): string {
 
 export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
   /**
-     * Get URL encoded string.
-     *
-     * @returns {string} base 64 url encoded value.
-     */
+   * Get URL encoded string.
+   *
+   * @returns {string} base 64 url encoded value.
+   */
   public base64URLEncode(value: string): string {
     return btoa(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     // return base64url.encode(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
@@ -23,14 +25,8 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
     // return base64url.decode(value).toString();
   }
 
-  public async hashSha256(data: string): Promise<string | Buffer> {
-    const textAsBuffer = new TextEncoder().encode(input);
-    const hashBuffer = await window.crypto.subtle.digest('SHA-256', textAsBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hash = hashArray
-      .map((item) => item.toString(16).padStart(2, '0'))
-      .join('');
-    return hash;
+  public hashSha256(data: string): string | Buffer {
+    return Buffer.from(sha256(new TextEncoder().encode(data)));
   }
 
   public generateRandomBytes(length: number): string | Buffer {
@@ -64,10 +60,14 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
         keys: [jwk],
       }),
       jwtVerifyOptions,
-    ).then(() => Promise.resolve(true)).catch((error) => Promise.reject(new AsgardeoAuthException(
-      'SPA-CRYPTO-UTILS-VJ-IV01',
-      error?.reason ?? JSON.stringify(error),
-      `${error?.code} ${error?.claim}`,
-    )));
+    )
+      .then(() => Promise.resolve(true))
+      .catch((error) => Promise.reject(
+        new AsgardeoAuthException(
+          'SPA-CRYPTO-UTILS-VJ-IV01',
+          error?.reason ?? JSON.stringify(error),
+          `${error?.code} ${error?.claim}`,
+        ),
+      ));
   }
 }

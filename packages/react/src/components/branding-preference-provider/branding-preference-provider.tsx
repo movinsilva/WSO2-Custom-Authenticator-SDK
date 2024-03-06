@@ -9,8 +9,7 @@ import { BrandingPreferenceAPIResponseInterface } from '../../models/branding-pr
 import LIGHT_THEME from '../../customization/light-theme';
 import generateAsgardeoTheme from '../../customization/theme';
 import BrandingPreferenceMeta from '../../customization/branding-preference-meta';
-import { AuthenticationConfig } from '../../models/auth';
-import { DataLayer } from '../../utils/data-layer';
+import { useConfig } from '../asgardeo-provider/asgardeo-provider';
 
 /**
  * Props interface for the Branding preference provider.
@@ -23,7 +22,7 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
   props: PropsWithChildren<BrandingPreferenceProviderProps>,
 ): ReactElement => {
   const { children, brandingProps } = props;
-  const dataLayer = DataLayer.getInstance();
+  const { config } = useConfig();
 
   const [brandingPreference, setBrandingPreference] = useState<Partial<BrandingPreferenceAPIResponseInterface>>();
 
@@ -37,7 +36,6 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
 
   useEffect(() => {
     try {
-      const config: AuthenticationConfig = dataLayer.getAuthConfig();
       branding(config.baseUrl).then((response: any) => {
         const resp: BrandingPreferenceAPIResponseInterface = response;
         if (resp?.preference?.configs?.isBrandingEnabled) {
@@ -48,7 +46,7 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
         }
       });
     } catch (error) {
-      throw new Error('Error while fetching branding preferences');
+      throw new Error(`Error while fetching branding preferences: ${error}`);
     }
   }, []);
 

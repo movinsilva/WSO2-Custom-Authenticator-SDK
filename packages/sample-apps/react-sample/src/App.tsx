@@ -7,6 +7,7 @@ import SignedOut from '../../../react/src/components/control-components/signed-o
 import {Hooks} from './Hooks.tsx';
 import SignInButton from '../../../react/src/components/sign-in-button/sign-in-button.tsx';
 import SignIn from '../../../react/src/components/sign-in/signin.tsx';
+import SignOutButton from '../../../react/src/components/sign-out-button/sign-out-button.tsx';
 import './App.scss';
 
 function App() {
@@ -14,7 +15,9 @@ function App() {
     <div className="container">
       <div className="title">Welcome to the sample app!</div>
 
-      <SignIn />
+      <SignedOut>
+        <SignIn />
+      </SignedOut>
 
       <div className="authenticatedComponent">
         AuthenticatedComponent:
@@ -31,6 +34,8 @@ function App() {
       <SignedOut>
         <SignInButton />
       </SignedOut>
+
+      <SignOutButton />
     </div>
   );
 }

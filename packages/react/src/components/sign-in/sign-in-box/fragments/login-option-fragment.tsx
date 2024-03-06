@@ -15,13 +15,7 @@ const LoginOptionFragment = (props: LoginOptionFragmentPropsInterface): ReactEle
   const { authenticator, handleClick } = props;
   return (
     <Button
-      startIcon={(
-        <img
-          className="oxygen-sign-in-option-image"
-          src={images[authenticator]}
-          alt={authenticator}
-        />
-      )}
+      startIcon={<img className="oxygen-sign-in-option-image" src={images[authenticator]} alt={authenticator} />}
       variant="contained"
       className="oxygen-sign-in-option"
       type="button"

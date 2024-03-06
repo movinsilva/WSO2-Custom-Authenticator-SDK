@@ -1,1 +1,3 @@
-// export { configureAuthClient, requestAccessToken } from './asgardeo-auth-js.js';
+export {
+  configureAuthClient, requestAccessToken, getIsAuthenticated, getAuthInstance, getDataLayer, signOut,
+} from './asgardeo-auth-js.js';

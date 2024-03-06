@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { BrandingPreferenceAPIResponseInterface } from './branding-preferences';
+import { Store } from './auth-js';
 
 export enum FlowStatus {
   DEFAULT = 'DEFAULT', // hasn't started the flow yet
@@ -26,18 +27,20 @@ export interface AuthConfig {
   redirectUri: string;
   // The client ID for authentication
   scope: string; // The fallback component to render
-
 }
 
-export interface Config {
+export interface AsgardeoProviderPropsInterface {
   config: AuthConfig;
   customization?: Partial<BrandingPreferenceAPIResponseInterface>; // to be changed
+  store?: Store;
 }
 
 export interface AuthContext {
+  accessToken: string;
+  config: AuthenticationConfig;
   customizationOptions?: any;
   isAuthenticated: boolean;
-  setAuthentication: (value: boolean, token?: string) => void;
+  setAuthentication: () => void;
 }
 
 /**
@@ -79,8 +82,8 @@ export interface Metadata {
 }
 
 export interface AdditionalData {
-  redirectUrl: string,
-  state: string,
+  redirectUrl: string;
+  state: string;
 }
 
 export interface Link {
@@ -111,8 +114,8 @@ export interface SignInFragmentPropsInterface {
 }
 
 /*
-  * Proptypes for the signedIn and signedOut component.
-  */
+ * Proptypes for the signedIn and signedOut component.
+ */
 export interface SignedPropsInterface {
   fallback?: ReactNode;
 }

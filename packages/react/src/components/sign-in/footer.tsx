@@ -1,6 +1,6 @@
-import React, {Fragment, FunctionComponent, ReactElement} from 'react';
-import {useBrandingPreference} from '../branding-preference-provider/branding-preference-context';
-import {isEmpty} from '../../utils/common';
+import React, { FunctionComponent, ReactElement } from 'react';
+import { useBrandingPreference } from '../branding-preference-provider/branding-preference-context';
+import { isEmpty } from '../../utils/common';
 
 const componentId = 'login-screen-skeleton-product-footer';
 /**
@@ -20,13 +20,13 @@ const Footer: FunctionComponent<FooterInterface> = (props: FooterInterface): Rea
   const brandingPreference = brandingData?.brandingPreference?.preference;
 
   return !brandingPreference ? (
-    <div></div>
+    <div />
   ) : (
     <div data-componentid={componentId} className="footer">
       <div className="ui container fluid">
         <div className="ui text menu">
           <div className="left menu">
-            <a className="item no-hover copyright-text line-break" id="copyright">
+            <a href="www.google.com" className="item no-hover copyright-text line-break" id="copyright">
               <div className="powered-by-logo">
                 <div>WSO2 LLC SDK</div>
               </div>
