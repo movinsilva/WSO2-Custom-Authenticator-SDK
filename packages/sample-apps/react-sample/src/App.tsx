@@ -8,6 +8,8 @@ import {Hooks} from './Hooks.tsx';
 import SignInButton from '../../../react/src/components/sign-in-button/sign-in-button.tsx';
 import SignIn from '../../../react/src/components/sign-in/signin.tsx';
 import SignOutButton from '../../../react/src/components/sign-out-button/sign-out-button.tsx';
+
+import Profile from '../../../react/src/components/profile/profile.tsx';
 import './App.scss';
 
 function App() {
@@ -17,17 +19,17 @@ function App() {
 
       <SignedOut>
         <SignIn />
+        <div className="margin" />
       </SignedOut>
 
-      <div className="authenticatedComponent">
-        AuthenticatedComponent:
-        <SignedIn>
-          <div style={{fontSize: '2rem'}}> You are authenticated!</div>
-        </SignedIn>
-        <SignedOut>
-          <div style={{fontSize: '2rem'}}> You are not authenticated!</div>
-        </SignedOut>
-      </div>
+      <SignedIn>
+        <div>
+          <Profile />
+        </div>
+      </SignedIn>
+      <SignedOut>
+        <div style={{fontSize: '2rem'}}> You are not authenticated!</div>
+      </SignedOut>
 
       <Hooks />
 

@@ -1,5 +1,5 @@
 import { authorizeRequestBuilder, authenticateRequestBuilder, tokenRequestBuilder } from './authentication-core-request-builder.js';
-import { getAuthorizeUrl, getAuthnUrl, getTokenUrl } from '../utils/url-generator.js';
+import { getAuthorizeUrl, getAuthnUrl, getTokenUrl } from '../../utils/url-generator.js';
 
 /**
  * Authorizes the user with the provided base URL, client ID, scope, and redirect URI.

@@ -10,6 +10,7 @@ const SignOutButton = () => {
     signOut().then(() => {
       authContext?.setAuthentication();
     });
+    sessionStorage.clear();
   };
   return <Button onClick={handleClick}>Sign Out</Button>;
 };

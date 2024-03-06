@@ -2,7 +2,7 @@ import {
   Box, Link, Paper, Grid, Divider, Typography,
 } from '@oxygen-ui/react';
 import {
-  authorize, authenticate, requestAccessToken, getFlowConfig, setFlowConfig,
+  authorize, authenticate, requestAccessToken, getFlowConfig, setFlowConfig, me,
 } from 'asgardeo-core';
 import React, {
   useEffect, useState, ReactElement, useContext, FunctionComponent,
@@ -109,6 +109,9 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       await requestAccessToken(resp.authData.code, resp.authData.session_state);
       authContext.setAuthentication();
       setIsRetry(true);
+
+      const m = await me(config.baseUrl);
+      console.log('Me response:', m);
     } else {
       setAuthenticator(resp.nextStep?.authenticators ?? []);
 

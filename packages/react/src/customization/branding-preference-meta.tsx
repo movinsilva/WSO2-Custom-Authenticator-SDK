@@ -377,7 +377,7 @@ export default class BrandingPreferenceMeta {
     /* ------  Font Family ------ */
 
     /* Body */
-    .sign-in-box-node {
+    .sign-in-box-node, .profile-component-box {
         font-family: var(--asg-primary-font-family);
     }
 

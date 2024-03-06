@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@oxygen-ui/react": "^1.10.0",
+    "@oxygen-ui/react-icons": "^1.10.0",
     "asgardeo-core": "*",
     "crypto-js": "^4.2.0",
     "fast-sha256": "^1.3.0",

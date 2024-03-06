@@ -1,5 +1,5 @@
-import {Box, Button, CircularProgress} from '@oxygen-ui/react';
-import React, {useState} from 'react';
+import { Box, Button, CircularProgress } from '@oxygen-ui/react';
+import React, { useState } from 'react';
 import SignInBox from '../sign-in/sign-in-box/sign-in-box';
 
 const SignInButton = () => {
@@ -15,7 +15,7 @@ const SignInButton = () => {
   };
 
   return (
-    <div className="asgardeo" style={{padding: '2rem'}}>
+    <div className="asgardeo" style={{ padding: '2rem' }}>
       <Button className="ui button primary" onClick={openModal}>
         Sign In
       </Button>

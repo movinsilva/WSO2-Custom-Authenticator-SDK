@@ -1,4 +1,4 @@
-import { getBrandingUrl } from '../utils/url-generator.js';
+import { getBrandingUrl } from '../../utils/url-generator.js';
 
 /**
  * Fetch branding information from the authentication server.
