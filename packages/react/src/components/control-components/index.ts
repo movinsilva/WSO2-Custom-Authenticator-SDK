@@ -1,2 +1,2 @@
-export { SignedIn } from './signed-in';
-export { SignedOut } from './signed-out';
+export { default as SignedIn } from './signed-in';
+export { default as SignedOut } from './signed-out';

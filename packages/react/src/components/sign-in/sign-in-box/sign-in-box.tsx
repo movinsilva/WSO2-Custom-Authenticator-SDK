@@ -1,12 +1,6 @@
-import {
-  Box, Link, Paper, Grid, Divider, Typography,
-} from '@oxygen-ui/react';
-import {
-  authorize, authenticate, requestAccessToken, getFlowConfig, setFlowConfig, me,
-} from 'asgardeo-core';
-import React, {
-  useEffect, useState, ReactElement, useContext, FunctionComponent,
-} from 'react';
+import {Box, Link, Paper, Grid, Divider, Typography} from '@oxygen-ui/react';
+import {authorize, authenticate, requestAccessToken, getFlowConfig, setFlowConfig} from 'asgardeo-core';
+import React, {useEffect, useState, ReactElement, useContext, FunctionComponent} from 'react';
 import BasicAuthFragment from './fragments/basic-auth-fragment';
 import './sign-in-box.scss';
 import {
@@ -17,9 +11,9 @@ import {
   IdentifiableComponentInterface,
   Metadata,
 } from '../../../models/auth';
-import { AsgardeoProviderContext, useConfig } from '../../asgardeo-provider/asgardeo-provider';
-import { useBrandingPreference } from '../../branding-preference-provider/branding-preference-context';
-import { BrandingPreferenceInterface } from '../../../models/branding-preferences';
+import {AsgardeoProviderContext, useConfig} from '../../asgardeo-provider/asgardeo-context';
+import {useBrandingPreference} from '../../branding-preference-provider/branding-preference-context';
+import {BrandingPreferenceInterface} from '../../../models/branding-preferences';
 import TOTPFragment from './fragments/totp-fragment';
 import LoginOptionFragment from './fragments/login-option-fragment';
 
@@ -34,16 +28,23 @@ interface SignInBoxInterface extends IdentifiableComponentInterface {
   setIsLoading: Function;
 }
 
-// eslint-disable-next-line max-len
+/**
+ * The sign-in box component.
+ *
+ * @component
+ * @param {SignInBoxInterface} props The props of the component
+ * @returns {ReactElement} The sign-in box component
+ */
 const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterface): ReactElement => {
   const componentId = 'sign-in-box';
+  //TODO: Remove this after first authentication step
   let showSelfSignUp = true;
-  const { config } = useConfig();
-  const { setIsLoading } = props;
+  const [isRetry, setIsRetry] = useState(false);
+  const {config} = useConfig();
+  const {setIsLoading} = props;
 
   const [flowStatus, setFlowStatus] = useState<FlowStatus>(FlowStatus.DEFAULT);
   const [authenticators, setAuthenticator] = useState<Authenticator[]>();
-  const [isRetry, setIsRetry] = useState(false);
   const authContext = useContext(AsgardeoProviderContext);
   const brandingData = useBrandingPreference();
 
@@ -60,7 +61,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       const state = url.searchParams.get('state');
 
       // Send the 'code' and 'state' to the parent window and close the current window (popup)
-      window.opener.postMessage({ code, state }, config.redirectUri);
+      window.opener.postMessage({code, state}, config.redirectUri);
       window.close();
     }
 
@@ -80,6 +81,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       } else {
         setFlowStatus(resp.flowStatus);
         setAuthenticator(resp.nextStep?.authenticators ?? []);
+        setIsRetry(resp.flowStatus === FlowStatus.FAIL_INCOMPLETE);
       }
     });
     setIsLoading(false);
@@ -99,24 +101,22 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       authParams,
     );
     console.log('Authenticate response:', resp);
-    showSelfSignUp = false;
     setFlowStatus(resp.flowStatus);
-    setFlowConfig(resp);
 
+    // when the authentication is successful, generate the token
     if (resp.flowStatus === FlowStatus.SUCCESS_COMPLETED && resp.authData) {
-      // when the authentication is successful, generate the token
-
+      setFlowConfig(resp);
       await requestAccessToken(resp.authData.code, resp.authData.session_state);
       authContext.setAuthentication();
-      setIsRetry(true);
-
-      const m = await me(config.baseUrl);
-      console.log('Me response:', m);
     } else {
       setAuthenticator(resp.nextStep?.authenticators ?? []);
 
       if (resp.flowStatus === FlowStatus.FAIL_INCOMPLETE) {
-        setIsRetry(true);
+        const currentFlowConfig: AuthorizeApiResponseInterface = await getFlowConfig();
+        currentFlowConfig.flowStatus = FlowStatus.FAIL_INCOMPLETE;
+        setFlowConfig(currentFlowConfig);
+      } else {
+        setFlowConfig(resp);
       }
     }
     setIsLoading(false);
@@ -139,10 +139,10 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
         // Check the origin of the message to ensure it's from the popup window
         if (event.origin !== config.redirectUri) return;
 
-        const { code, state } = event.data;
+        const {code, state} = event.data;
 
         if (code && state) {
-          handleAuthenticate({ code, state }, resp.nextStep.authenticators[0].authenticatorId);
+          handleAuthenticate({code, state}, resp.nextStep.authenticators[0].authenticatorId);
         }
 
         // Remove the event listener
@@ -157,7 +157,13 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
   const renderSignInOptions = (authenticator: Authenticator) => {
     switch (authenticator.authenticator) {
       case AuthenticatorType.TOTP:
-        return <TOTPFragment handleAuthenticate={handleAuthenticate} authenticatorId={authenticator.authenticatorId} />;
+        return (
+          <TOTPFragment
+            handleAuthenticate={handleAuthenticate}
+            authenticatorId={authenticator.authenticatorId}
+            isRetry={isRetry}
+          />
+        );
 
       default:
         return (
@@ -182,7 +188,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       if (authenticators.length > 1) {
         isMultipleAuthenticators = true;
       }
-      authenticators.forEach((authenticator) => {
+      authenticators.forEach(authenticator => {
         if (authenticator.authenticator === AuthenticatorType.USERNAME_PASSWORD) {
           usernamePassword = true;
           usernamePasswordID = authenticator.authenticatorId;
@@ -213,8 +219,8 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
           )}
 
           {/* If multiple options are available, then render the relevant compact fragments */}
-          {isMultipleAuthenticators
-            && authenticators.map((authenticator) => {
+          {isMultipleAuthenticators &&
+            authenticators.map(authenticator => {
               if (authenticator.authenticator !== AuthenticatorType.USERNAME_PASSWORD) {
                 return (
                   <LoginOptionFragment
@@ -259,7 +265,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
         </Box>
       )}
       {flowStatus === FlowStatus.SUCCESS_COMPLETED && (
-        <div style={{ padding: '1rem', backgroundColor: 'white' }}>Successfully Authenticated</div>
+        <div style={{padding: '1rem', backgroundColor: 'white'}}>Successfully Authenticated</div>
       )}
     </div>
   );

@@ -7,35 +7,30 @@ const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme
   branding: BrandingPreferenceContextProps,
 ) => {
   const mode: string = branding?.brandingPreference?.preference?.theme?.activeTheme.toUpperCase() ?? 'LIGHT';
-  const brandingTheme: ThemeConfigInterface = branding?.brandingPreference?.preference?.theme[mode as PredefinedThemes];
+  // eslint-disable-next-line max-len
+  const brandingTheme: ThemeConfigInterface | undefined = branding?.brandingPreference?.preference?.theme[mode as PredefinedThemes];
 
   return extendTheme({
     colorSchemes: {
       dark: {
         brand: {
           logo: {
-            main: brandingTheme?.images?.myAccountLogo?.imgURL
-                            ?? '../../assets/asgardeo-logo.svg',
+            main: brandingTheme?.images?.myAccountLogo?.imgURL ?? '../../assets/asgardeo-logo.svg',
           },
         },
         palette: {
           customComponents: {
             AppShell: {
               Main: {
-                background:
-                                    brandingTheme?.colors?.background?.body?.main
-                                    ?? 'var(--oxygen-palette-background-paper)',
+                background: brandingTheme?.colors?.background?.body?.main ?? 'var(--oxygen-palette-background-paper)',
               },
               MainWrapper: {
                 background:
-                                    brandingTheme?.colors?.background?.surface?.dark
-                                    ?? 'var(--oxygen-palette-background-paper)',
+                  brandingTheme?.colors?.background?.surface?.dark ?? 'var(--oxygen-palette-background-paper)',
               },
             },
             Navbar: {
-              background:
-                                brandingTheme?.colors?.background?.surface?.dark
-                                ?? 'var(--oxygen-palette-background-paper)',
+              background: brandingTheme?.colors?.background?.surface?.dark ?? 'var(--oxygen-palette-background-paper)',
             },
           },
           gradients: {
@@ -52,8 +47,7 @@ const generateAsgardeoTheme: (branding: BrandingPreferenceContextProps) => Theme
       light: {
         brand: {
           logo: {
-            main: brandingTheme?.images?.myAccountLogo?.imgURL
-                            ?? '../assets/asgardeo-logo.svg',
+            main: brandingTheme?.images?.myAccountLogo?.imgURL ?? '../assets/asgardeo-logo.svg',
           },
         },
         palette: {

@@ -18,7 +18,6 @@
  * under the License.
 -->
 
-<!-- TODO: Rename this to google.svg whenever a major refactroring takes place since the static link is used in already added IdPs. -->
 <svg id="google-idp-illustration" class="icon" xmlns="http://www.w3.org/2000/svg" width="67.91" height="67.901" viewBox="0 0 67.91 67.901">
     <g id="google-idp-illustration" transform="translate(-0.001 -0.001)">
         <path id="Path_10" data-name="Path 10" d="M15.049,160.965l-2.364,8.824-8.639.183a34.011,34.011,0,0,1-.25-31.7h0l7.691,1.41,3.369,7.645a20.262,20.262,0,0,0,.19,13.642Z" transform="translate(0 -119.93)" fill="#fbbb00" />

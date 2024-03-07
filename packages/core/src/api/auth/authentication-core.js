@@ -1,5 +1,5 @@
-import { authorizeRequestBuilder, authenticateRequestBuilder, tokenRequestBuilder } from './authentication-core-request-builder.js';
-import { getAuthorizeUrl, getAuthnUrl, getTokenUrl } from '../../utils/url-generator.js';
+import { authorizeRequestBuilder, authenticateRequestBuilder } from './authentication-core-request-builder.js';
+import { getAuthorizeUrl, getAuthnUrl } from '../../utils/url-generator.js';
 
 /**
  * Authorizes the user with the provided base URL, client ID, scope, and redirect URI.
@@ -32,7 +32,7 @@ export const authorize = async (baseUrl, clientId, scope, redirectUri) => {
     throw new Error('Authorization failed');
   } catch (error) {
     // exception to be implemented
-    throw new Error('Authorization failed');
+    throw new Error(`Authorization failed: ${error}`);
   }
 };
 
@@ -68,38 +68,6 @@ export const authenticate = async (baseUrl, flowId, authenticatorId, authenticat
     throw new Error('Authentication failed');
   } catch (error) {
     // exception to be implemented
-    throw new Error('Authentication failed');
-  }
-};
-
-/**
- * Gets an access token by passing the code with client ID and redirect URL.
- * @param {string} baseUrl - The base URL of the authentication server.
- * @param {string} code - The authorization code received from the authentication server.
- * @param {string} clientId - The client ID of the application.
- * @param {string} redirectUri - The URI to redirect to after successful login.
- * @returns {Promise<object|undefined>} A promise that resolves with the response object from the
- * authentication server, or undefined if the response is not successful or an error occurs.
- */
-export const getAccessToken = async (baseUrl, code, clientId, redirectUrl) => {
-  try {
-    const request = tokenRequestBuilder(
-      getTokenUrl(baseUrl),
-      code,
-      clientId,
-      redirectUrl,
-    );
-
-    // Disable certificate verification for the duration of this request
-    // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response = await fetch(request);
-
-    if (response.ok) {
-      const responseObject = await response.json();
-      return responseObject;
-    }
-    throw new Error('Token request failed');
-  } catch (error) {
-    throw new Error('Token request failed');
+    throw new Error(`Authentication failed: ${error}`);
   }
 };

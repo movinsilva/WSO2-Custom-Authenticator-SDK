@@ -1,6 +1,7 @@
-import { Box, Button, CircularProgress } from '@oxygen-ui/react';
-import React, { useState } from 'react';
+import {Box, Button, CircularProgress} from '@oxygen-ui/react';
+import React, {useState} from 'react';
 import SignInBox from '../sign-in/sign-in-box/sign-in-box';
+import './sign-in-button.scss';
 
 const SignInButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -15,40 +16,16 @@ const SignInButton = () => {
   };
 
   return (
-    <div className="asgardeo" style={{ padding: '2rem' }}>
+    <div className="asgardeo" style={{padding: '2rem'}}>
       <Button className="ui button primary" onClick={openModal}>
         Sign In
       </Button>
 
       {modalVisible && (
-        <Box
-          style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            zIndex: 1000,
-            boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          {isLoading ? <CircularProgress /> : <SignInBox setIsLoading={setIsLoading} />}
-        </Box>
+        <Box className="popup-box">{isLoading ? <CircularProgress /> : <SignInBox setIsLoading={setIsLoading} />}</Box>
       )}
 
-      {modalVisible && (
-        <Box
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            zIndex: 100,
-          }}
-          onClick={closeModal}
-        />
-      )}
+      {modalVisible && <Box className="popup-box-overlay" onClick={closeModal} />}
     </div>
   );
 };

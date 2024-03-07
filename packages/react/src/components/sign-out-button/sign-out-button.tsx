@@ -1,7 +1,7 @@
 import { Button } from '@oxygen-ui/react';
 import { signOut } from 'asgardeo-core';
 import React, { useContext } from 'react';
-import { AsgardeoProviderContext } from '../asgardeo-provider/asgardeo-provider';
+import { AsgardeoProviderContext } from '../asgardeo-provider/asgardeo-context';
 
 const SignOutButton = () => {
   const authContext = useContext(AsgardeoProviderContext);

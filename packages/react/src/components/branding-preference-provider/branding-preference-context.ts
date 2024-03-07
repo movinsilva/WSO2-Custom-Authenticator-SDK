@@ -6,9 +6,9 @@ import { BrandingPreferenceAPIResponseInterface } from '../../models/branding-pr
  */
 export type BrandingPreferenceContextProps = {
   /**
-     * The branding preferences to be stored in the context.
-     */
-  brandingPreference: BrandingPreferenceAPIResponseInterface;
+   * The branding preferences to be stored in the context.
+   */
+  brandingPreference: Partial<BrandingPreferenceAPIResponseInterface> | undefined;
 };
 
 /**

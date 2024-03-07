@@ -1,1 +1,1 @@
-export { authenticate, authorize, getAccessToken } from './authentication-core.js';
+export { authenticate, authorize } from './authentication-core.js';

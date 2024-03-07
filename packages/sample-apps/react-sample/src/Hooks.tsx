@@ -1,5 +1,5 @@
-//import { useAuthentication } from "asgardeo-react";
-import {useAuthentication} from '../../../react/src/components/asgardeo-provider/asgardeo-provider.tsx';
+//import {useAuthentication} from 'asgardeo-react';
+import {useAuthentication} from '../../../react/src/components/asgardeo-provider/asgardeo-context.ts';
 
 import React from 'react';
 

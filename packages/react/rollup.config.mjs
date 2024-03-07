@@ -2,7 +2,8 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
-import scss from 'rollup-plugin-scss';
+import image from '@rollup/plugin-image';
+import styles from 'rollup-plugin-styles';
 
 import packageJson from './package.json' assert {type: 'json'};
 
@@ -32,16 +33,16 @@ export default [
       resolve(),
       commonjs(),
       typescript({tsconfig: './tsconfig.json'}),
-      scss({
-        input: 'src/components/sign-in-box/sign-in-box.scss',
-        output: 'dist/css/style.css',
-        failOnError: true,
-      }),
+      styles({
+        mode: 'inject'
+    }),
+      image()
     ],
   },
   {
     input: 'dist/esm/types/index.d.ts',
     output: [{dir: 'dist/', format: 'esm'}],
+    external: [/\.(sass|scss|css)$/] /* ignore style files */,
     plugins: [dts()],
   },
 ];

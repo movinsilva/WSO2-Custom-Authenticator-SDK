@@ -1,1 +1,1 @@
-export { default as branding } from './branding.js';
+export { branding, brandingText } from './branding.js';

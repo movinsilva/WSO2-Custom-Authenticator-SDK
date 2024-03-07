@@ -70,33 +70,3 @@ export const authenticateRequestBuilder = (authnUri, flowId, authenticatorId, au
 
   return new Request(authnUri, requestOptions);
 };
-
-/**
- * Builds a request for getting an access token.
- *
- * @param {string} tokenUri - The token endpoint URI.
- * @param {string} code - The authorization code received from the authorization server.
- * @param {string} clientId - The client ID of the application.
- * @param {string} redirectUri - The URI to redirect to after successful login.
- * @returns {Request} - The token request.
- */
-export const tokenRequestBuilder = (tokenUri, code, clientId, redirectUri) => {
-  const formBody = new URLSearchParams();
-  formBody.append('code', code);
-  formBody.append('client_id', clientId);
-  formBody.append('grant_type', 'authorization_code');
-  formBody.append('redirect_uri', redirectUri);
-
-  const headers = {
-    Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
-  };
-
-  const requestOptions = {
-    body: formBody.toString(),
-    headers,
-    method: 'POST',
-  };
-
-  return new Request(tokenUri, requestOptions);
-};

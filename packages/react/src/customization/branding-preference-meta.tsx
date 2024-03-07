@@ -1,6 +1,6 @@
-import { BrandingPreferenceThemeInterface, PredefinedThemes } from '../models/branding-preferences';
+import {BrandingPreferenceThemeInterface, PredefinedThemes} from '../models/branding-preferences';
 
-import { isEmpty } from '../utils/common';
+import {isEmpty} from '../utils/common';
 
 /**
  * Class for the Branding Preference Metadata.
@@ -41,10 +41,10 @@ export default class BrandingPreferenceMeta {
 
     return `
         ${
-  theme[theme.activeTheme].typography.font.importURL
-    ? `@import url(${theme[theme.activeTheme].typography.font.importURL});`
-    : ''
-}
+          theme[theme.activeTheme].typography.font.importURL
+            ? `@import url(${theme[theme.activeTheme].typography.font.importURL});`
+            : ''
+        }
 
         .sign-in-box-node, .asgardeo {
         --asg-colors-primary-main: ${theme[theme.activeTheme].colors.primary.main};
@@ -390,7 +390,7 @@ export default class BrandingPreferenceMeta {
         font-family: var(--asg-primary-font-family);
     }
 
-    .ui.header, .ui.link {
+    .ui.header, .ui.link, .profile-title-1, .profile-sub-title, .profile-title {
         font-family: var(--asg-primary-font-family);
     }
 

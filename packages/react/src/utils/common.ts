@@ -1,4 +1,5 @@
 // This function checks if a given value is empty.
+// eslint-disable-next-line import/prefer-default-export
 export const isEmpty = (value: any): boolean => {
   // If the value is null or undefined, return true.
   if (value == null) {

@@ -1,31 +1,42 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  FunctionComponent,
-  PropsWithChildren,
-  useMemo,
-  useEffect,
-} from 'react';
-import { configureAuthClient, getAuthInstance } from 'asgardeo-core';
-import { AsgardeoProviderPropsInterface, AuthContext, AuthenticationConfig } from '../../models/auth';
+import React, {useState, FunctionComponent, PropsWithChildren, useMemo, useEffect} from 'react';
+import {configureAuthClient, getAuthInstance} from 'asgardeo-core';
+import {AsgardeoProviderPropsInterface, AuthenticationConfig} from '../../models/auth';
 import BrandingPreferenceProvider from '../branding-preference-provider/branding-preference-provider';
 import SessionStore from '../../utils/session-store';
 import Store from '../../models';
-import { CryptoUtils } from '../../models/auth-js';
+import {CryptoUtils} from '../../models/auth-js';
 import SPACryptoUtils from '../../utils/crypto-utils';
+import {AsgardeoProviderContext} from './asgardeo-context';
 
-// context for the AsgardeoProvider
-export const AsgardeoProviderContext = createContext<AuthContext | undefined>(undefined);
-
-export const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderPropsInterface>> = (
+/**
+ * AsgardeoProvider component is a wrapper component that provides authentication-related
+ * functionality to its child components.
+ *
+ * @component
+ * @param {AsgardeoProviderPropsInterface} props The props of the component
+ * @returns {ReactElement} The AsgardeoProvider component
+ * @example
+ * ```tsx
+ * <AsgardeoProvider
+ *   config={{
+ *     clientId: "your-client-id",
+ *     baseUrl: "https://your-base-url",
+ *     scope: "openid",
+ *     redirectUri: "https://your-redirect-uri"
+ *   }}
+ *   customization={customization}
+ *   store={store}
+ * >
+ *   <App />
+ * </AsgardeoProvider>
+ * ```
+ */
+const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderPropsInterface>> = (
   props: PropsWithChildren<AsgardeoProviderPropsInterface>,
 ) => {
   const {
     children,
-    config: {
-      clientId, baseUrl, scope, redirectUri,
-    },
+    config: {clientId, baseUrl, scope, redirectUri},
     customization,
     store,
   } = props;
@@ -86,14 +97,4 @@ export const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProvi
   );
 };
 
-// Custom hook to access the authentication state
-export const useAuthentication = () => {
-  const { isAuthenticated } = useContext(AsgardeoProviderContext) as { isAuthenticated: boolean };
-  const { accessToken } = useContext(AsgardeoProviderContext) as { accessToken: string };
-  return { isAuthenticated, accessToken };
-};
-
-export const useConfig = () => {
-  const { config } = useContext(AsgardeoProviderContext) as { config: AuthenticationConfig };
-  return { config };
-};
+export default AsgardeoProvider;

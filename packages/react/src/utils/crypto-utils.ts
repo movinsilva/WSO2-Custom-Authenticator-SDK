@@ -1,6 +1,8 @@
 import sha256 from 'fast-sha256';
 import { createLocalJWKSet, jwtVerify } from 'jose';
+import { Buffer } from 'buffer';
 import { CryptoUtils, JWKInterface } from '../models/auth-js';
+import AsgardeoAuthException from '../exception/exception';
 
 // Function to generate random bytes of specified length
 function randombytes(length: number): string {
@@ -10,6 +12,8 @@ function randombytes(length: number): string {
 }
 
 export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
+  /* eslint-disable class-methods-use-this */
+
   /**
    * Get URL encoded string.
    *
@@ -48,6 +52,7 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
       audience: clientID,
       clockTolerance,
       subject,
+      issuer,
     };
 
     if (validateJwtIssuer ?? true) {
@@ -70,4 +75,6 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
         ),
       ));
   }
+
+  /* eslint-disable class-methods-use-this */
 }

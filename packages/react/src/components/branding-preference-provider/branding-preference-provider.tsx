@@ -1,15 +1,14 @@
-import React, {
-  FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState,
-} from 'react';
-import { branding } from 'asgardeo-core';
+import React, {FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState} from 'react';
+import {branding} from 'asgardeo-core';
 import merge from 'lodash.merge';
-import { ThemeProvider } from '@oxygen-ui/react';
-import { BrandingPreferenceContext, BrandingPreferenceContextProps } from './branding-preference-context';
-import { BrandingPreferenceAPIResponseInterface } from '../../models/branding-preferences';
+import {ThemeProvider} from '@oxygen-ui/react';
+import {BrandingPreferenceContext, BrandingPreferenceContextProps} from './branding-preference-context';
+import {BrandingPreferenceAPIResponseInterface} from '../../models/branding-preferences';
 import LIGHT_THEME from '../../customization/light-theme';
 import generateAsgardeoTheme from '../../customization/theme';
 import BrandingPreferenceMeta from '../../customization/branding-preference-meta';
-import { useConfig } from '../asgardeo-provider/asgardeo-provider';
+import {useConfig} from '../asgardeo-provider/asgardeo-context';
+import {Helmet} from 'react-helmet';
 
 /**
  * Props interface for the Branding preference provider.
@@ -21,17 +20,17 @@ interface BrandingPreferenceProviderProps {
 const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPreferenceProviderProps>> = (
   props: PropsWithChildren<BrandingPreferenceProviderProps>,
 ): ReactElement => {
-  const { children, brandingProps } = props;
-  const { config } = useConfig();
+  const {children, brandingProps} = props;
+  const {config} = useConfig();
 
   const [brandingPreference, setBrandingPreference] = useState<Partial<BrandingPreferenceAPIResponseInterface>>();
 
   const contextValues: BrandingPreferenceContextProps = useMemo(() => {
     if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
-      return { brandingPreference: undefined };
+      return {brandingPreference: undefined};
     }
 
-    return { brandingPreference };
+    return {brandingPreference};
   }, [brandingPreference]);
 
   useEffect(() => {
@@ -41,7 +40,6 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));
         } else {
-          // to do - this has to change: merge with passed object
           setBrandingPreference(merge(resp, LIGHT_THEME) as BrandingPreferenceAPIResponseInterface);
         }
       });
@@ -68,7 +66,7 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
   return (
     <BrandingPreferenceContext.Provider value={contextValues}>
       {/* to do - whether to use helmet or not */}
-      {injectBrandingCSSSkeleton()}
+      <Helmet>{injectBrandingCSSSkeleton()}</Helmet>
       <ThemeProvider
         theme={generateAsgardeoTheme(contextValues)}
         defaultMode="light"

@@ -4,13 +4,20 @@ import FormControlLabel from '@oxygen-ui/react/FormControlLabel';
 import FormGroup from '@oxygen-ui/react/FormGroup';
 import TextField from '@oxygen-ui/react/TextField';
 import Typography from '@oxygen-ui/react/Typography';
-import React, { ReactElement, useState } from 'react';
-import { Box } from '@oxygen-ui/react';
-import { SignInFragmentPropsInterface } from '../../../../models/auth';
+import React, {ReactElement, useState} from 'react';
+import {Box} from '@oxygen-ui/react';
+import {SignInFragmentPropsInterface} from '../../../../models/auth';
 
-/* eslint-disable-next-line max-len */
+/**
+ * Basic Auth Fragment component which consists of the basic authentication form
+ * containing username and password fields.
+ *
+ * @component
+ * @param {SignInFragmentPropsInterface} props The props of the component
+ * @returns {ReactElement} The Basic Auth Fragment component
+ */
 const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement => {
-  const { handleAuthenticate, authenticatorId, isRetry } = props;
+  const {handleAuthenticate, authenticatorId, isRetry} = props;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -36,7 +43,7 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         value={username}
         placeholder="Enter your Username"
         className="ui input"
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={e => setUsername(e.target.value)}
       />
       <TextField
         required
@@ -48,13 +55,10 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         value={password}
         placeholder="Enter your password"
         className="input"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
       <FormGroup className="">
-        <FormControlLabel
-          control={<Checkbox color="secondary" />}
-          label="Remember me on this computer"
-        />
+        <FormControlLabel control={<Checkbox color="secondary" />} label="Remember me on this computer" />
       </FormGroup>
       <Button
         color="primary"
@@ -63,7 +67,7 @@ const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement =>
         type="submit"
         fullWidth
         onClick={() => {
-          handleAuthenticate({ username, password }, authenticatorId);
+          handleAuthenticate({username, password}, authenticatorId);
         }}
       >
         Sign In
