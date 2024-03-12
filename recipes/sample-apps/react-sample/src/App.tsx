@@ -1,9 +1,10 @@
-import SignedIn from '../../../react/src/components/control-components/signed-in.tsx';
-import SignedOut from '../../../react/src/components/control-components/signed-out.tsx';
-import SignInButton from '../../../react/src/components/sign-in-button/sign-in-button.tsx';
-import SignIn from '../../../react/src/components/sign-in/signin.tsx';
-import SignOutButton from '../../../react/src/components/sign-out-button/sign-out-button.tsx';
-import Profile from '../../../react/src/components/profile/profile.tsx';
+import SignedIn from '../../../../packages/react/src/components/control-components/signed-in.tsx';
+import SignedOut from '../../../../packages/react/src/components/control-components/signed-out.tsx';
+import SignInButton from '../../../../packages/react/src/components/sign-in-button/sign-in-button.tsx';
+import SignIn from '../../../../packages/react/src/components/sign-in/signin.tsx';
+import SignOutButton from '../../../../packages/react/src/components/sign-out-button/sign-out-button.tsx';
+import Profile from '../../../../packages/react/src/components/profile/profile.tsx';
+import UserButton from '../../../../packages/react/src/components/user-button/user-button.tsx';
 
 //import {SignInButton, SignIn, SignOutButton, SignedIn, SignedOut, Profile} from 'asgardeo-react';
 
@@ -24,6 +25,10 @@ function App() {
         THIS IS SIGNED IN COMPONENT
         <div>
           <Profile />
+        </div>
+        <div>
+          USER BUTTON
+          <UserButton />
         </div>
       </SignedIn>
       <SignedOut>

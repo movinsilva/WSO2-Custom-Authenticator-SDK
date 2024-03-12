@@ -1,5 +1,5 @@
 import React, {FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState} from 'react';
-import {branding} from 'asgardeo-core';
+import {branding} from '@asgardeo/ui-core';
 import merge from 'lodash.merge';
 import {ThemeProvider} from '@oxygen-ui/react';
 import {BrandingPreferenceContext, BrandingPreferenceContextProps} from './branding-preference-context';

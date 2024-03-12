@@ -1,7 +1,7 @@
 import {Box, Container, Typography} from '@oxygen-ui/react';
 import {UserIcon} from '@oxygen-ui/react-icons';
 import React, {FunctionComponent, useEffect, useState} from 'react';
-import {me} from 'asgardeo-core';
+import {me} from '@asgardeo/ui-core';
 import {useConfig} from '../asgardeo-provider/asgardeo-context';
 import './profile.scss';
 import {MeAPIResponseInterface} from '../../models/me';

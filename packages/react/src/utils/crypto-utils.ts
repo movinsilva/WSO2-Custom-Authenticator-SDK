@@ -1,14 +1,14 @@
 import sha256 from 'fast-sha256';
-import { createLocalJWKSet, jwtVerify } from 'jose';
-import { Buffer } from 'buffer';
-import { CryptoUtils, JWKInterface } from '../models/auth-js';
+import {createLocalJWKSet, jwtVerify} from 'jose';
+import {Buffer} from 'buffer';
+import {CryptoUtils, JWKInterface} from '../models/auth-js';
 import AsgardeoAuthException from '../exception/exception';
 
 // Function to generate random bytes of specified length
 function randombytes(length: number): string {
   const bytes = new Uint8Array(length);
   window.crypto.getRandomValues(bytes);
-  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
 export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
@@ -20,7 +20,8 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
    * @returns {string} base 64 url encoded value.
    */
   public base64URLEncode(value: string): string {
-    return btoa(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    let utf8Value = unescape(encodeURIComponent(value));
+    return btoa(utf8Value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     // return base64url.encode(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   }
 
@@ -67,13 +68,15 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
       jwtVerifyOptions,
     )
       .then(() => Promise.resolve(true))
-      .catch((error) => Promise.reject(
-        new AsgardeoAuthException(
-          'SPA-CRYPTO-UTILS-VJ-IV01',
-          error?.reason ?? JSON.stringify(error),
-          `${error?.code} ${error?.claim}`,
+      .catch(error =>
+        Promise.reject(
+          new AsgardeoAuthException(
+            'SPA-CRYPTO-UTILS-VJ-IV01',
+            error?.reason ?? JSON.stringify(error),
+            `${error?.code} ${error?.claim}`,
+          ),
         ),
-      ));
+      );
   }
 
   /* eslint-disable class-methods-use-this */

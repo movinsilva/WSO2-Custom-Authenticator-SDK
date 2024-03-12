@@ -1,5 +1,5 @@
 import React, {useState, FunctionComponent, PropsWithChildren, useMemo, useEffect} from 'react';
-import {configureAuthClient, getAuthInstance} from 'asgardeo-core';
+import {setAuthInstance, getAuthInstance} from '@asgardeo/ui-core';
 import {AsgardeoProviderPropsInterface, AuthenticationConfig} from '../../models/auth';
 import BrandingPreferenceProvider from '../branding-preference-provider/branding-preference-provider';
 import SessionStore from '../../utils/session-store';
@@ -53,7 +53,7 @@ const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderProp
 
   const spaUtils: CryptoUtils = new SPACryptoUtils();
 
-  configureAuthClient(config, storeInstance, spaUtils);
+  setAuthInstance(config, storeInstance, spaUtils);
 
   const [accessToken, setAccessToken] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -64,6 +64,7 @@ const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderProp
   const setAuthentication = () => {
     const authClient = getAuthInstance();
     authClient.isAuthenticated().then((isAuth: boolean) => {
+      console.log('AsgardeoProvider -> setAuthentication -> isAuth', isAuth);
       setIsAuthenticated(isAuth);
     });
 

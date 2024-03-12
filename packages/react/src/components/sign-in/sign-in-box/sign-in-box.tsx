@@ -1,5 +1,5 @@
 import {Box, Link, Paper, Grid, Divider, Typography} from '@oxygen-ui/react';
-import {authorize, authenticate, requestAccessToken, getFlowConfig, setFlowConfig} from 'asgardeo-core';
+import {authorize, authenticate, getAuthInstance} from '@asgardeo/ui-core';
 import React, {useEffect, useState, ReactElement, useContext, FunctionComponent} from 'react';
 import BasicAuthFragment from './fragments/basic-auth-fragment';
 import './sign-in-box.scss';
@@ -43,8 +43,9 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
   const {config} = useConfig();
   const {setIsLoading} = props;
 
-  const [flowStatus, setFlowStatus] = useState<FlowStatus>(FlowStatus.DEFAULT);
-  const [authenticators, setAuthenticator] = useState<Authenticator[]>();
+  // const [flowStatus, setFlowStatus] = useState<FlowStatus>(FlowStatus.DEFAULT);
+  const [authResponse, setAuthResponse] = useState<AuthorizeApiResponseInterface>();
+  //const [authenticators, setAuthenticator] = useState<Authenticator[]>();
   const authContext = useContext(AsgardeoProviderContext);
   const brandingData = useBrandingPreference();
 
@@ -53,7 +54,6 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
   }
 
   useEffect(() => {
-    setIsLoading(true);
     // This script is added so that the popup window can send the code and state to the parent window
     const url = new URL(window.location.href);
     if (url.searchParams.has('code') && url.searchParams.has('state')) {
@@ -65,26 +65,14 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
       window.close();
     }
 
-    getFlowConfig().then((resp: AuthorizeApiResponseInterface) => {
-      if (!Object.keys(resp).length || resp.flowStatus === FlowStatus.DEFAULT) {
-        authorize(config.baseUrl, config.clientId, config.scope, config.redirectUri)
-          .then((result: AuthorizeApiResponseInterface) => {
-            setFlowStatus(result.flowStatus);
-            setAuthenticator(result.nextStep.authenticators);
-            setFlowConfig(result);
-            console.log('Authorization result:', result);
-            setIsLoading(false);
-          })
-          .catch((error: any) => {
-            throw new Error(`Error in authorization: ${error}`);
-          });
-      } else {
-        setFlowStatus(resp.flowStatus);
-        setAuthenticator(resp.nextStep?.authenticators ?? []);
-        setIsRetry(resp.flowStatus === FlowStatus.FAIL_INCOMPLETE);
-      }
-    });
-    setIsLoading(false);
+    console.log('use effect called');
+
+    authorize(config.baseUrl, config.clientId, config.scope, config.redirectUri).then(
+      (result: AuthorizeApiResponseInterface) => {
+        console.log('Authorization called with result:', result);
+        setAuthResponse(result);
+      },
+    );
   }, []);
 
   /**
@@ -92,39 +80,37 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
    * @param {any} authParams - The authentication parameters.
    */
   const handleAuthenticate = async (authParams: any, authenticatorId: string) => {
-    setIsLoading(true);
-    const flowConfig: AuthorizeApiResponseInterface = await getFlowConfig();
-    const resp: AuthorizeApiResponseInterface = await authenticate(
-      config.baseUrl,
-      flowConfig.flowId,
-      authenticatorId,
-      authParams,
-    );
+    const resp: AuthorizeApiResponseInterface = await authenticate({
+      flowID: authResponse?.flowId,
+      authenticatorID: authenticatorId,
+      authenticatorParametres: authParams,
+    });
     console.log('Authenticate response:', resp);
-    setFlowStatus(resp.flowStatus);
 
     // when the authentication is successful, generate the token
     if (resp.flowStatus === FlowStatus.SUCCESS_COMPLETED && resp.authData) {
-      setFlowConfig(resp);
-      await requestAccessToken(resp.authData.code, resp.authData.session_state);
+      console.log('successful authentication');
+      setAuthResponse(resp);
+      const authInstance = getAuthInstance();
+      await authInstance.requestAccessToken(resp.authData.code, resp.authData.session_state);
       authContext.setAuthentication();
     } else {
-      setAuthenticator(resp.nextStep?.authenticators ?? []);
-
       if (resp.flowStatus === FlowStatus.FAIL_INCOMPLETE) {
-        const currentFlowConfig: AuthorizeApiResponseInterface = await getFlowConfig();
-        currentFlowConfig.flowStatus = FlowStatus.FAIL_INCOMPLETE;
-        setFlowConfig(currentFlowConfig);
+        setAuthResponse({
+          ...resp,
+          nextStep: authResponse.nextStep,
+        });
       } else {
-        setFlowConfig(resp);
+        setAuthResponse(resp);
       }
     }
-    setIsLoading(false);
   };
 
   const handleAuthenticateOther = async (authenticatorId: string) => {
-    const flowConfig = await getFlowConfig();
-    const resp: AuthorizeApiResponseInterface = await authenticate(config.baseUrl, flowConfig.flowId, authenticatorId);
+    const resp: AuthorizeApiResponseInterface = await authenticate({
+      flowID: authResponse?.flowId,
+      authenticatorID: authenticatorId,
+    });
     console.log('Authenticate response:', resp);
     const metaData: Metadata = resp.nextStep.authenticators[0].metadata;
     if (metaData.promptType === 'REDIRECTION_PROMPT') {
@@ -149,8 +135,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
         window.removeEventListener('message', messageEventHandler);
       });
     } else if (metaData.promptType === 'USER_PROMPT') {
-      setAuthenticator(resp.nextStep?.authenticators ?? []);
-      setFlowConfig(resp);
+      setAuthResponse(resp);
     }
   };
 
@@ -179,6 +164,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
   /**
    * Generate the sign-in option based on the flow status and authenticator type.
    */
+  const authenticators = authResponse?.nextStep?.authenticators;
   const generateSignInOptions = () => {
     if (authenticators) {
       let usernamePassword: boolean = false;
@@ -244,7 +230,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
 
   return (
     <div className="sign-in-box-node login-portal layout" data-componentid={`${componentId}`}>
-      {flowStatus !== FlowStatus.SUCCESS_COMPLETED && brandingData && (
+      {authResponse?.flowStatus !== FlowStatus.SUCCESS_COMPLETED && brandingData && (
         <Box className="oxygen-sign-in ui form" data-componentid={`${componentId}-inner`}>
           <Paper className="oxygen-sign-in-box" elevation={0} variant="outlined">
             <Box className="oxygen-sign-in-form">
@@ -264,7 +250,7 @@ const SignInBox: FunctionComponent<SignInBoxInterface> = (props: SignInBoxInterf
           </Paper>
         </Box>
       )}
-      {flowStatus === FlowStatus.SUCCESS_COMPLETED && (
+      {authResponse?.flowStatus === FlowStatus.SUCCESS_COMPLETED && (
         <div style={{padding: '1rem', backgroundColor: 'white'}}>Successfully Authenticated</div>
       )}
     </div>

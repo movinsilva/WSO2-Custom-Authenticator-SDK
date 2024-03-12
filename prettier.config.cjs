@@ -1,2 +1,2 @@
-module.exports = require('@brionmario/prettier-config');
+module.exports = require('@wso2/prettier-config');
 
