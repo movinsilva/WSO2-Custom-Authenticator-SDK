@@ -16,15 +16,10 @@
  * under the License.
  */
 
-import IdentityException from 'src/exception/exception';
+import UICoreException from 'src/exception/ui-core-exception';
 import { getAuthorizeUrl } from '../utils/url-generator';
 
-const authorizeRequestBuilder = (
-  authorizeUri: string,
-  clientId: string,
-  scope: string,
-  redirectUri: string,
-): Request => {
+const authorizeRequestBuilder = (baseUrl: string, clientId: string, scope: string, redirectUri: string): Request => {
   const formBody: URLSearchParams = new URLSearchParams();
   formBody.append('client_id', clientId);
   formBody.append('scope', scope);
@@ -43,12 +38,19 @@ const authorizeRequestBuilder = (
     method: 'POST',
   };
 
+  const authorizeUri: string = getAuthorizeUrl(baseUrl);
+
   return new Request(authorizeUri, requestOptions);
 };
 
-const authorize = async (baseUrl: string, clientId: string, scope: string, redirectUri: string): Promise<any> => {
+export const authorize = async (
+  baseUrl: string,
+  clientId: string,
+  scope: string,
+  redirectUri: string,
+): Promise<any> => {
   try {
-    const request: Request = authorizeRequestBuilder(getAuthorizeUrl(baseUrl), clientId, scope, redirectUri);
+    const request: Request = authorizeRequestBuilder(baseUrl, clientId, scope, redirectUri);
 
     // Disable certificate verification for the duration of this request
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -58,10 +60,14 @@ const authorize = async (baseUrl: string, clientId: string, scope: string, redir
     if (response.ok) {
       return await response.json();
     }
-    throw new IdentityException('AZ-RF-01', 'Authorization failed', 'Authorization response is not ok');
+    throw new UICoreException('AZ-RF-01', 'Authorization failed 01', response);
   } catch (error) {
-    throw new IdentityException('AZ-RF-02', 'Authorization failed', `Authorization failed: ${error}`);
+    // console.error(error.message, error.code, error.stack, error);
+    error.printException();
+    throw new UICoreException('AZ-RF-02', 'Authorization failed 02', error);
   }
 };
 
-export default authorize;
+export const exportedForTesting: Object = {
+  authorizeRequestBuilder,
+};

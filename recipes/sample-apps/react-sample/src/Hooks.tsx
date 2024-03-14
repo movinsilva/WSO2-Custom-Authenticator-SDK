@@ -1,17 +1,23 @@
-//import {useAuthentication} from 'asgardeo-react';
-import {useAuthentication} from '../../../../packages/react/src/components/asgardeo-provider/asgardeo-context.ts';
+import { useAuthentication } from "@asgardeo/react-ui";
+//import { useAuthentication } from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-context.ts";
 
-import React from 'react';
+import React from "react";
 
 export function Hooks(): React.ReactElement {
-  const {accessToken, isAuthenticated} = useAuthentication();
+  const { accessToken, isAuthenticated } = useAuthentication();
 
   return (
-    <div style={{margin: '2rem'}}>
-      <div style={{fontSize: '2rem'}}>Hooks Available</div>
-      <div style={{fontSize: '1.5rem'}}>1. useAuthentication()</div>
-      <div style={{fontSize: '1rem'}}>Access Token: {accessToken ?? '...'}</div>
-      <div style={{fontSize: '1rem', marginTop: '18px'}}>Is Authenticated: {isAuthenticated?.toString() ?? '...'}</div>
+    <div style={{ margin: "2rem" }}>
+      <div style={{ fontSize: "2rem" }}>Custom Hooks Available</div>
+      <div style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+        1. useAuthentication()
+      </div>
+      <div style={{ fontSize: "1rem" }}>
+        <b>Access Token:</b> {accessToken ?? "..."}
+      </div>
+      <div style={{ fontSize: "1rem", marginTop: "12px" }}>
+        <b>Is Authenticated:</b> {isAuthenticated?.toString() ?? "..."}
+      </div>
     </div>
   );
 }

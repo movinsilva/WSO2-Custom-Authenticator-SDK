@@ -1,20 +1,47 @@
 .container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-in {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .authenticatedComponent {
-    padding: 1rem;
-     margin: 1rem;
-     border: 1px solid blue;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid blue;
 }
 
 .margin {
-    margin-bottom: 30rem;
+  margin-bottom: 30rem;
+}
+
+.oxygen-header-user-dropdown-menu {
+  visibility: hidden;
+}
+
+.profile {
+  height: 90vh;
+  padding-top: 2rem;
+}
+
+.nav-bar {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 }

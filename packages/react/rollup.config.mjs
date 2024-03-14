@@ -30,13 +30,16 @@ export default [
       },
     ],
     plugins: [
-      resolve(),
+      resolve({
+        browser: true,
+        preferBuiltins: true,
+      }),
       commonjs(),
       typescript({tsconfig: './tsconfig.json'}),
       styles({
         mode: 'inject'
     }),
-      image()
+      image(),
     ],
   },
   {

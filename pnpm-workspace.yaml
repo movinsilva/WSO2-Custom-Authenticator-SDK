@@ -1,4 +1,4 @@
 packages:
-  - 'packages/*'
-  - 'recipes/react/*'
-  - 'recipes/sample-apps/*'
+  - "packages/*"
+  - "recipes/react/**/*"
+  - "recipes/sample-apps/*"

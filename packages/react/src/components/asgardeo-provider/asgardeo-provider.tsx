@@ -1,12 +1,39 @@
-import React, {useState, FunctionComponent, PropsWithChildren, useMemo, useEffect} from 'react';
-import {setAuthInstance, getAuthInstance} from '@asgardeo/ui-core';
-import {AsgardeoProviderPropsInterface, AuthenticationConfig} from '../../models/auth';
-import BrandingPreferenceProvider from '../branding-preference-provider/branding-preference-provider';
-import SessionStore from '../../utils/session-store';
-import Store from '../../models';
-import {CryptoUtils} from '../../models/auth-js';
-import SPACryptoUtils from '../../utils/crypto-utils';
-import {AsgardeoProviderContext} from './asgardeo-context';
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { setAuthInstance, getAuthInstance } from "@asgardeo/ui-core";
+import React, {
+  useState,
+  FunctionComponent,
+  PropsWithChildren,
+  useMemo,
+  useEffect,
+} from "react";
+import { AsgardeoProviderContext } from "./asgardeo-context";
+import Store from "../../models";
+import {
+  AsgardeoProviderPropsInterface,
+  AuthenticationConfig,
+} from "../../models/auth";
+import { CryptoUtils } from "../../models/auth-js";
+import SPACryptoUtils from "../../utils/crypto-utils";
+import SessionStore from "../../utils/session-store";
+import BrandingPreferenceProvider from "../branding-preference-provider/branding-preference-provider";
 
 /**
  * AsgardeoProvider component is a wrapper component that provides authentication-related
@@ -31,14 +58,15 @@ import {AsgardeoProviderContext} from './asgardeo-context';
  * </AsgardeoProvider>
  * ```
  */
-const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderPropsInterface>> = (
-  props: PropsWithChildren<AsgardeoProviderPropsInterface>,
-) => {
+const AsgardeoProvider: FunctionComponent<
+  PropsWithChildren<AsgardeoProviderPropsInterface>
+> = (props: PropsWithChildren<AsgardeoProviderPropsInterface>) => {
   const {
     children,
-    config: {clientId, baseUrl, scope, redirectUri},
+    config: { clientId, baseUrl, scope, redirectUri },
     customization,
     store,
+    endpoints,
   } = props;
 
   const config: AuthenticationConfig = {
@@ -53,25 +81,29 @@ const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderProp
 
   const spaUtils: CryptoUtils = new SPACryptoUtils();
 
-  setAuthInstance(config, storeInstance, spaUtils);
+  setAuthInstance(config, storeInstance, spaUtils, endpoints);
 
-  const [accessToken, setAccessToken] = useState<string>('');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [accessToken, setAccessToken] = useState<string>("");
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
 
   /**
    * Sets the authentication status and access token.
    */
-  const setAuthentication = () => {
+  const setAuthentication = (): void => {
     const authClient = getAuthInstance();
     authClient.isAuthenticated().then((isAuth: boolean) => {
-      console.log('AsgardeoProvider -> setAuthentication -> isAuth', isAuth);
-      setIsAuthenticated(isAuth);
+      // Update the state only if the value has changed
+      if (isAuth !== isAuthenticated) {
+        setIsAuthenticated(isAuth);
+      }
     });
 
     setIsAuthenticated(getAuthInstance().isAuthenticated());
 
     authClient.getAccessToken().then((accessTokenFromClient: any) => {
-      setAccessToken(accessTokenFromClient);
+      if (accessTokenFromClient) {
+        setAccessToken(accessTokenFromClient);
+      }
     });
   };
 
@@ -87,13 +119,15 @@ const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderProp
       accessToken,
       config,
     }),
-    [isAuthenticated, accessToken],
+    [isAuthenticated, accessToken]
   );
 
   // Render the provider with the value object and the wrapped components
   return (
     <AsgardeoProviderContext.Provider value={value}>
-      <BrandingPreferenceProvider brandingProps={customization}>{children}</BrandingPreferenceProvider>
+      <BrandingPreferenceProvider brandingProps={customization}>
+        {children}
+      </BrandingPreferenceProvider>
     </AsgardeoProviderContext.Provider>
   );
 };

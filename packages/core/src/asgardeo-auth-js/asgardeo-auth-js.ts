@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import {
-  AsgardeoAuthClient, AuthClientConfig, CryptoUtils, Store,
-} from '@asgardeo/auth-js';
+import {AsgardeoAuthClient, AuthClientConfig, CryptoUtils, Store} from '@asgardeo/auth-js';
 
 export class AuthClient {
-  static instance: AsgardeoAuthClient<unknown>;
+  private static instance: AsgardeoAuthClient<unknown>;
 
-  static getInstance(authClientConfig: AuthClientConfig, store: Store, cryptoUtils: CryptoUtils): AuthClient {
+  private constructor() {}
+
+  static getInstance(authClientConfig?: AuthClientConfig, store?: Store, cryptoUtils?: CryptoUtils): AuthClient {
     if (!AuthClient.instance) {
       AuthClient.instance = new AsgardeoAuthClient();
       AuthClient.instance.initialize(authClientConfig, store, cryptoUtils);
@@ -33,8 +33,8 @@ export class AuthClient {
 }
 
 // TODO: Add the type for the config object
-export function setAuthInstance(config: any, store: Store, cryptoUtils: CryptoUtils): void {
-  const { baseUrl, clientId, redirectUri } = config;
+export function setAuthInstance(config: any, store: Store, cryptoUtils: CryptoUtils, endpoints?: any): void {
+  const {baseUrl, clientId, redirectUri} = config;
 
   const authClientConfig: AuthClientConfig = {
     baseUrl,
@@ -48,5 +48,5 @@ export function setAuthInstance(config: any, store: Store, cryptoUtils: CryptoUt
 }
 
 export function getAuthInstance(): AuthClient {
-  return AuthClient.instance;
+  return AuthClient.getInstance();
 }

@@ -1,17 +1,37 @@
-import sha256 from 'fast-sha256';
-import {createLocalJWKSet, jwtVerify} from 'jose';
-import {Buffer} from 'buffer';
-import {CryptoUtils, JWKInterface} from '../models/auth-js';
-import AsgardeoAuthException from '../exception/exception';
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { createLocalJWKSet, jwtVerify } from "jose";
+import AsgardeoAuthException from "../exception/exception";
+import { CryptoUtils, JWKInterface } from "../models/auth-js";
 
 // Function to generate random bytes of specified length
 function randombytes(length: number): string {
   const bytes = new Uint8Array(length);
   window.crypto.getRandomValues(bytes);
-  return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join(
+    ""
+  );
 }
 
-export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
+export default class SPACryptoUtils
+  implements CryptoUtils<Promise<string> | string>
+{
   /* eslint-disable class-methods-use-this */
 
   /**
@@ -20,8 +40,11 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
    * @returns {string} base 64 url encoded value.
    */
   public base64URLEncode(value: string): string {
-    let utf8Value = unescape(encodeURIComponent(value));
-    return btoa(utf8Value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const utf8Value = unescape(encodeURIComponent(value));
+    return btoa(utf8Value)
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=/g, "");
     // return base64url.encode(value).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
   }
 
@@ -30,11 +53,25 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
     // return base64url.decode(value).toString();
   }
 
-  public hashSha256(data: string): string | Buffer {
-    return Buffer.from(sha256(new TextEncoder().encode(data)));
+  public async hashSha256(data: string): Promise<string> {
+    // return Buffer.from(sha256(new TextEncoder().encode(data)));
+    // encode as UTF-8
+    const msgBuffer = new TextEncoder().encode(data);
+
+    // hash the message
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+
+    // convert ArrayBuffer to Array
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    // convert bytes to hex string
+    const hashHex = hashArray
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+    return hashHex;
   }
 
-  public generateRandomBytes(length: number): string | Buffer {
+  public generateRandomBytes(length: number): string {
     return randombytes(length);
   }
 
@@ -46,7 +83,7 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
     issuer: string,
     subject: string,
     clockTolerance?: number,
-    validateJwtIssuer?: boolean,
+    validateJwtIssuer?: boolean
   ): Promise<boolean> {
     const jwtVerifyOptions = {
       algorithms,
@@ -65,17 +102,17 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
       createLocalJWKSet({
         keys: [jwk],
       }),
-      jwtVerifyOptions,
+      jwtVerifyOptions
     )
       .then(() => Promise.resolve(true))
-      .catch(error =>
+      .catch((error) =>
         Promise.reject(
           new AsgardeoAuthException(
-            'SPA-CRYPTO-UTILS-VJ-IV01',
+            "SPA-CRYPTO-UTILS-VJ-IV01",
             error?.reason ?? JSON.stringify(error),
-            `${error?.code} ${error?.claim}`,
-          ),
-        ),
+            `${error?.code} ${error?.claim}`
+          )
+        )
       );
   }
 

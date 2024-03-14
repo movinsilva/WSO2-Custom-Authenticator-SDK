@@ -1,39 +1,46 @@
-import SignedIn from '../../../../packages/react/src/components/control-components/signed-in.tsx';
-import SignedOut from '../../../../packages/react/src/components/control-components/signed-out.tsx';
-import SignInButton from '../../../../packages/react/src/components/sign-in-button/sign-in-button.tsx';
-import SignIn from '../../../../packages/react/src/components/sign-in/signin.tsx';
-import SignOutButton from '../../../../packages/react/src/components/sign-out-button/sign-out-button.tsx';
-import Profile from '../../../../packages/react/src/components/profile/profile.tsx';
-import UserButton from '../../../../packages/react/src/components/user-button/user-button.tsx';
+// import SignedIn from "../../../../packages/react/src/components/control-components/signed-in.tsx";
+// import SignedOut from "../../../../packages/react/src/components/control-components/signed-out.tsx";
+// import SignInButton from "../../../../packages/react/src/components/sign-in-button/sign-in-button.tsx";
+// import SignIn from "../../../../packages/react/src/components/sign-in/sign-in.tsx";
+// import SignOutButton from "../../../../packages/react/src/components/sign-out-button/sign-out-button.tsx";
+// import Profile from "../../../../packages/react/src/components/profile/profile.tsx";
+// import UserButton from "../../../../packages/react/src/components/user-button/user-button.tsx";
 
-//import {SignInButton, SignIn, SignOutButton, SignedIn, SignedOut, Profile} from 'asgardeo-react';
+import {
+  SignInButton,
+  SignIn,
+  SignOutButton,
+  SignedIn,
+  SignedOut,
+  Profile,
+  useAuthentication,
+} from "@asgardeo/react-ui";
 
-import {Hooks} from './Hooks.tsx';
-import './App.scss';
+//import { useAuthentication } from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-context.ts";
+
+import { Hooks } from "./Hooks.tsx";
+import "./App.scss";
 
 function App() {
+  const { isAuthenticated } = useAuthentication();
+
   return (
     <div className="container">
-      <div className="title">Welcome to the sample app!</div>
+      <SignedIn>
+        <nav className="nav-bar"></nav>
+      </SignedIn>
 
       <SignedOut>
-        <SignIn />
-        <div className="margin" />
+        <div className="sign-in">
+          <SignIn />
+        </div>
       </SignedOut>
 
       <SignedIn>
-        THIS IS SIGNED IN COMPONENT
-        <div>
+        <div className="profile">
           <Profile />
         </div>
-        <div>
-          USER BUTTON
-          <UserButton />
-        </div>
       </SignedIn>
-      <SignedOut>
-        <div style={{fontSize: '2rem'}}> You are not authenticated!</div>
-      </SignedOut>
 
       <Hooks />
 

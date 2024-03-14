@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { setAuthInstance, getAuthInstance } from './asgardeo-auth-js';
+export { getAuthInstance, setAuthInstance } from './asgardeo-auth-js';

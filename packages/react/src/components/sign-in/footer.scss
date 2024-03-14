@@ -1,0 +1,39 @@
+.footer {
+  &.fixed {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .ui.text.menu {
+    background-color: transparent;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .right.menu {
+      margin-top: 6px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+    }
+
+    .item {
+      color: grey;
+      text-decoration: none;
+
+      &.no-hover {
+        cursor: auto;
+      }
+      &:not(.no-hover) {
+        &:hover {
+          color: blue;
+        }
+      }
+    }
+  }
+}

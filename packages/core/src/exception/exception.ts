@@ -16,25 +16,22 @@
  * under the License.
  */
 
-export default class IdentityException extends Error {
-  public code: string | undefined;
-
+export default class AsgardeoException extends Error {
   public override name: string;
-
-  public override message: string;
 
   public override stack: string;
 
-  constructor(code: string, name: string, message: string, stack?: any) {
+  public code: string;
+
+  constructor(code: string, message: string, stack?: any) {
     super(message);
-    this.code = `ui-core-${code}`;
-    this.name = name;
+    this.code = `ASG-${code}`;
+    this.name = this.constructor.name;
     this.stack = stack;
     Object.setPrototypeOf(this, new.target.prototype);
   }
 
-  /* The error printing style modified to show the code first */
-  override toString(): string {
-    return `\ncode: ${this.code}\nname: ${this.name}\nmessage: ${this.message}`;
+  public printException(): void {
+    console.error(`ERROR Code: ${this.code}\nMessage: ${this.message} ${this.stack ? `\nStack: ${this.stack}` : ''}`);
   }
 }

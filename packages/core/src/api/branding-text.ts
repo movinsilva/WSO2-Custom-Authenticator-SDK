@@ -16,13 +16,15 @@
  * under the License.
  */
 
-const brandingTextRequestBuilder = (
-  baseUrl: string,
+import { getAuthInstance } from 'src/asgardeo-auth-js/asgardeo-auth-js';
+import { getBrandingTextUrl } from 'src/utils/url-generator';
+
+const brandingTextRequestBuilder = async (
   locale: string,
   name: string,
   screen: string,
   type: string,
-): Request => {
+): Promise<Request> => {
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
@@ -38,7 +40,9 @@ const brandingTextRequestBuilder = (
   params.append('screen', screen);
   params.append('type', type);
 
-  const urlWithParams: string = `${baseUrl}?${params.toString()}`;
+  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+  const textUrl: string = getBrandingTextUrl(baseUrl);
+  const urlWithParams: string = `${textUrl}?${params.toString()}`;
 
   return new Request(urlWithParams, requestOptions);
 };
@@ -55,14 +59,8 @@ const brandingTextRequestBuilder = (
  * response object from the authentication server, or an error occurs if
  * the response is not successful.
  */
-const brandingText = async (
-  baseUrl: string,
-  locale: string,
-  name: string,
-  screen: string,
-  type: string,
-): Promise<Response> => {
-  const request: Request = brandingTextRequestBuilder(baseUrl, locale, name, screen, type);
+const brandingText = async (locale: string, name: string, screen: string, type: string): Promise<Response> => {
+  const request: Request = await brandingTextRequestBuilder(locale, name, screen, type);
   try {
     const response: Response = await fetch(request);
     if (response.ok) {

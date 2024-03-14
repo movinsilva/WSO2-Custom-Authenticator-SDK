@@ -1,1 +1,1 @@
-declare module 'asgardeo-react';
+declare module "@asgardeo/react-ui";

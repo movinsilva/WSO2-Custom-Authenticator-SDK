@@ -22,4 +22,6 @@ export const getAuthnUrl = (baseUrl: string): string => `${baseUrl}/oauth2/authn
 
 export const getBrandingUrl = (baseUrl: string): string => `${baseUrl}/api/server/v1/branding-preference`;
 
+export const getBrandingTextUrl = (baseUrl: string): string => `${baseUrl}/api/server/v1/branding-preference/text/resolve`;
+
 export const getMeUrl = (baseUrl: string): string => `${baseUrl}/scim2/Me`;

@@ -18,7 +18,7 @@
 
 import { getAuthInstance } from 'src/asgardeo-auth-js';
 import { getAuthnUrl } from 'src/utils/url-generator';
-import IdentityException from '../exception/exception';
+import AsgardeoException from '../exception/exception';
 
 type AuthnParams = {
   authenticatorID: string;
@@ -58,11 +58,11 @@ const authenticate = async (props: AuthnParams): Promise<Response> => {
     const request: Request = await generateAuthnRequest(props);
     const response: Response = await fetch(request);
     if (!response.ok) {
-      throw new IdentityException('AN-RF-01', 'Authentication Response Failed', 'Request failed damn');
+      throw new AsgardeoException('AN-RF-01', 'Authentication Response Failed', 'Request failed damn');
     }
     return await response.json();
   } catch (error) {
-    throw new IdentityException('AN-RF-02', `Authentication Response Failed: ${error}`, error.message);
+    throw new AsgardeoException('AN-RF-02', `Authentication Response Failed: ${error}`, error.message);
   }
 };
 
