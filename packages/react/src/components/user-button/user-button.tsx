@@ -16,27 +16,16 @@
  * under the License.
  */
 
-import { me } from "@asgardeo/ui-core";
 import { Box, MenuItem, Typography, UserDropdownMenu } from "@oxygen-ui/react";
-import React, { useEffect, useState, FunctionComponent } from "react";
-import { MeAPIResponseInterface } from "../../models/me";
-import {
-  useAuthentication,
-  useConfig,
-} from "../asgardeo-provider/asgardeo-context";
+import React, { FunctionComponent } from "react";
+import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
 import "./user-button.scss";
+import { UserIcon } from "@oxygen-ui/react-icons";
 
 const UserButton: FunctionComponent = () => {
-  const [meInfo, setMeInfo] = useState<MeAPIResponseInterface>(
-    {} as MeAPIResponseInterface
-  );
-  const { config } = useConfig();
+  const { signOut, user } = useAuthentication();
 
-  useEffect(() => {
-    me(config.baseUrl).then((response: MeAPIResponseInterface) => {
-      setMeInfo(response);
-    });
-  }, []);
+  console.log("user from user-button: ", user);
 
   return (
     <UserDropdownMenu
@@ -44,30 +33,57 @@ const UserButton: FunctionComponent = () => {
       triggerOptions={{
         children: (
           <div className="user-button-img-container">
-            {meInfo.profileUrl && <img src={meInfo.profileUrl} alt="profile" />}
+            {user ? (
+              user.profileUrl ? (
+                <img src={user.profileUrl} alt="profile" />
+              ) : user.photos ? (
+                <img
+                  src={user.photos[0].value}
+                  referrerPolicy="no-referrer"
+                  alt="federated-login"
+                />
+              ) : (
+                <div className="default-profile-icon-container">
+                  <UserIcon
+                    className="profile-icon"
+                    size={28}
+                    verticalAlign="middle"
+                  />
+                </div>
+              )
+            ) : null}
           </div>
         ),
       }}
     >
-      <Box className="profile-info-box">
-        {meInfo.name && meInfo.profileUrl ? (
-          <div className="profile-detail-section">
-            {meInfo.profileUrl && (
-              <img className="user-img" src={meInfo.profileUrl} alt="profile" />
-            )}
-            <Typography className="profile-sub-title">{`${
-              meInfo.name?.givenName ?? ""
-            } ${meInfo.name?.familyName ?? ""}`}</Typography>
-          </div>
-        ) : (
-          <Typography className="profile-no-details">
-            No profile details have been set with this account
-          </Typography>
-        )}
-      </Box>
+      {user && (
+        <Box className="profile-info-box">
+          {user.name || user.profileUrl ? (
+            <div className="profile-detail-section">
+              {user.profileUrl ? (
+                <img src={user.profileUrl} alt="profile" className="user-img" />
+              ) : user.photos ? (
+                <img
+                  src={user.photos[0].value}
+                  referrerPolicy="no-referrer"
+                  alt="federated-login"
+                  className="user-img"
+                />
+              ) : null}
+              <Typography className="profile-sub-title">{`${
+                user.name?.givenName ?? ""
+              } ${user.name?.familyName ?? ""}`}</Typography>
+            </div>
+          ) : (
+            <Typography className="profile-no-details">
+              No profile details have been set with this account
+            </Typography>
+          )}
+        </Box>
+      )}
       <div className="menu-item-container">
         <MenuItem>Manage Account</MenuItem>
-        <MenuItem>Sign Out</MenuItem>
+        <MenuItem onClick={signOut}>Sign Out</MenuItem>
       </div>
     </UserDropdownMenu>
   );

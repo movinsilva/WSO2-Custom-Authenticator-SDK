@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { setAuthInstance, getAuthInstance } from "@asgardeo/ui-core";
+import { setAuthInstance, getAuthInstance, me } from "@asgardeo/ui-core";
 import React, {
   useState,
   FunctionComponent,
@@ -31,6 +31,7 @@ import {
   AuthenticationConfig,
 } from "../../models/auth";
 import { CryptoUtils } from "../../models/auth-js";
+import { MeAPIResponseInterface } from "../../models/me";
 import SPACryptoUtils from "../../utils/crypto-utils";
 import SessionStore from "../../utils/session-store";
 import BrandingPreferenceProvider from "../branding-preference-provider/branding-preference-provider";
@@ -85,6 +86,7 @@ const AsgardeoProvider: FunctionComponent<
 
   const [accessToken, setAccessToken] = useState<string>("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
+  const [user, setUser] = useState<MeAPIResponseInterface>();
 
   /**
    * Sets the authentication status and access token.
@@ -103,12 +105,31 @@ const AsgardeoProvider: FunctionComponent<
     authClient.getAccessToken().then((accessTokenFromClient: any) => {
       if (accessTokenFromClient) {
         setAccessToken(accessTokenFromClient);
+
+        me(config.baseUrl).then((response: any) => {
+          console.log("response from user: ", response);
+          setUser(response as MeAPIResponseInterface);
+        });
       }
     });
   };
 
   useEffect(() => {
     setAuthentication();
+
+    // This script is added so that the popup window can send the code and state to the parent window
+    const url: URL = new URL(window.location.href);
+    console.log("url:", url);
+    if (url.searchParams.has("code") && url.searchParams.has("state")) {
+      const code: string | null = url.searchParams.get("code");
+      const state: string | null = url.searchParams.get("state");
+
+      console.log("code:", code, "\nstate:", state);
+
+      // Send the 'code' and 'state' to the parent window and close the current window (popup)
+      window.opener.postMessage({ code, state }, config.redirectUri);
+      window.close();
+    }
   }, []);
 
   // Value object to be passed to the AsgardeoProvider
@@ -118,8 +139,9 @@ const AsgardeoProvider: FunctionComponent<
       setAuthentication,
       accessToken,
       config,
+      user,
     }),
-    [isAuthenticated, accessToken]
+    [isAuthenticated, accessToken, user]
   );
 
   // Render the provider with the value object and the wrapped components

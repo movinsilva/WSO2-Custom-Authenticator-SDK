@@ -16,29 +16,60 @@
  * under the License.
  */
 
+import { getAuthInstance } from 'src/asgardeo-auth-js';
 import UICoreException from 'src/exception/ui-core-exception';
 import { getAuthorizeUrl } from '../utils/url-generator';
 
-const authorizeRequestBuilder = (baseUrl: string, clientId: string, scope: string, redirectUri: string): Request => {
+const authorizeRequestBuilder = async (
+  baseUrl: string,
+  clientId: string,
+  scope: string,
+  redirectUri: string,
+): Request => {
   const formBody: URLSearchParams = new URLSearchParams();
   formBody.append('client_id', clientId);
   formBody.append('scope', scope);
   formBody.append('response_type', 'code');
   formBody.append('response_mode', 'direct');
   formBody.append('redirect_uri', redirectUri);
-  //   formBody.append('code_challenge', code_challenge);
 
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+  const authorizeUri: string = getAuthorizeUrl(baseUrl);
+  const url = await getAuthInstance().getAuthorizationURL();
+
+  // Parse the URL and extract the search parameters
+  // const params = new URLSearchParams(new URL(url).search);
+
+  // console.log('params: ', params);
+  // formBody.append('code_challenge', params.get('code_challenge'));
+  // formBody.append('code_challenge_method', params.get('code_challenge_method'));
+
+  // const code = await getAuthInstance().getPKCECode(params.get('state'));
+  // console.log('code: ', code);
+  // console.log('url code: ', params.get('code_challenge'));
+
+  // console.log('getAuthorizationURL: ', url);
+
+  // params.delete('response_mode');
+  // params.append('response_mode', 'direct');
+  // // Convert the search parameters to a string
+  // const body = params.toString();
+  // console.log('body: ', body);
+
+  // const requestOptions: RequestInit = {
+  //   body: body,
+  //   headers,
+  //   method: 'POST',
+  // };
 
   const requestOptions: RequestInit = {
     body: formBody.toString(),
     headers,
     method: 'POST',
   };
-
-  const authorizeUri: string = getAuthorizeUrl(baseUrl);
 
   return new Request(authorizeUri, requestOptions);
 };
@@ -50,7 +81,7 @@ export const authorize = async (
   redirectUri: string,
 ): Promise<any> => {
   try {
-    const request: Request = authorizeRequestBuilder(baseUrl, clientId, scope, redirectUri);
+    const request: Request = await authorizeRequestBuilder(baseUrl, clientId, scope, redirectUri);
 
     // Disable certificate verification for the duration of this request
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -63,7 +94,8 @@ export const authorize = async (
     throw new UICoreException('AZ-RF-01', 'Authorization failed 01', response);
   } catch (error) {
     // console.error(error.message, error.code, error.stack, error);
-    error.printException();
+    // error.printException();
+    console.log('error: ', error);
     throw new UICoreException('AZ-RF-02', 'Authorization failed 02', error);
   }
 };

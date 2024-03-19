@@ -22,3 +22,4 @@ export { AsgardeoProvider, useAuthentication } from "./asgardeo-provider";
 export { default as SignInButton } from "./sign-in-button";
 export { default as SignOutButton } from "./sign-out-button";
 export { default as Profile } from "./profile";
+export { default as UserButton } from "./user-button";

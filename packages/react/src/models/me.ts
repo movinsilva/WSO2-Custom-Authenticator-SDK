@@ -20,6 +20,7 @@ export interface MeAPIResponseInterface {
   emails: string[];
   id: string;
   name: any;
+  photos?: any;
   profileUrl: string;
   userName: string;
 }

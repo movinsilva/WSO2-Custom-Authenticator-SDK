@@ -17,4 +17,4 @@
  */
 
 export * from './api/public-api';
-export * from './asgardeo-auth-js/asgardeo-auth-js';
+export * from './asgardeo-auth-js/index';

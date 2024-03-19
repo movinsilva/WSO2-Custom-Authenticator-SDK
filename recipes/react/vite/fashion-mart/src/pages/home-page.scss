@@ -1,0 +1,15 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+
+  .home-profile {
+    background-color: rgb(243, 132, 132);
+    color: white;
+    padding: 10px 1rem;
+    border-radius: 20px;
+    border: none;
+  }
+}

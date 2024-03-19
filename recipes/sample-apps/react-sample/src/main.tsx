@@ -1,13 +1,13 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 
-import { AsgardeoProvider } from "@asgardeo/react-ui";
-//import AsgardeoProvider from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-provider.tsx";
+//import { AsgardeoProvider } from "@asgardeo/react-ui";
+import AsgardeoProvider from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-provider.tsx";
 
 const config = {
   baseUrl: "https://localhost:9443",
-  clientId: "fyGmog7fpcFgTNTOqLFIGIt2laQa",
-  scope: "openid internal_login",
+  clientId: "b1uRjwpqydvxjGR42Y6BnIdQMRMa",
+  scope: "openid internal_login profile",
   redirectUri: "https://localhost:5173",
 };
 

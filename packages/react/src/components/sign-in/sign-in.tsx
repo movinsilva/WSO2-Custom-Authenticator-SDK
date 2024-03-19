@@ -91,18 +91,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
   }
 
   useEffect(() => {
-    // This script is added so that the popup window can send the code and state to the parent window
-    const url: URL = new URL(window.location.href);
-    if (url.searchParams.has("code") && url.searchParams.has("state")) {
-      const code: string | null = url.searchParams.get("code");
-      const state: string | null = url.searchParams.get("state");
-
-      // Send the 'code' and 'state' to the parent window and close the current window (popup)
-      window.opener.postMessage({ code, state }, config.redirectUri);
-      window.close();
-    }
-
-    console.log("useEffect of sign in", authContext, brandingPreference);
+    console.log("useEffect called", window.name, window);
 
     authorize(
       config.baseUrl,
@@ -169,6 +158,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
         "width=500,height=600"
       );
 
+      console.log("event listener attached window: ", window.name, window);
       // Add an event listener to the window to capture the message from the popup
       window.addEventListener("message", function messageEventHandler(event) {
         // Check the origin of the message to ensure it's from the popup window

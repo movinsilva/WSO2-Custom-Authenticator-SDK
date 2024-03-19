@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import { me } from "@asgardeo/ui-core";
 import { Box, Container, Typography } from "@oxygen-ui/react";
 import { UserIcon } from "@oxygen-ui/react-icons";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { useConfig } from "../asgardeo-provider/asgardeo-context";
+import React, { FunctionComponent } from "react";
+import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
 import "./profile.scss";
-import { MeAPIResponseInterface } from "../../models/me";
 
 /**
  * Profile component to display user profile information.
@@ -35,30 +33,20 @@ import { MeAPIResponseInterface } from "../../models/me";
  * ```
  */
 const Profile: FunctionComponent = () => {
-  const [meInfo, setMeInfo] = useState<MeAPIResponseInterface>(
-    {} as MeAPIResponseInterface
-  );
-  const { config } = useConfig();
+  const { user } = useAuthentication();
 
-  useEffect(() => {
-    me(config.baseUrl).then((response: MeAPIResponseInterface) => {
-      setMeInfo(response);
-      console.log(meInfo);
-    });
-  }, []);
-
-  if (meInfo) {
+  if (user) {
     return (
       <Box className="profile-component-box asgardeo">
         <Box className="identifier-box">
-          <UserIcon className="profile-icon" verticalAlign="middle" />
+          <UserIcon className="profile-icon" verticalAlign="middle" size={12} />
           <Typography className="profile-sub-title">Account</Typography>
         </Box>
         <Typography variant="h3" className="profile-title">
           Account
         </Typography>
         <Typography variant="h5" className="profile-sub-title">
-          Manage your account settings
+          View your account details
         </Typography>
 
         <Typography variant="h5" className="profile-title-1">
@@ -67,14 +55,20 @@ const Profile: FunctionComponent = () => {
         <Container className="title-underline" />
 
         <Box className="profile-info-box">
-          {meInfo.name || meInfo.profileUrl ? (
+          {user.name || user.profileUrl ? (
             <>
-              {meInfo.profileUrl && (
-                <img src={meInfo.profileUrl} alt="profile" />
-              )}
+              {user.profileUrl ? (
+                <img src={user.profileUrl} alt="profile" />
+              ) : user.photos ? (
+                <img
+                  src={user.photos[0].value}
+                  referrerPolicy="no-referrer"
+                  alt="federated-login"
+                />
+              ) : null}
               <Typography className="profile-sub-title">{`${
-                meInfo.name?.givenName ?? ""
-              } ${meInfo.name?.familyName ?? ""}`}</Typography>
+                user.name?.givenName ?? ""
+              } ${user.name?.familyName ?? ""}`}</Typography>
             </>
           ) : (
             <Typography className="profile-no-details">
@@ -87,15 +81,15 @@ const Profile: FunctionComponent = () => {
           Username
         </Typography>
         <Container className="title-underline" />
-        <Typography className="profile-sub-title">{meInfo.userName}</Typography>
+        <Typography className="profile-sub-title">{user.userName}</Typography>
 
         <Typography variant="h5" className="profile-title-1">
           Email Addresses
         </Typography>
         <Container className="title-underline" />
-        {meInfo.emails ? (
+        {user.emails ? (
           <Typography className="profile-sub-title">
-            {meInfo.emails[0]}
+            {user.emails[0]}
           </Typography>
         ) : (
           <Typography className="profile-no-details">

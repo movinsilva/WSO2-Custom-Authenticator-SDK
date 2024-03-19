@@ -1,0 +1,34 @@
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 85vh;
+  background-color: #ffffff;
+
+  h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    padding: 12px 2rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background-color: #f89c9c;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f86161;
+    }
+  }
+}

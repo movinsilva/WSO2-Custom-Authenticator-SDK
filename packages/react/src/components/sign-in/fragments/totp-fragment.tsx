@@ -20,7 +20,7 @@ import { Box, Button, TextField, Typography } from "@oxygen-ui/react";
 import React, { ReactElement, useRef, useState } from "react";
 import { SignInFragmentPropsInterface } from "../../../models/auth";
 
-const componentId = "totp-fragment";
+const componentId: string = "totp-fragment";
 
 /**
  * TOTP fragment login option component with input fields.

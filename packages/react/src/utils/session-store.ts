@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Store } from "../models/auth-js";
+import { Store } from "@asgardeo/ui-core";
 
 export default class SessionStore implements Store {
   private storage: Storage;

@@ -18,6 +18,7 @@
 
 import { Context, createContext, useContext } from "react";
 import { AuthContext, AuthenticationConfig } from "../../models/auth";
+import { MeAPIResponseInterface } from "../../models/me";
 
 /**
  * Context for the AsgardeoProvider component.
@@ -38,7 +39,16 @@ export const useAuthentication = () => {
   const { accessToken } = useContext(AsgardeoProviderContext) as {
     accessToken: string;
   };
-  return { accessToken, isAuthenticated };
+
+  const { user } = useContext(AsgardeoProviderContext) as unknown as {
+    user: MeAPIResponseInterface;
+  };
+
+  const signOut = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  };
+  return { accessToken, isAuthenticated, signOut, user };
 };
 
 /**

@@ -19,15 +19,30 @@
 import { getAuthInstance } from "@asgardeo/ui-core";
 import { Button } from "@oxygen-ui/react";
 import React, { useContext } from "react";
-import { AsgardeoProviderContext } from "../asgardeo-provider/asgardeo-context";
+import {
+  AsgardeoProviderContext,
+  useAuthentication,
+} from "../asgardeo-provider/asgardeo-context";
 
 const SignOutButton = () => {
   const authContext = useContext(AsgardeoProviderContext);
+  const [signoutURL, setSignoutURL] = React.useState<string>("");
+  getAuthInstance()
+    .getSignOutURL()
+    .then((response) => {
+      console.log("signout: ", response);
+      setSignoutURL(response);
+    });
 
-  const handleClick = () => {
-    sessionStorage.clear();
-  };
-  return <Button onClick={handleClick}>Sign Out</Button>;
+  const { signOut } = useAuthentication();
+
+  return (
+    <div className="asgardeo">
+      <Button className="ui button primary" onClick={signOut}>
+        Sign Out
+      </Button>
+    </div>
+  );
 };
 
 export default SignOutButton;

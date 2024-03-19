@@ -25,8 +25,8 @@ import { LoginOptionFragmentPropsInterface } from "../../../models/auth";
 
 const images: { [key: string]: any } = {
   Google: google,
-  facebook,
   Github: github,
+  facebook,
 };
 
 /**

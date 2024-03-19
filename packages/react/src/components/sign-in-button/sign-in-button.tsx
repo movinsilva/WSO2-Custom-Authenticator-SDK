@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { Box, Button, CircularProgress } from "@oxygen-ui/react";
+import { Box, Button } from "@oxygen-ui/react";
 import React, { useState } from "react";
 import SignIn from "../sign-in/sign-in";
 import "./sign-in-button.scss";
 
 const SignInButton = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setModalVisible(true);
@@ -41,11 +40,7 @@ const SignInButton = () => {
 
       {modalVisible && (
         <Box className="popup-box">
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
-            <SignIn setIsLoading={setIsLoading} />
-          )}
+          <SignIn />
         </Box>
       )}
 

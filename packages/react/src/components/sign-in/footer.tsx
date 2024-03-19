@@ -61,15 +61,16 @@ const Footer: FunctionComponent<FooterInterface> = (
       <div className="ui container fluid">
         <div className="ui text menu">
           <div className="left menu">
-            <a
-              href="www.google.com"
-              className="item no-hover copyright-text line-break"
-              id="copyright"
-            >
-              <div className="powered-by-logo">
-                <div>{text?.copyright}</div>
+            <div className="powered-by-logo">
+              <div>
+                {text?.copyright && text.copyright.includes("{{currentYear}}")
+                  ? text.copyright.replace(
+                      "{{currentYear}}",
+                      new Date().getFullYear().toString()
+                    )
+                  : text?.copyright}
               </div>
-            </a>
+            </div>
           </div>
           <div className="right menu">
             {!isEmpty(

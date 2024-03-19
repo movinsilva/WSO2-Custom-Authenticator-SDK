@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import {AsgardeoAuthClient, AuthClientConfig, CryptoUtils, Store} from '@asgardeo/auth-js';
+import {
+  AsgardeoAuthClient, AuthClientConfig, CryptoUtils, ResponseMode, Store,
+} from '@asgardeo/auth-js';
 
 export class AuthClient {
   private static instance: AsgardeoAuthClient<unknown>;
@@ -34,14 +36,14 @@ export class AuthClient {
 
 // TODO: Add the type for the config object
 export function setAuthInstance(config: any, store: Store, cryptoUtils: CryptoUtils, endpoints?: any): void {
-  const {baseUrl, clientId, redirectUri} = config;
+  const { baseUrl, clientId, redirectUri } = config;
 
   const authClientConfig: AuthClientConfig = {
     baseUrl,
     clientID: clientId,
-    enablePKCE: false,
     signInRedirectURL: redirectUri,
     signOutRedirectURL: redirectUri,
+    enablePKCE: false,
   };
 
   AuthClient.getInstance(authClientConfig, store, cryptoUtils);

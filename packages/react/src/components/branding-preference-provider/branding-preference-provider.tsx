@@ -27,7 +27,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Helmet } from "react-helmet";
 import {
   BrandingPreferenceContext,
   BrandingPreferenceContextProps,
@@ -104,7 +103,7 @@ const BrandingPreferenceProvider: FunctionComponent<
   return (
     <BrandingPreferenceContext.Provider value={contextValues}>
       {/* to do - whether to use helmet or not */}
-      <Helmet>{injectBrandingCSSSkeleton()}</Helmet>
+      {injectBrandingCSSSkeleton()}
       <ThemeProvider
         theme={generateAsgardeoTheme(contextValues)}
         defaultMode="light"
