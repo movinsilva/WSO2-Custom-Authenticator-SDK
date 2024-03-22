@@ -6,9 +6,9 @@ import { AsgardeoProvider } from "@asgardeo/react-ui";
 
 const config = {
   baseUrl: "https://localhost:9443",
-  clientId: "b1uRjwpqydvxjGR42Y6BnIdQMRMa",
-  scope: "openid internal_login profile",
-  redirectUri: "https://localhost:5173",
+  clientID: "b1uRjwpqydvxjGR42Y6BnIdQMRMa",
+  scope: ["openid", "internal_login", "profile"],
+  signInRedirectURL: "https://localhost:5173",
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

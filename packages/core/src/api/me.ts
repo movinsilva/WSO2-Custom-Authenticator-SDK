@@ -49,8 +49,9 @@ const meRequestBuilder = async (meUrl: string): Promise<Request> => {
  * @returns {Promise<Object>} - A promise that resolves to the user information.
  * @throws {Error} - If the "me" request fails.
  */
-const me = async (baseUrl: string): Promise<Response> => {
+const me = async (): Promise<Response> => {
   try {
+    const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
     const request: Request = await meRequestBuilder(getMeUrl(baseUrl));
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const response: Response = await fetch(request);

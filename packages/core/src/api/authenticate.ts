@@ -17,16 +17,17 @@
  */
 
 import { getAuthInstance } from 'src/asgardeo-auth-js';
+import { AuthApiResponse } from 'src/model';
 import { getAuthnUrl } from 'src/utils/url-generator';
 import AsgardeoException from '../exception/exception';
 
-type AuthnParams = {
+interface AuthnParams {
   authenticatorID: string;
   authenticatorParametres?: any;
   flowID: string;
-};
+}
 
-const generateAuthnRequest = async (props: AuthnParams): Promise<Request> => {
+const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
   const { flowID, authenticatorID, authenticatorParametres } = props;
 
   const authBody: any = {
@@ -53,14 +54,13 @@ const generateAuthnRequest = async (props: AuthnParams): Promise<Request> => {
   return new Request(getAuthnUrl(baseUrl), requestOptions);
 };
 
-const authenticate = async (props: AuthnParams): Promise<Response> => {
+const authenticate = async (props: AuthnParams): Promise<AuthApiResponse> => {
   try {
-    const request: Request = await generateAuthnRequest(props);
-    const response: Response = await fetch(request);
-    if (!response.ok) {
-      throw new AsgardeoException('AN-RF-01', 'Authentication Response Failed', 'Request failed damn');
+    const response: Response = await fetch(await getAuthnRequest(props));
+    if (response.ok) {
+      return (await response.json()) as AuthApiResponse;
     }
-    return await response.json();
+    throw new AsgardeoException('UI_CORE-AN-AN-SE-01', 'Authentication Response is not OK');
   } catch (error) {
     throw new AsgardeoException('AN-RF-02', `Authentication Response Failed: ${error}`, error.message);
   }

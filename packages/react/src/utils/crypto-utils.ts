@@ -35,19 +35,19 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
    */
   public base64URLEncode(value: Buffer | string): string {
     console.log("base64URLEncode called with value: ", value);
-    // return base64url
-    //   .encode(value)
-    //   .replace(/\+/g, "-")
-    //   .replace(/\//g, "_")
-    //   .replace(/=/g, "");
+    return base64url
+      .encode(value)
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=/g, "");
 
-    return btoa(value.toString());
+    // return btoa(unescape(encodeURIComponent(value.toString())));
   }
 
   public base64URLDecode(value: string): string {
     console.log("base64URLDecode called with value: ", value);
-    // return base64url.decode(value).toString();
-    return atob(value);
+    return base64url.decode(value).toString();
+    // return atob(value);
   }
 
   public hashSha256(data: string): string | Buffer {

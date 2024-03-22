@@ -30,8 +30,4 @@ export default class AsgardeoException extends Error {
     this.stack = stack;
     Object.setPrototypeOf(this, new.target.prototype);
   }
-
-  public printException(): void {
-    console.error(`ERROR Code: ${this.code}\nMessage: ${this.message} ${this.stack ? `\nStack: ${this.stack}` : ''}`);
-  }
 }

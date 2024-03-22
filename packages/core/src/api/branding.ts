@@ -16,10 +16,14 @@
  * under the License.
  */
 
+import { getAuthInstance } from 'src/asgardeo-auth-js';
+import AsgardeoException from 'src/exception/exception';
 import { getBrandingUrl } from '../utils/url-generator';
 
-const branding = async (baseUrl: string): Promise<Response> => {
+const branding = async (): Promise<Response> => {
   try {
+    const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     const response: Response = await fetch(getBrandingUrl(baseUrl));
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
@@ -27,10 +31,9 @@ const branding = async (baseUrl: string): Promise<Response> => {
     if (response.ok) {
       return await response.json();
     }
-    throw new Error('Branding request failed');
+    throw new AsgardeoException('UI_CORE-BR-BR-01', 'Branding response is not ok');
   } catch (error) {
-    // handle the error
-    throw new Error('Branding request failed');
+    throw new AsgardeoException('UI_CORE-BR-BR-02', 'Error while fetching branding data.', error);
   }
 };
 

@@ -16,8 +16,6 @@
  * under the License.
  */
 
-export const getAuthorizeUrl = (baseUrl: string): string => `${baseUrl}/oauth2/authorize`;
-
 export const getAuthnUrl = (baseUrl: string): string => `${baseUrl}/oauth2/authn`;
 
 export const getBrandingUrl = (baseUrl: string): string => `${baseUrl}/api/server/v1/branding-preference`;

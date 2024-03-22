@@ -18,5 +18,10 @@
 
 export { getAuthInstance, setAuthInstance } from './asgardeo-auth-js';
 export {
-  AsgardeoAuthException, CryptoUtils, JWKInterface, Store,
+  AsgardeoAuthException,
+  CryptoUtils,
+  JWKInterface,
+  Store,
+  AsgardeoAuthClient,
+  TokenResponse,
 } from '@asgardeo/auth-js';

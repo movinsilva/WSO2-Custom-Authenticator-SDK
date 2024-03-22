@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { authorize, authenticate, getAuthInstance } from "@asgardeo/ui-core";
+import {
+  authorize,
+  authenticate,
+  getAuthInstance,
+  AuthApiResponse,
+} from "@asgardeo/ui-core";
 import {
   Box,
   Link,
@@ -80,8 +85,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
   const [isRetry, setIsRetry] = useState(false);
   const { config } = useConfig();
 
-  const [authResponse, setAuthResponse] =
-    useState<AuthorizeApiResponseInterface>();
+  const [authResponse, setAuthResponse] = useState<AuthApiResponse>();
   const authContext = useContext(AsgardeoProviderContext);
   const { brandingPreference } = useBrandingPreference();
   const [isLoading, setIsLoading] = useState(true);
@@ -93,12 +97,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
   useEffect(() => {
     console.log("useEffect called", window.name, window);
 
-    authorize(
-      config.baseUrl,
-      config.clientId,
-      config.scope,
-      config.redirectUri
-    ).then((result: AuthorizeApiResponseInterface) => {
+    authorize().then((result: AuthApiResponse) => {
       console.log("Authorization called with result:", result);
       setAuthResponse(result);
       setIsLoading(false);
@@ -114,7 +113,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
     authenticatorId: string
   ) => {
     setIsLoading(true);
-    const resp: AuthorizeApiResponseInterface = await authenticate({
+    const resp: AuthApiResponse = await authenticate({
       flowID: authResponse?.flowId,
       authenticatorID: authenticatorId,
       authenticatorParametres: authParams,
@@ -126,9 +125,13 @@ const SignIn: FunctionComponent<SignInInterface> = (
       console.log("successful authentication");
       setAuthResponse(resp);
       const authInstance = getAuthInstance();
+      const state: string = (
+        await authInstance.getDataLayer().getTemporaryDataParameter("state")
+      ).toString();
       await authInstance.requestAccessToken(
         resp.authData.code,
-        resp.authData.session_state
+        resp.authData.session_state,
+        state
       );
       authContext.setAuthentication();
     } else if (resp.flowStatus === FlowStatus.FAIL_INCOMPLETE) {
@@ -162,7 +165,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
       // Add an event listener to the window to capture the message from the popup
       window.addEventListener("message", function messageEventHandler(event) {
         // Check the origin of the message to ensure it's from the popup window
-        if (event.origin !== config.redirectUri) return;
+        if (event.origin !== config.signInRedirectURL) return;
 
         const { code, state } = event.data;
 

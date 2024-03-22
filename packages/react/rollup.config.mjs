@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 import image from '@rollup/plugin-image';
 import styles from 'rollup-plugin-styles';
+import nodePolyfills from 'rollup-plugin-polyfill-node';
 
 import packageJson from './package.json' assert {type: 'json'};
 
@@ -40,6 +41,9 @@ export default [
         mode: 'inject'
     }),
       image(),
+      nodePolyfills({
+        buffer: true,
+      })
     ],
   },
   {

@@ -62,27 +62,14 @@ import BrandingPreferenceProvider from "../branding-preference-provider/branding
 const AsgardeoProvider: FunctionComponent<
   PropsWithChildren<AsgardeoProviderPropsInterface>
 > = (props: PropsWithChildren<AsgardeoProviderPropsInterface>) => {
-  const {
-    children,
-    config: { clientId, baseUrl, scope, redirectUri },
-    customization,
-    store,
-    endpoints,
-  } = props;
-
-  const config: AuthenticationConfig = {
-    baseUrl,
-    clientId,
-    redirectUri,
-    scope,
-  };
+  const { children, config, customization, store } = props;
 
   // If a store instance is passed, use it. Otherwise, create a new instance of the SessionStore
   const storeInstance: Store = store || new SessionStore();
 
   const spaUtils: CryptoUtils = new SPACryptoUtils();
 
-  setAuthInstance(config, storeInstance, spaUtils, endpoints);
+  setAuthInstance(config, storeInstance, spaUtils);
 
   const [accessToken, setAccessToken] = useState<string>("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
@@ -100,13 +87,11 @@ const AsgardeoProvider: FunctionComponent<
       }
     });
 
-    setIsAuthenticated(getAuthInstance().isAuthenticated());
-
     authClient.getAccessToken().then((accessTokenFromClient: any) => {
       if (accessTokenFromClient) {
         setAccessToken(accessTokenFromClient);
 
-        me(config.baseUrl).then((response: any) => {
+        me().then((response: any) => {
           console.log("response from user: ", response);
           setUser(response as MeAPIResponseInterface);
         });
@@ -119,15 +104,12 @@ const AsgardeoProvider: FunctionComponent<
 
     // This script is added so that the popup window can send the code and state to the parent window
     const url: URL = new URL(window.location.href);
-    console.log("url:", url);
     if (url.searchParams.has("code") && url.searchParams.has("state")) {
       const code: string | null = url.searchParams.get("code");
       const state: string | null = url.searchParams.get("state");
 
-      console.log("code:", code, "\nstate:", state);
-
       // Send the 'code' and 'state' to the parent window and close the current window (popup)
-      window.opener.postMessage({ code, state }, config.redirectUri);
+      window.opener.postMessage({ code, state }, config.signInRedirectURL);
       window.close();
     }
   }, []);

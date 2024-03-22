@@ -16,54 +16,38 @@
  * under the License.
  */
 
+import { AsgardeoAuthClient } from '@asgardeo/auth-js';
 import { getAuthInstance } from 'src/asgardeo-auth-js';
+import AsgardeoException from 'src/exception/exception';
 import UICoreException from 'src/exception/ui-core-exception';
-import { getAuthorizeUrl } from '../utils/url-generator';
+import { AuthApiResponse } from 'src/model';
 
-const authorizeRequestBuilder = async (
-  baseUrl: string,
-  clientId: string,
-  scope: string,
-  redirectUri: string,
-): Request => {
+const authorizeRequestBuilder = async (): Promise<Request> => {
+  const authInstace: AsgardeoAuthClient<any> = getAuthInstance();
+  const data: any = await authInstace.getDataLayer().getConfigData();
+  const url: string = await authInstace.getAuthorizationURL();
+  const authorizeUri: string = (await authInstace.getOIDCServiceEndpoints()).authorizationEndpoint;
+
+  // Parse the URL and extract the search parameters
+  const params: URLSearchParams = new URLSearchParams(new URL(url).search);
   const formBody: URLSearchParams = new URLSearchParams();
-  formBody.append('client_id', clientId);
-  formBody.append('scope', scope);
+
   formBody.append('response_type', 'code');
   formBody.append('response_mode', 'direct');
-  formBody.append('redirect_uri', redirectUri);
+  formBody.append('redirect_uri', data.signInRedirectURL);
+  formBody.append('client_id', params.get('client_id'));
+  formBody.append('scope', params.get('scope'));
+  formBody.append('code_challenge', params.get('code_challenge'));
+  formBody.append('code_challenge_method', params.get('code_challenge_method'));
+  const state: string = params.get('state');
+  formBody.append('state', state);
+
+  /* Save the state temporarily in the data layer, this needs to be passed when token is requested */
+  await getAuthInstance().getDataLayer().setTemporaryDataParameter('state', state);
 
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-  const authorizeUri: string = getAuthorizeUrl(baseUrl);
-  const url = await getAuthInstance().getAuthorizationURL();
-
-  // Parse the URL and extract the search parameters
-  // const params = new URLSearchParams(new URL(url).search);
-
-  // console.log('params: ', params);
-  // formBody.append('code_challenge', params.get('code_challenge'));
-  // formBody.append('code_challenge_method', params.get('code_challenge_method'));
-
-  // const code = await getAuthInstance().getPKCECode(params.get('state'));
-  // console.log('code: ', code);
-  // console.log('url code: ', params.get('code_challenge'));
-
-  // console.log('getAuthorizationURL: ', url);
-
-  // params.delete('response_mode');
-  // params.append('response_mode', 'direct');
-  // // Convert the search parameters to a string
-  // const body = params.toString();
-  // console.log('body: ', body);
-
-  // const requestOptions: RequestInit = {
-  //   body: body,
-  //   headers,
-  //   method: 'POST',
-  // };
 
   const requestOptions: RequestInit = {
     body: formBody.toString(),
@@ -74,29 +58,19 @@ const authorizeRequestBuilder = async (
   return new Request(authorizeUri, requestOptions);
 };
 
-export const authorize = async (
-  baseUrl: string,
-  clientId: string,
-  scope: string,
-  redirectUri: string,
-): Promise<any> => {
+export const authorize = async (): Promise<AuthApiResponse> => {
   try {
-    const request: Request = await authorizeRequestBuilder(baseUrl, clientId, scope, redirectUri);
-
     // Disable certificate verification for the duration of this request
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response: Response = await fetch(request);
+    const response: Response = await fetch(await authorizeRequestBuilder());
 
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
     if (response.ok) {
-      return await response.json();
+      return (await response.json()) as AuthApiResponse;
     }
-    throw new UICoreException('AZ-RF-01', 'Authorization failed 01', response);
+    throw new AsgardeoException('UI_CORE-AZ-AZ-SE-01', 'Authorization response is not OK');
   } catch (error) {
-    // console.error(error.message, error.code, error.stack, error);
-    // error.printException();
-    console.log('error: ', error);
-    throw new UICoreException('AZ-RF-02', 'Authorization failed 02', error);
+    throw new UICoreException('UI_CORE-AZ-AZ-SE-02', 'Authorization failed', error);
   }
 };
 

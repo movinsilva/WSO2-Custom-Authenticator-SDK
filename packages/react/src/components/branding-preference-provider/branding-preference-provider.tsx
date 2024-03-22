@@ -65,7 +65,7 @@ const BrandingPreferenceProvider: FunctionComponent<
 
   useEffect(() => {
     try {
-      branding(config.baseUrl).then((response: any) => {
+      branding().then((response: any) => {
         const resp: BrandingPreferenceAPIResponseInterface = response;
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));

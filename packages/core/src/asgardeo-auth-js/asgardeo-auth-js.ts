@@ -17,15 +17,20 @@
  */
 
 import {
-  AsgardeoAuthClient, AuthClientConfig, CryptoUtils, ResponseMode, Store,
+  AsgardeoAuthClient, AuthClientConfig, CryptoUtils, Store,
 } from '@asgardeo/auth-js';
+import { AuthConfig } from '../model/config';
 
 export class AuthClient {
-  private static instance: AsgardeoAuthClient<unknown>;
+  private static instance: AsgardeoAuthClient<any>;
 
   private constructor() {}
 
-  static getInstance(authClientConfig?: AuthClientConfig, store?: Store, cryptoUtils?: CryptoUtils): AuthClient {
+  static getInstance(
+    authClientConfig?: AuthClientConfig,
+    store?: Store,
+    cryptoUtils?: CryptoUtils,
+  ): AsgardeoAuthClient<any> {
     if (!AuthClient.instance) {
       AuthClient.instance = new AsgardeoAuthClient();
       AuthClient.instance.initialize(authClientConfig, store, cryptoUtils);
@@ -34,21 +39,20 @@ export class AuthClient {
   }
 }
 
-// TODO: Add the type for the config object
-export function setAuthInstance(config: any, store: Store, cryptoUtils: CryptoUtils, endpoints?: any): void {
-  const { baseUrl, clientId, redirectUri } = config;
-
+export function setAuthInstance(config: AuthConfig, store: Store, cryptoUtils: CryptoUtils): void {
   const authClientConfig: AuthClientConfig = {
-    baseUrl,
-    clientID: clientId,
-    signInRedirectURL: redirectUri,
-    signOutRedirectURL: redirectUri,
-    enablePKCE: false,
+    baseUrl: config.baseUrl,
+    clientID: config.clientID,
+    enablePKCE: config.enablePKCE ?? true,
+    endpoints: config.endpoints,
+    scope: config.scope,
+    signInRedirectURL: config.signInRedirectURL,
+    wellKnownEndpoint: config.wellKnownEndpoint,
   };
 
   AuthClient.getInstance(authClientConfig, store, cryptoUtils);
 }
 
-export function getAuthInstance(): AuthClient {
+export function getAuthInstance(): AsgardeoAuthClient<any> {
   return AuthClient.getInstance();
 }

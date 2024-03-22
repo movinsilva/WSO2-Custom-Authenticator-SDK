@@ -16,6 +16,5 @@
  * under the License.
  */
 
-export * from './api/public-api';
-export * from './asgardeo-auth-js/index';
-export * from './model/index';
+export * from './config';
+export * from './api-based-auth-response';

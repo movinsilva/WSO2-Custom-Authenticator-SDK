@@ -33,6 +33,10 @@ function App() {
         </nav>
       </SignedIn>
 
+      <SignedOut>
+        <SignIn />
+      </SignedOut>
+
       <SignedIn>
         <div className="profile">
           <Profile />
