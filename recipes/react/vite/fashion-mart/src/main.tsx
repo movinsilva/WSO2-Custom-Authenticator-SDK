@@ -10,9 +10,16 @@ const config = {
   signInRedirectURL: "https://localhost:5173",
 };
 
+const devConfig = {
+  baseUrl: "https://dev.api.asgardeo.io/t/movinorg",
+  clientID: "kH5OfXOvpGLOvp1iAw4zQmNvv4oa",
+  scope: ["openid", "internal_login", "profile"],
+  signInRedirectURL: "https://localhost:5174",
+};
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AsgardeoProvider
-    config={config}
+    config={devConfig}
     customization={{
       preference: {
         theme: {
