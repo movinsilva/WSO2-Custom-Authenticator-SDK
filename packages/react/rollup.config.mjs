@@ -5,6 +5,7 @@ import dts from 'rollup-plugin-dts';
 import image from '@rollup/plugin-image';
 import styles from 'rollup-plugin-styles';
 import nodePolyfills from 'rollup-plugin-polyfill-node';
+import json from '@rollup/plugin-json';
 
 import packageJson from './package.json' assert {type: 'json'};
 
@@ -19,11 +20,11 @@ export default [
       warn(warning);
     },
     output: [
-      {
-        file: packageJson.main,
-        format: 'cjs',
-        sourcemap: true,
-      },
+      // {
+      //   file: packageJson.main,
+      //   format: 'cjs',
+      //   sourcemap: true,
+      // },
       {
         file: packageJson.module,
         format: 'esm',
@@ -41,6 +42,7 @@ export default [
         mode: 'inject'
     }),
       image(),
+      json(),
       nodePolyfills({
         buffer: true,
       })

@@ -19,3 +19,4 @@
 export * from './api/public-api';
 export * from './asgardeo-auth-js/index';
 export * from './model/index';
+export * from './exception/index';

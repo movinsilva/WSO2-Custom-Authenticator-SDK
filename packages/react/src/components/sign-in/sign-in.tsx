@@ -21,6 +21,9 @@ import {
   authenticate,
   getAuthInstance,
   AuthApiResponse,
+  AsgardeoException,
+  Metadata,
+  Authenticator,
 } from "@asgardeo/ui-core";
 import {
   Box,
@@ -45,12 +48,9 @@ import LoginOptionFragment from "./fragments/login-option-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import Header from "./header";
 import {
-  Authenticator,
   AuthenticatorType,
-  AuthorizeApiResponseInterface,
   FlowStatus,
   IdentifiableComponentInterface,
-  Metadata,
 } from "../../models/auth";
 import { BrandingPreferenceInterface } from "../../models/branding-preferences";
 import {
@@ -87,7 +87,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
 
   const [authResponse, setAuthResponse] = useState<AuthApiResponse>();
   const authContext = useContext(AsgardeoProviderContext);
-  const { brandingPreference } = useBrandingPreference();
+  const { brandingPreference, textPreference } = useBrandingPreference();
   const [isLoading, setIsLoading] = useState(true);
 
   if (!authContext) {
@@ -95,8 +95,6 @@ const SignIn: FunctionComponent<SignInInterface> = (
   }
 
   useEffect(() => {
-    console.log("useEffect called", window.name, window);
-
     authorize().then((result: AuthApiResponse) => {
       console.log("Authorization called with result:", result);
       setAuthResponse(result);
@@ -112,6 +110,12 @@ const SignIn: FunctionComponent<SignInInterface> = (
     authParams: any,
     authenticatorId: string
   ) => {
+    if (authResponse === undefined) {
+      throw new AsgardeoException(
+        "REACT_UI-SIGNIN-HA",
+        "Auth response is undefined."
+      );
+    }
     setIsLoading(true);
     const resp: AuthApiResponse = await authenticate({
       flowID: authResponse?.flowId,
@@ -147,10 +151,16 @@ const SignIn: FunctionComponent<SignInInterface> = (
   };
 
   const handleAuthenticateOther = async (authenticatorId: string) => {
+    if (authResponse === undefined) {
+      throw new AsgardeoException(
+        "REACT_UI-SIGNIN-HAO",
+        "Auth response is undefined."
+      );
+    }
     setIsLoading(true);
-    const resp: AuthorizeApiResponseInterface = await authenticate({
-      flowID: authResponse?.flowId,
+    const resp: AuthApiResponse = await authenticate({
       authenticatorID: authenticatorId,
+      flowID: authResponse.flowId,
     });
     console.log("Authenticate response:", resp);
     const metaData: Metadata = resp.nextStep.authenticators[0].metadata;
@@ -161,7 +171,6 @@ const SignIn: FunctionComponent<SignInInterface> = (
         "width=500,height=600"
       );
 
-      console.log("event listener attached window: ", window.name, window);
       // Add an event listener to the window to capture the message from the popup
       window.addEventListener("message", function messageEventHandler(event) {
         // Check the origin of the message to ensure it's from the popup window
@@ -311,13 +320,13 @@ const SignIn: FunctionComponent<SignInInterface> = (
                 <div className="oxygen-sign-in-options-wrapper" />
                 {showSelfSignUp && (
                   <Grid container className="oxygen-sign-in-sign-up-link">
-                    <Grid>Don&apos;t have an account? </Grid>
+                    <Grid>{textPreference.common.registerPreText} </Grid>
                     <Grid>
                       <Link
                         href="www.google.com"
                         className="oxygen-sign-in-sign-up-link-action"
                       >
-                        Register
+                        {textPreference.common.registerLink}
                       </Link>
                     </Grid>
                   </Grid>

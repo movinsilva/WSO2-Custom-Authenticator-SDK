@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { LocalizationResponse } from "@asgardeo/ui-core";
 import { Box } from "@oxygen-ui/react";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -24,6 +25,8 @@ import FormGroup from "@oxygen-ui/react/FormGroup";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import React, { ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
+import localizationKeys from "../../../localization/keys";
 import { SignInFragmentPropsInterface } from "../../../models/auth";
 
 /**
@@ -41,6 +44,8 @@ const BasicAuthFragment = (
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const { t } = useTranslation();
+
   return (
     <div className="basic-auth-fragment">
       <Typography
@@ -48,12 +53,12 @@ const BasicAuthFragment = (
         className="oxygen-sign-in-header ui header"
         variant="h4"
       >
-        Sign In
+        {t(localizationKeys.login.signinHeader)}
       </Typography>
       {isRetry && (
         <Box className="oxygen-sign-in-retry-header-box">
           <Typography className="oxygen-sign-in-error ui sub header">
-            Login failed! Please check your username and password and try again
+            {t(localizationKeys.login.retryText)}
           </Typography>
         </Box>
       )}
@@ -62,10 +67,10 @@ const BasicAuthFragment = (
         required
         fullWidth
         autoComplete="off"
-        label="Username"
+        label={t(localizationKeys.login.usernameLabel)}
         name="text"
         value={username}
-        placeholder="Enter your Username"
+        placeholder={t(localizationKeys.login.usernamePlaceHolder)}
         className="ui input"
         onChange={(e) => setUsername(e.target.value)}
       />
@@ -74,17 +79,17 @@ const BasicAuthFragment = (
         fullWidth
         name="password"
         autoComplete="new-password"
-        label="Password"
+        label={t(localizationKeys.login.passwordLabel)}
         type="password"
         value={password}
-        placeholder="Enter your password"
+        placeholder={t(localizationKeys.login.passwordPlaceHolder)}
         className="input"
         onChange={(e) => setPassword(e.target.value)}
       />
       <FormGroup className="">
         <FormControlLabel
           control={<Checkbox color="secondary" />}
-          label="Remember me on this computer"
+          label={t(localizationKeys.common.rememberMe)}
         />
       </FormGroup>
       <Button
@@ -99,7 +104,7 @@ const BasicAuthFragment = (
           setPassword("");
         }}
       >
-        Sign In
+        {t(localizationKeys.login.loginButtonLabel)}
       </Button>
     </div>
   );

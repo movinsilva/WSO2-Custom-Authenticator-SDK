@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import { AuthConfig } from "@asgardeo/ui-core";
 import { Context, createContext, useContext } from "react";
-import { AuthContext, AuthenticationConfig } from "../../models/auth";
+import { AuthContext } from "../../models/auth";
 import { MeAPIResponseInterface } from "../../models/me";
 
 /**
@@ -44,7 +45,7 @@ export const useAuthentication = () => {
     user: MeAPIResponseInterface;
   };
 
-  const signOut = () => {
+  const signOut = (): void => {
     sessionStorage.clear();
     window.location.reload();
   };
@@ -57,7 +58,7 @@ export const useAuthentication = () => {
  */
 export const useConfig = () => {
   const { config } = useContext(AsgardeoProviderContext) as {
-    config: AuthenticationConfig;
+    config: AuthConfig;
   };
   return { config };
 };

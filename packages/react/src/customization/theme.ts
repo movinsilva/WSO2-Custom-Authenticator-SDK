@@ -18,21 +18,23 @@
 
 import { Theme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
-import { BrandingPreferenceContextProps } from "../components/branding-preference-provider/branding-preference-context";
 import {
+  BrandingPreferenceAPIResponseInterface,
   PredefinedThemes,
   ThemeConfigInterface,
 } from "../models/branding-preferences";
 
-const generateAsgardeoTheme: (
-  branding: BrandingPreferenceContextProps
-) => Theme = (branding: BrandingPreferenceContextProps) => {
+type generateAsgardeoThemeProps =
+  | Partial<BrandingPreferenceAPIResponseInterface>
+  | undefined;
+
+const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
+  branding: generateAsgardeoThemeProps
+) => {
   const mode: string =
-    branding?.brandingPreference?.preference?.theme?.activeTheme.toUpperCase() ??
-    "LIGHT";
-  // eslint-disable-next-line max-len
+    branding?.preference?.theme?.activeTheme.toUpperCase() ?? "LIGHT";
   const brandingTheme: ThemeConfigInterface | undefined =
-    branding?.brandingPreference?.preference?.theme[mode as PredefinedThemes];
+    branding?.preference?.theme[mode as PredefinedThemes];
 
   return extendTheme({
     colorSchemes: {

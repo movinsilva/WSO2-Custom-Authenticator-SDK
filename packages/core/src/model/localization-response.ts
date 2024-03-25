@@ -16,22 +16,32 @@
  * under the License.
  */
 
-export const isEmpty = (value: any): boolean => {
-  // If the value is null or undefined, return true.
-  if (value == null || undefined) {
-    return true;
-  }
+interface LocalizationResponse {
+  login: {
+    forgotPasswordLinkLabel: string;
+    loginButtonLabel: string;
+    passwordLabel: string;
+    passwordPlaceHolder: string;
+    retryText: string;
+    signinHeader: string;
+    usernameLabel: string;
+    usernamePlaceHolder: string;
+  };
+  common: {
+    dividerText: string;
+    registerLink: string;
+    registerPreText: string;
+    rememberMe: string;
+  };
+  socialLogins: {
+    preText: string;
+  };
+  test?: string;
+  // TODO: Add the rest of the localization keys
+  totp: {
+    otpLabel: string;
+    verifyButtonLabel: string;
+  };
+}
 
-  // If the value is an array, a string, or has a splice method (like an array-like object),
-  // check if its length is zero. If it is, return true.
-  if (
-    Array.isArray(value) ||
-    typeof value === "string" ||
-    typeof value.splice === "function"
-  ) {
-    return !value.length;
-  }
-
-  // If the value is an object, check if it has any keys. If it doesn't, return true.
-  return Object.keys(value).length === 0;
-};
+export default LocalizationResponse;

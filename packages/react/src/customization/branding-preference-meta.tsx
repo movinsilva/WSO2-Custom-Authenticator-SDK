@@ -44,35 +44,37 @@ export default class BrandingPreferenceMeta {
       return;
     }
 
-    const footerFontColor = !isEmpty(theme[theme.activeTheme].footer.font.color)
-      ? theme[theme.activeTheme].footer.font.color
+    const footerFontColor = !isEmpty(
+      theme[theme.activeTheme].footer?.font?.color
+    )
+      ? theme[theme.activeTheme].footer?.font?.color
       : "inherit";
     const headingFontColor = !isEmpty(
-      theme[theme.activeTheme].typography.heading.font.color
+      theme[theme.activeTheme].typography?.heading?.font?.color
     )
-      ? theme[theme.activeTheme].typography.heading.font.color
+      ? theme[theme.activeTheme].typography?.heading?.font?.color
       : "inherit";
     const loginBoxFontColor = !isEmpty(
-      theme[theme.activeTheme].loginBox.font.color
+      theme[theme.activeTheme].loginBox?.font?.color
     )
-      ? theme[theme.activeTheme].loginBox.font.color
+      ? theme[theme.activeTheme].loginBox?.font?.color
       : "inherit";
     const inputBaseFontColor = !isEmpty(
-      theme[theme.activeTheme].inputs.base.font.color
+      theme[theme.activeTheme].inputs?.base?.font?.color
     )
-      ? theme[theme.activeTheme].inputs.base.font.color
+      ? theme[theme.activeTheme].inputs?.base?.font?.color
       : "inherit";
     const inputBaseLabelFontColor = !isEmpty(
-      theme[theme.activeTheme].inputs.base.labels.font.color
+      theme[theme.activeTheme].inputs?.base?.labels?.font?.color
     )
-      ? theme[theme.activeTheme].inputs.base.labels.font.color
+      ? theme[theme.activeTheme].inputs?.base?.labels?.font?.color
       : "inherit";
 
     return `
         ${
-          theme[theme.activeTheme].typography.font.importURL
+          theme[theme.activeTheme].typography?.font.importURL
             ? `@import url(${
-                theme[theme.activeTheme].typography.font.importURL
+                theme[theme.activeTheme].typography?.font?.importURL
               });`
             : ""
         }

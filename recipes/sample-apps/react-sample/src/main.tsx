@@ -3,6 +3,10 @@ import App from "./App.tsx";
 
 //import { AsgardeoProvider } from "@asgardeo/react-ui";
 import AsgardeoProvider from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-provider.tsx";
+import {
+  LanguageCode,
+  Localization,
+} from "@asgardeo/react-ui/src/models/localization.ts";
 
 const config = {
   baseUrl: "https://localhost:9443",
@@ -10,16 +14,24 @@ const config = {
   scope: ["openid", "internal_login", "profile"],
   signInRedirectURL: "https://localhost:5173",
 };
-// customization={{
-//   preference: {
-//     theme: {
-//       LIGHT: {loginBox: {background: {backgroundColor: '#c19012'}}},
-//     },
-//   },
-// }}
+
+const customLocalization: Localization = {
+  languageCode: LanguageCode.FRENCH,
+  languageResource: { login: { signinHeader: "HELLO in French" } },
+};
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <AsgardeoProvider config={config}>
+  <AsgardeoProvider
+    config={config}
+    localization={customLocalization}
+    customization={{
+      preference: {
+        theme: {
+          LIGHT: { loginBox: { background: { backgroundColor: "#ADD8E6" } } },
+        },
+      },
+    }}
+  >
     <App />
   </AsgardeoProvider>
 );

@@ -19,6 +19,7 @@
 import { AuthConfig, Store } from "@asgardeo/ui-core";
 import { ReactNode } from "react";
 import { BrandingPreferenceAPIResponseInterface } from "./branding-preferences";
+import { Localization } from "./localization";
 
 export enum FlowStatus {
   DEFAULT = "DEFAULT", // hasn't started the flow yet
@@ -37,6 +38,7 @@ export enum AuthenticatorType {
 export interface AsgardeoProviderPropsInterface {
   config: AuthConfig;
   customization?: Partial<BrandingPreferenceAPIResponseInterface>;
+  localization?: Localization;
   store?: Store;
 }
 
@@ -51,7 +53,7 @@ export interface AuthContext {
   accessToken: string;
   config: AuthConfig;
   customizationOptions?: any;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   setAuthentication: () => void;
 }
 

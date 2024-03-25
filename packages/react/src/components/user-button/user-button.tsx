@@ -25,8 +25,6 @@ import { UserIcon } from "@oxygen-ui/react-icons";
 const UserButton: FunctionComponent = () => {
   const { signOut, user } = useAuthentication();
 
-  console.log("user from user-button: ", user);
-
   return (
     <UserDropdownMenu
       className="asgardeo user-button"

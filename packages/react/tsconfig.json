@@ -12,6 +12,8 @@
     "declarationDir": "types",
     "outDir": "dist",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "resolveJsonModule": true,
   }
 }

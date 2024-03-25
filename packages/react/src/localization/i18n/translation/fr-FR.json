@@ -1,0 +1,26 @@
+{
+  "test": "testing",
+  "common": {
+    "rememberMe": "Se souvenir de moi sur cet ordinateur",
+    "dividerText": "ou",
+    "registerLink": "S'inscrire",
+    "registerPreText": "Vous n'avez pas de compte ?"
+  },
+  "login": {
+    "signinHeader": "Connexion",
+    "usernameLabel": "Nom d'utilisateur",
+    "usernamePlaceHolder": "Entrez votre nom d'utilisateur",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceHolder": "Entrez votre mot de passe",
+    "loginButtonLabel": "Se connecter",
+    "forgotPasswordLinkLabel": "Mot de passe oublié ?",
+    "retryText": "Échec de la connexion ! Veuillez vérifier votre nom d'utilisateur et votre mot de passe, puis réessayez"
+  },
+  "socialLogins": {
+    "preText": "Se connecter avec"
+  },
+  "totp": {
+    "otpLabel": "Code TOTP",
+    "verifyButtonLabel": "Vérifier"
+  }
+}

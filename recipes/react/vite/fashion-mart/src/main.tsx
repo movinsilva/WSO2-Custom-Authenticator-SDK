@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { Router } from "./routes/router";
 import "./app.scss";
@@ -12,7 +11,18 @@ const config = {
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <AsgardeoProvider config={config}>
+  <AsgardeoProvider
+    config={config}
+    customization={{
+      preference: {
+        theme: {
+          LIGHT: {
+            colors: { background: { surface: { main: "#686767" } } },
+          },
+        },
+      },
+    }}
+  >
     <Router />
   </AsgardeoProvider>
 );

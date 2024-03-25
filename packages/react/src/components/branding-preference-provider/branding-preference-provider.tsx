@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { branding } from "@asgardeo/ui-core";
+import { LocalizationResponse, branding } from "@asgardeo/ui-core";
 import { ThemeProvider } from "@oxygen-ui/react";
 import merge from "lodash.merge";
 import React, {
@@ -34,14 +34,17 @@ import {
 import BrandingPreferenceMeta from "../../customization/branding-preference-meta";
 import LIGHT_THEME from "../../customization/light-theme";
 import generateAsgardeoTheme from "../../customization/theme";
+import i18nInitialize from "../../localization/i18n/i18n";
+import defaultLocalization from "../../localization/keys";
 import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
-import { useConfig } from "../asgardeo-provider/asgardeo-context";
+import { Localization } from "../../models/localization";
 
 /**
  * Props interface for the Branding preference provider.
  */
 interface BrandingPreferenceProviderProps {
   brandingProps?: Partial<BrandingPreferenceAPIResponseInterface>;
+  localization?: Localization;
 }
 
 const BrandingPreferenceProvider: FunctionComponent<
@@ -49,19 +52,43 @@ const BrandingPreferenceProvider: FunctionComponent<
 > = (
   props: PropsWithChildren<BrandingPreferenceProviderProps>
 ): ReactElement => {
-  const { children, brandingProps } = props;
-  const { config } = useConfig();
+  const { children, brandingProps, localization } = props;
 
   const [brandingPreference, setBrandingPreference] =
     useState<Partial<BrandingPreferenceAPIResponseInterface>>();
 
-  const contextValues: BrandingPreferenceContextProps = useMemo(() => {
-    if (!brandingPreference?.preference?.configs?.isBrandingEnabled) {
-      return { brandingPreference: undefined };
-    }
+  const contextValues: BrandingPreferenceContextProps = useMemo(
+    () => ({ brandingPreference, textPreference: defaultLocalization }),
+    [brandingPreference]
+  );
 
-    return { brandingPreference };
-  }, [brandingPreference]);
+  const tt: any = {
+    common: {
+      rememberMe: "Remember me on this computer",
+      dividerText: "or",
+      registerLink: "Register",
+      registerPreText: "Don't have an account?",
+    },
+    login: {
+      signinHeader: "Something to test",
+      usernameLabel: "Username",
+      usernamePlaceHolder: "Enter your username",
+      passwordLabel: "Password",
+      passwordPlaceHolder: "Enter your password",
+      loginButtonLabel: "Sign In",
+      forgotPasswordLinkLabel: "Forgot Password?",
+      retryText:
+        "Login failed! Please check your username and password and try again",
+    },
+    socialLogins: {
+      preText: "Sign in with",
+    },
+    totp: {
+      otpLabel: "TOTP Code",
+      verifyButtonLabel: "Verify",
+    },
+  };
+  i18nInitialize(localization);
 
   useEffect(() => {
     try {
@@ -71,7 +98,10 @@ const BrandingPreferenceProvider: FunctionComponent<
           setBrandingPreference(merge(resp, brandingProps));
         } else {
           setBrandingPreference(
-            merge(resp, LIGHT_THEME) as BrandingPreferenceAPIResponseInterface
+            merge(
+              LIGHT_THEME,
+              brandingProps
+            ) as BrandingPreferenceAPIResponseInterface
           );
         }
       });
@@ -90,10 +120,7 @@ const BrandingPreferenceProvider: FunctionComponent<
   }, [brandingPreference?.preference?.theme]);
 
   const injectBrandingCSSSkeleton = () => {
-    if (
-      !brandingPreference?.preference?.theme ||
-      !brandingPreference?.preference?.configs?.isBrandingEnabled
-    ) {
+    if (!brandingPreference?.preference?.theme) {
       return null;
     }
 
@@ -102,10 +129,10 @@ const BrandingPreferenceProvider: FunctionComponent<
 
   return (
     <BrandingPreferenceContext.Provider value={contextValues}>
-      {/* to do - whether to use helmet or not */}
+      {/* TODO - whether to use helmet or not */}
       {injectBrandingCSSSkeleton()}
       <ThemeProvider
-        theme={generateAsgardeoTheme(contextValues)}
+        theme={generateAsgardeoTheme(contextValues.brandingPreference)}
         defaultMode="light"
         modeStorageKey="myaccount-oxygen-mode"
       >

@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { setAuthInstance, getAuthInstance, me } from "@asgardeo/ui-core";
+import {
+  setAuthInstance,
+  getAuthInstance,
+  me,
+  Store,
+  CryptoUtils,
+  AsgardeoAuthClient,
+} from "@asgardeo/ui-core";
 import React, {
   useState,
   FunctionComponent,
@@ -25,12 +32,7 @@ import React, {
   useEffect,
 } from "react";
 import { AsgardeoProviderContext } from "./asgardeo-context";
-import Store from "../../models";
-import {
-  AsgardeoProviderPropsInterface,
-  AuthenticationConfig,
-} from "../../models/auth";
-import { CryptoUtils } from "../../models/auth-js";
+import { AsgardeoProviderPropsInterface } from "../../models/auth";
 import { MeAPIResponseInterface } from "../../models/me";
 import SPACryptoUtils from "../../utils/crypto-utils";
 import SessionStore from "../../utils/session-store";
@@ -62,7 +64,7 @@ import BrandingPreferenceProvider from "../branding-preference-provider/branding
 const AsgardeoProvider: FunctionComponent<
   PropsWithChildren<AsgardeoProviderPropsInterface>
 > = (props: PropsWithChildren<AsgardeoProviderPropsInterface>) => {
-  const { children, config, customization, store } = props;
+  const { children, config, customization, store, localization } = props;
 
   // If a store instance is passed, use it. Otherwise, create a new instance of the SessionStore
   const storeInstance: Store = store || new SessionStore();
@@ -79,7 +81,7 @@ const AsgardeoProvider: FunctionComponent<
    * Sets the authentication status and access token.
    */
   const setAuthentication = (): void => {
-    const authClient = getAuthInstance();
+    const authClient: AsgardeoAuthClient<any> = getAuthInstance();
     authClient.isAuthenticated().then((isAuth: boolean) => {
       // Update the state only if the value has changed
       if (isAuth !== isAuthenticated) {
@@ -129,7 +131,10 @@ const AsgardeoProvider: FunctionComponent<
   // Render the provider with the value object and the wrapped components
   return (
     <AsgardeoProviderContext.Provider value={value}>
-      <BrandingPreferenceProvider brandingProps={customization}>
+      <BrandingPreferenceProvider
+        brandingProps={customization}
+        localization={localization}
+      >
         {children}
       </BrandingPreferenceProvider>
     </AsgardeoProviderContext.Provider>

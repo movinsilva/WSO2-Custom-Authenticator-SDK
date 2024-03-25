@@ -18,3 +18,4 @@
 
 export * from './config';
 export * from './api-based-auth-response';
+export { default as LocalizationResponse } from './localization-response';
