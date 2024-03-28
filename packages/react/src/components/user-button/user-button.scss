@@ -1,0 +1,35 @@
+.asgardeo.user-button {
+}
+.user-button-img-container {
+  img {
+    margin-top: 8px;
+    width: 40px;
+    border-radius: 50%;
+  }
+}
+
+.default-profile-icon-container {
+  border: rgb(239, 127, 127) 1px solid;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.user-img {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.profile-info-box {
+  padding: 1rem 6px;
+}
+
+.profile-detail-section {
+  padding-left: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.menu-item-container {
+  padding-left: 2rem;
+}

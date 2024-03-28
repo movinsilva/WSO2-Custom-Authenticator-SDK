@@ -1,0 +1,196 @@
+:root {
+  --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed var(--oxygen-palette-divider);
+}
+
+.circular-progress {
+  margin: 2rem auto;
+}
+
+.sign-in-box-node {
+  .oxygen-sign-in {
+    padding: 12px 32px;
+    margin: 0 auto;
+
+    .oxygen-sign-in-box {
+      padding: 26px 32px;
+      width: 380px;
+    }
+
+    .oxygen-sign-in-logo {
+      max-height: 50px;
+      margin-bottom: 30px;
+    }
+
+    .oxygen-sign-in-header {
+      margin-bottom: 32px;
+    }
+
+    .oxygen-sign-in-sub-header {
+      margin-bottom: 16px;
+    }
+
+    .oxygen-sign-in-retry-header-box {
+      border: 2px solid red;
+      border-radius: 20px;
+      padding: 1rem;
+      background-color: rgb(223, 146, 69);
+      margin-bottom: 1rem;
+    }
+
+    .oxygen-sign-in-form {
+      .oxygen-text-field {
+        margin-bottom: 20px;
+      }
+
+      .oxygen-sign-in-cta {
+        margin: 16px 0;
+      }
+
+      .oxygen-sign-in-sign-up-link {
+        font-size: 14px;
+      }
+
+      .oxygen-sign-in-sign-up-link-action {
+        margin-left: 5px;
+      }
+    }
+
+    .oxygen-sign-in-options {
+      margin-top: 16px;
+
+      .oxygen-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+          0 0 1px 0 rgba(0, 0, 0, 0.12),
+          0 1px 1px 0 rgba(0, 0, 0, 0.24);
+
+        &:hover {
+          color: rgba(0, 0, 0, 0.8);
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulsing-success {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);
+  }
+
+  70% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+.basic-sign-in-option-controls-wrapper {
+  .basic-sign-in-option-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-right: -10px;
+    margin-left: -10px;
+    margin-bottom: 10px;
+
+    .action-button {
+      width: 20px;
+      height: 20px;
+
+      svg {
+        fill: var(--oxygen-palette-text-secondary);
+      }
+    }
+  }
+
+  .basic-sign-in-option-control-fields {
+    border: var(--asg-auth-flow-builder-flows-basic-sign-in-option-controls-border);
+    padding: 10px 10px 0 10px;
+    margin-right: -10px;
+    margin-left: -10px;
+  }
+}
+
+.totp-fragment,
+.sms-otp-fragment {
+  .pin-code-input-fields {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+
+    .MuiInputBase-input {
+      text-align: center;
+    }
+
+    input {
+      padding: 16px 4px;
+    }
+  }
+}
+
+.email-otp-fragment {
+  .otp-input .MuiFormLabel-root {
+    text-wrap: wrap;
+  }
+}
+
+.sms-otp-fragment,
+.email-otp-fragment {
+  .oxygen-sign-in-action-group {
+    .oxygen-sign-in-cta:first-child {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.active-sessions-limit-fragment {
+  table,
+  th,
+  td {
+    border: 1px solid var(--oxygen-palette-divider);
+    border-collapse: collapse;
+    border-style: inset;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  table {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+.oxygen-sign-in-option {
+  background: var(--oxygen-palette-common-white);
+  color: var(--oxygen-palette-common-black);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 1px 0 rgba(0, 0, 0, 0.12),
+    0 1px 1px 0 rgba(0, 0, 0, 0.24);
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.oxygen-sign-in-option-divider {
+  margin-bottom: 16px;
+}
+
+.oxygen-sign-in-option-image {
+  height: 20px;
+}

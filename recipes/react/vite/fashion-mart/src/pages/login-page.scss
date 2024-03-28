@@ -1,0 +1,13 @@
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: start;
+  padding: 10vw;
+  align-items: center;
+  background-image: url("../assets/online-shopping.jpg");
+  background-size: cover;
+
+  .login-portal.layout .oxygen-sign-in-box {
+    background: rgba(246, 122, 122, 0.14);
+  }
+}

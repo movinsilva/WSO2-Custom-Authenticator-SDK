@@ -1,15 +1,20 @@
 {
-  "name": "wso2-custom-authenticator-sdk",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "@asgardeo/ui-sdk-workspace",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
   "scripts": {},
   "private": true,
-  "dependencies": {},
+  "pnpm": {
+    "overrides": {
+      "@typescript-eslint/parser": "6.2.0"
+    }
+  },
   "devDependencies": {
-    "@nx/js": "18.0.3",
     "nx": "18.0.3"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "recipes/react/**/*"
+    
   ]
 }
