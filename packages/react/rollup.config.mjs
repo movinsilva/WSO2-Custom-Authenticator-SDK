@@ -45,6 +45,7 @@ export default [
       json(),
       nodePolyfills({
         buffer: true,
+        crypto: true
       })
     ],
   },

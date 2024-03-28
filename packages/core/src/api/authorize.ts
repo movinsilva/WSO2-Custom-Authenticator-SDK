@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { AsgardeoAuthClient } from '@asgardeo/auth-js';
-import { getAuthInstance } from '../asgardeo-auth-js';
+import {AsgardeoAuthClient} from '@asgardeo/auth-js';
+import {getAuthInstance} from '../asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import { AuthApiResponse } from '../model';
+import {AuthApiResponse} from '../model';
 
 const getAuthorizePostRequest = async (): Promise<Request> => {
   const authInstace: AsgardeoAuthClient<any> = getAuthInstance();
@@ -54,6 +54,8 @@ const getAuthorizePostRequest = async (): Promise<Request> => {
     method: 'POST',
   };
 
+  console.log('Authorization request: ', authorizeUri, requestOptions);
+
   return new Request(authorizeUri, requestOptions);
 };
 
@@ -71,12 +73,14 @@ export const authorize = async (): Promise<AuthApiResponse> => {
     response = await fetch(await getAuthorizePostRequest());
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
   } catch (error) {
-    throw new AsgardeoException('UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error);
+    console.log('Authorization API call failed', error);
+    throw new AsgardeoException('JS_UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error);
   }
 
   if (response.ok) {
     return (await response.json()) as AuthApiResponse;
   }
+  console.log('Authorization response is not OK', response.status, response.statusText);
   throw new AsgardeoException('UI_CORE-AUTHZ-AZ-HE02', 'Authorization response is not OK');
 };
 

@@ -110,6 +110,7 @@ const BrandingPreferenceProvider: FunctionComponent<
     <BrandingPreferenceContext.Provider value={contextValues}>
       {/* TODO - whether to use helmet or not */}
       {injectBrandingCSSSkeleton()}
+      {console.log("contextValues", contextValues.brandingPreference)}
       <ThemeProvider
         theme={generateAsgardeoTheme(contextValues.brandingPreference)}
         defaultMode="light"
