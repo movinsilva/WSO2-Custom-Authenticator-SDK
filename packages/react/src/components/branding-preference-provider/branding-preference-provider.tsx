@@ -37,7 +37,7 @@ import generateAsgardeoTheme from "../../customization/theme";
 import i18nInitialize from "../../localization/i18n/i18n";
 import defaultLocalization from "../../localization/keys";
 import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
-import { Localization } from "../../models/localization";
+import { LanguageCode, Localization } from "../../models/localization";
 
 /**
  * Props interface for the Branding preference provider.
@@ -58,42 +58,19 @@ const BrandingPreferenceProvider: FunctionComponent<
     useState<Partial<BrandingPreferenceAPIResponseInterface>>();
 
   const contextValues: BrandingPreferenceContextProps = useMemo(
-    () => ({ brandingPreference, textPreference: defaultLocalization }),
+    () => ({
+      brandingPreference,
+      localizationLanguage:
+        localization?.languageCode ?? LanguageCode.ENGLISH_US,
+    }),
     [brandingPreference]
   );
-
-  const tt: any = {
-    common: {
-      rememberMe: "Remember me on this computer",
-      dividerText: "or",
-      registerLink: "Register",
-      registerPreText: "Don't have an account?",
-    },
-    login: {
-      signinHeader: "Something to test",
-      usernameLabel: "Username",
-      usernamePlaceHolder: "Enter your username",
-      passwordLabel: "Password",
-      passwordPlaceHolder: "Enter your password",
-      loginButtonLabel: "Sign In",
-      forgotPasswordLinkLabel: "Forgot Password?",
-      retryText:
-        "Login failed! Please check your username and password and try again",
-    },
-    socialLogins: {
-      preText: "Sign in with",
-    },
-    totp: {
-      otpLabel: "TOTP Code",
-      verifyButtonLabel: "Verify",
-    },
-  };
-  i18nInitialize(localization);
 
   useEffect(() => {
     try {
       branding().then((response: any) => {
-        const resp: BrandingPreferenceAPIResponseInterface = response;
+        const resp: BrandingPreferenceAPIResponseInterface =
+          response as BrandingPreferenceAPIResponseInterface;
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));
         } else {
@@ -108,6 +85,8 @@ const BrandingPreferenceProvider: FunctionComponent<
     } catch (error) {
       throw new Error(`Error while fetching branding preferences: ${error}`);
     }
+
+    i18nInitialize(localization);
   }, []);
 
   const theme: string | undefined = useMemo(() => {

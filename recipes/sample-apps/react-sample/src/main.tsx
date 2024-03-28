@@ -16,8 +16,8 @@ const config = {
 };
 
 const customLocalization: Localization = {
-  languageCode: LanguageCode.FRENCH,
-  languageResource: { login: { signinHeader: "HELLO in French" } },
+  languageCode: LanguageCode.ENGLISH_US,
+  languageResource: { login: { signinHeader: "Custom text works!" } },
 };
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     customization={{
       preference: {
         theme: {
-          LIGHT: { loginBox: { background: { backgroundColor: "#ADD8E6" } } },
+          LIGHT: { loginBox: { background: { backgroundColor: "#ADC8E6" } } },
         },
       },
     }}

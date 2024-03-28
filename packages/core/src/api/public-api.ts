@@ -17,7 +17,7 @@
  */
 
 export { authorize } from './authorize';
-export { default as authenticate } from './authenticate';
+export { authenticate } from './authenticate';
 export { default as branding } from './branding';
-export { default as brandingText } from './branding-text';
-export { default as me } from './me';
+export { brandingText } from './branding-text';
+export { me } from './me';

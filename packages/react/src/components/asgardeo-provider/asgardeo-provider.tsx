@@ -23,6 +23,7 @@ import {
   Store,
   CryptoUtils,
   AsgardeoAuthClient,
+  MeResponse,
 } from "@asgardeo/ui-core";
 import React, {
   useState,
@@ -33,7 +34,6 @@ import React, {
 } from "react";
 import { AsgardeoProviderContext } from "./asgardeo-context";
 import { AsgardeoProviderPropsInterface } from "../../models/auth";
-import { MeAPIResponseInterface } from "../../models/me";
 import SPACryptoUtils from "../../utils/crypto-utils";
 import SessionStore from "../../utils/session-store";
 import BrandingPreferenceProvider from "../branding-preference-provider/branding-preference-provider";
@@ -75,7 +75,7 @@ const AsgardeoProvider: FunctionComponent<
 
   const [accessToken, setAccessToken] = useState<string>("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
-  const [user, setUser] = useState<MeAPIResponseInterface>();
+  const [user, setUser] = useState<MeResponse>();
 
   /**
    * Sets the authentication status and access token.
@@ -93,9 +93,9 @@ const AsgardeoProvider: FunctionComponent<
       if (accessTokenFromClient) {
         setAccessToken(accessTokenFromClient);
 
-        me().then((response: any) => {
+        me().then((response: MeResponse) => {
           console.log("response from user: ", response);
-          setUser(response as MeAPIResponseInterface);
+          setUser(response);
         });
       }
     });

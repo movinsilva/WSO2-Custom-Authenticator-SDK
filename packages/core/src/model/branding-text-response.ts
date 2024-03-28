@@ -16,15 +16,19 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/ui-core";
-
-export interface Localization {
-  languageCode: LanguageCode;
-  languageResource?: Partial<LocalizationResponse>;
+export interface BrandingTextResponse {
+  locale: string;
+  name: string;
+  preference: BrandingTextPreference;
+  screen: string;
+  type: string;
 }
-export enum LanguageCode {
-  CUSTOM = "custom",
-  ENGLISH_US = "en_Us",
-  FRENCH = "fr-FR",
-  PORTUGUESE = "pt-BR",
+
+export interface BrandingTextPreference {
+  text: {
+    copyright: string;
+    'privacy.policy': string;
+    'site.title': string;
+    'terms.of.service': string;
+  };
 }

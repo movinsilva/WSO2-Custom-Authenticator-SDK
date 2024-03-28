@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { brandingText } from "@asgardeo/ui-core";
+import {
+  AsgardeoException,
+  BrandingTextPreference,
+  BrandingTextResponse,
+  brandingText,
+} from "@asgardeo/ui-core";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { isEmpty } from "../../utils/common";
 import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
@@ -38,23 +43,34 @@ interface FooterInterface {}
 const Footer: FunctionComponent<FooterInterface> = (
   props: FooterInterface
 ): ReactElement => {
-  const { brandingPreference } = useBrandingPreference();
-  const [text, setText] = React.useState();
+  const { brandingPreference, localizationLanguage } = useBrandingPreference();
+
+  console.log("textPreference", localizationLanguage);
+  const [brandingTextPreference, setBrandingTextPreference] =
+    React.useState<BrandingTextPreference>();
 
   useEffect(() => {
-    if (brandingPreference) {
-      brandingText(
-        brandingPreference?.locale,
-        brandingPreference?.name,
-        "common",
-        brandingPreference?.type
-      ).then((response: any) => {
-        setText(response?.preference.text);
-      });
+    try {
+      if (brandingPreference) {
+        brandingText(
+          localizationLanguage,
+          brandingPreference?.name ?? "carbon.super",
+          "common",
+          brandingPreference?.type ?? "ORG"
+        ).then((response: BrandingTextResponse) => {
+          setBrandingTextPreference(response?.preference);
+        });
+      }
+    } catch (error) {
+      throw new AsgardeoException(
+        "REACT_UI-FOOTER-SE01",
+        "Error in fetching branding text",
+        error
+      );
     }
   }, [brandingPreference]);
 
-  return !brandingPreference?.preference ? (
+  return !brandingTextPreference ? (
     <div />
   ) : (
     <div data-componentid={componentId} className="footer">
@@ -63,52 +79,59 @@ const Footer: FunctionComponent<FooterInterface> = (
           <div className="left menu">
             <div className="powered-by-logo">
               <div>
-                {text?.copyright && text.copyright.includes("{{currentYear}}")
-                  ? text.copyright.replace(
+                {brandingTextPreference.text.copyright &&
+                brandingTextPreference.text.copyright.includes(
+                  "{{currentYear}}"
+                )
+                  ? brandingTextPreference.text.copyright.replace(
                       "{{currentYear}}",
                       new Date().getFullYear().toString()
                     )
-                  : text?.copyright}
+                  : brandingTextPreference?.text.copyright}
               </div>
             </div>
           </div>
           <div className="right menu">
             {!isEmpty(
-              brandingPreference?.preference.urls?.privacyPolicyURL
+              brandingPreference?.preference?.urls?.privacyPolicyURL
             ) && (
               <a
                 id="privacy-policy"
                 className="item"
-                href={brandingPreference?.preference.urls.privacyPolicyURL}
+                href={brandingPreference?.preference?.urls.privacyPolicyURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
               >
-                {text ? text["privacy.policy"] : ""}
+                {brandingTextPreference
+                  ? brandingTextPreference.text["privacy.policy"]
+                  : ""}
               </a>
             )}
-            {!isEmpty(brandingPreference?.preference.urls?.termsOfUseURL) && (
+            {!isEmpty(brandingPreference?.preference?.urls?.termsOfUseURL) && (
               <a
                 id="terms-of-service"
                 className="item"
-                href={brandingPreference?.preference.urls.termsOfUseURL}
+                href={brandingPreference?.preference?.urls.termsOfUseURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
               >
-                {text ? text["terms.of.service"] : ""}
+                {brandingTextPreference
+                  ? brandingTextPreference.text["terms.of.service"]
+                  : ""}
               </a>
             )}
-            {!isEmpty(brandingPreference?.preference.urls?.termsOfUseURL) && (
+            {!isEmpty(brandingPreference?.preference?.urls?.termsOfUseURL) && (
               <a
                 id="terms-of-service"
                 className="item"
-                href={brandingPreference?.preference.urls.termsOfUseURL}
+                href={brandingPreference?.preference?.urls.termsOfUseURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
               >
-                {brandingPreference.locale}
+                {localizationLanguage}
               </a>
             )}
           </div>

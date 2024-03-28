@@ -19,6 +19,7 @@
 import { LocalizationResponse } from "@asgardeo/ui-core";
 import { createContext, useContext } from "react";
 import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
+import { LanguageCode } from "../../models/localization";
 
 /**
  * Props interface for BrandingPreferenceContext.
@@ -30,7 +31,7 @@ export type BrandingPreferenceContextProps = {
   brandingPreference:
     | Partial<BrandingPreferenceAPIResponseInterface>
     | undefined;
-  textPreference: LocalizationResponse;
+  localizationLanguage: LanguageCode;
 };
 
 /**

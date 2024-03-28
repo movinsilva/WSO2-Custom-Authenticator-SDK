@@ -24,6 +24,7 @@ import { AuthConfig } from '../model/config';
 export class AuthClient {
   private static instance: AsgardeoAuthClient<any>;
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
   static getInstance(

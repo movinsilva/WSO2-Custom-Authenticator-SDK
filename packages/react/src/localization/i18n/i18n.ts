@@ -25,11 +25,11 @@ import frenchLocalization from "./translation/fr-FR.json";
 import { LanguageCode, Localization } from "../../models/localization";
 
 const i18nInitialize = (localization: Localization | undefined): void => {
-  let languageCode: LanguageCode = LanguageCode.ENGLISH;
+  let languageCode: LanguageCode = LanguageCode.ENGLISH_US;
   let languageResource: Partial<LocalizationResponse> | undefined;
 
   if (localization) {
-    languageCode = localization.languageCode || LanguageCode.ENGLISH;
+    languageCode = localization.languageCode || LanguageCode.ENGLISH_US;
     if (localization.languageResource) {
       languageResource = localization.languageResource;
     }
@@ -50,13 +50,13 @@ const i18nInitialize = (localization: Localization | undefined): void => {
   }
 
   i18n.use(initReactI18next).init({
-    fallbackLng: LanguageCode.ENGLISH,
+    fallbackLng: LanguageCode.ENGLISH_US,
     interpolation: {
       escapeValue: false,
     },
     lng: languageCode,
     resources: {
-      [LanguageCode.ENGLISH]: {
+      [LanguageCode.ENGLISH_US]: {
         translation: englishLocalization,
       },
       [LanguageCode.FRENCH]: {

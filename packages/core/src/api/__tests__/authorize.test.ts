@@ -16,45 +16,55 @@
  * under the License.
  */
 
-import {describe, jest, test, expect} from '@jest/globals';
-import {authorize, exportedForTesting} from '../authorize';
+import {
+  describe, jest, test, expect,
+} from '@jest/globals';
+import { SpyInstance } from 'jest-mock';
+import * as authJS from '../../asgardeo-auth-js/index';
+import { exportedForTesting } from '../authorize';
 
-const {authorizeRequestBuilder} = exportedForTesting;
-g;
+const { authorizeRequestBuilder } = exportedForTesting;
+
+const mockBaseUrl: string = 'https://mockbaseurl:9443';
+const mockScope: string = 'mockScope';
+const mockRedirectUri: string = 'https://mockUrl:5173';
+const mockClientId: string = 'mockClientId';
+const mockResponseType: string = 'mockResponseType';
+const mockResponseMode: string = 'direct';
+
+const mock: SpyInstance = jest.spyOn(authJS, 'getAuthInstance');
+mock.mockImplementation((): any => ({
+  getAuthorizationURL: () => `${mockBaseUrl}/oauth2/authorize?scope=${mockScope}&response_type=${mockResponseType}&response_mode=${mockResponseMode}&redirect_uri=${mockRedirectUri}&client_id=${mockClientId}`,
+  getDataLayer: () => ({
+    getConfigData: () => ({
+      baseUrl: mockBaseUrl,
+      clientID: mockClientId,
+      signInRedirectURL: mockRedirectUri,
+    }),
+    setTemporaryDataParameter: () => jest.fn(),
+  }),
+  getOIDCServiceEndpoints: () => ({
+    authorizationEndpoint: `${mockBaseUrl}/oauth2/authorize`,
+  }),
+}));
 
 describe('authorize', () => {
-  const baseUrl = 'https://localhost:9443';
-  const scope = 'openid';
-  const redirect_uri = 'https://localhost:5173';
-  const client_id = 'fyGmog7fpcFgTNTOqLFIGIt2laQa';
-
-  describe('authorizeRequestBuilder', () => {
-    test('should return a request object with the correct parameters', async () => {
-      const request = authorizeRequestBuilder(baseUrl, client_id, scope, redirect_uri);
-      expect(request.method).toBe('POST');
-      expect(request.headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
-      expect(request.headers.get('Accept')).toBe('application/json');
-      expect(request.url).toBe(`${baseUrl}/oauth2/authorize`);
-      expect(await request.text()).toBe(
-        `client_id=${client_id}&scope=${scope}&response_type=code&response_mode=direct&redirect_uri=${encodeURIComponent(redirect_uri)}`,
-      );
-    });
+  test('getAuthorizePostRequest: should return a request object with the correct request type', async () => {
+    const request: Request = await authorizeRequestBuilder();
+    expect(request.method).toBe('POST');
+    expect(request.headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
+    expect(request.headers.get('Accept')).toBe('application/json');
+    expect(request.url).toBe(`${mockBaseUrl}/oauth2/authorize`);
   });
 
-  describe('authorizeFunction', () => {
-    test('should return a response object', async () => {
-      const mockFetch = jest.fn(() => Promise.resolve({flowId: 'flowId'}));
-      jest.mock(authorize, () => ({
-        return {
-          authorize: jest.fn().mockImplementation(() => {
-            fetch: mockFetch
-          })
-        
-        }
-      }));
-      const response = await authorize(baseUrl, client_id, scope, redirect_uri);
-      console.log('response', response);
-      expect(response).toBeInstanceOf(Object);
-    });
+  test('getAuthorizePostRequest: should return a request object with the correct request parameters', async () => {
+    const request: Request = await authorizeRequestBuilder();
+    const requestText: string = await request.text();
+
+    expect(requestText).toContain(`client_id=${mockClientId}`);
+    expect(requestText).toContain(`response_mode=${mockResponseMode}`);
+    expect(requestText).toContain(`scope=${mockScope}`);
+    expect(requestText).toContain(`redirect_uri=${encodeURIComponent(mockRedirectUri)}`);
+    expect(requestText).toContain('response_type=code');
   });
 });

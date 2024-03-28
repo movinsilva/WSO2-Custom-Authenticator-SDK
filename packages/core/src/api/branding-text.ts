@@ -16,15 +16,12 @@
  * under the License.
  */
 
-import { getAuthInstance } from 'src/asgardeo-auth-js/asgardeo-auth-js';
-import { getBrandingTextUrl } from 'src/utils/url-generator';
+import { getAuthInstance } from '../asgardeo-auth-js/asgardeo-auth-js';
+import { AsgardeoException } from '../exception';
+import { BrandingTextResponse } from '../model';
+import { getBrandingTextUrl } from '../utils/url-generator';
 
-const brandingTextRequestBuilder = async (
-  locale: string,
-  name: string,
-  screen: string,
-  type: string,
-): Promise<Request> => {
+const getBrandingTextRequest = async (locale: string, name: string, screen: string, type: string): Promise<Request> => {
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');
   headers.append('Content-Type', 'application/json');
@@ -48,29 +45,39 @@ const brandingTextRequestBuilder = async (
 };
 
 /**
- * Fetch branding text from the authentication server.
+ * Fetches the branding text from the server.
  *
- * @param {string} baseUrl - The base URL of the authentication server.
- * @param {string} locale - The locale of the branding text.
- * @param {string} name - The name of the branding text.
- * @param {string} screen - The screen of the branding text.
- * @param {string} type - The type of the branding text.
- * @returns {Promise<object|undefined>} A promise that resolves with the
- * response object from the authentication server, or an error occurs if
- * the response is not successful.
+ * @param locale - The locale of the branding text.
+ * @param name - The name of the branding text.
+ * @param screen - The screen of the branding text.
+ * @param type - The type of the branding text.
+ * @returns A Promise that resolves to the response from the server.
+ * @throws {AsgardeoException} If the API call fails or the response is not OK.
  */
-const brandingText = async (locale: string, name: string, screen: string, type: string): Promise<Response> => {
-  const request: Request = await brandingTextRequestBuilder(locale, name, screen, type);
+export const brandingText = async (
+  locale: string,
+  name: string,
+  screen: string,
+  type: string,
+): Promise<BrandingTextResponse> => {
+  const request: Request = await getBrandingTextRequest(locale, name, screen, type);
+  let response: Response;
+
   try {
-    const response: Response = await fetch(request);
-    if (response.ok) {
-      return await response.json();
-    }
-    throw new Error('Branding Text request failed');
+    response = await fetch(request);
   } catch (error) {
-    // handle the error
-    throw new Error('Branding Text request failed');
+    throw new AsgardeoException('JS_UI_CORE-BT-BT-NE01', 'Branding Text API call failed', error);
   }
+  if (response.ok) {
+    return (await response.json()) as BrandingTextResponse;
+  }
+  throw new AsgardeoException('JS_UI_CORE-BT-BT-HE02', 'Branding Text response is not OK');
 };
 
-export default brandingText;
+type ExportedForTestingType = {
+  getBrandingTextRequest: (locale: string, name: string, screen: string, type: string) => Promise<Request>;
+};
+
+export const exportedForTesting: ExportedForTestingType = {
+  getBrandingTextRequest,
+};

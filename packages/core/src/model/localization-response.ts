@@ -17,6 +17,12 @@
  */
 
 interface LocalizationResponse {
+  common: {
+    dividerText: string;
+    registerLink: string;
+    registerPreText: string;
+    rememberMe: string;
+  };
   login: {
     forgotPasswordLinkLabel: string;
     loginButtonLabel: string;
@@ -26,12 +32,6 @@ interface LocalizationResponse {
     signinHeader: string;
     usernameLabel: string;
     usernamePlaceHolder: string;
-  };
-  common: {
-    dividerText: string;
-    registerLink: string;
-    registerPreText: string;
-    rememberMe: string;
   };
   socialLogins: {
     preText: string;

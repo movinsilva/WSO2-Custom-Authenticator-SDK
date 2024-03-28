@@ -16,16 +16,10 @@
  * under the License.
  */
 
-import { getAuthInstance } from 'src/asgardeo-auth-js';
-import { AuthApiResponse } from 'src/model';
-import { getAuthnUrl } from 'src/utils/url-generator';
+import { getAuthInstance } from '../asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-
-interface AuthnParams {
-  authenticatorID: string;
-  authenticatorParametres?: any;
-  flowID: string;
-}
+import { AuthApiResponse, AuthnParams } from '../model';
+import { getAuthnUrl } from '../utils/url-generator';
 
 const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
   const { flowID, authenticatorID, authenticatorParametres } = props;
@@ -51,19 +45,33 @@ const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
 
   /* Getting baseURL from authClient's data layer */
   const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+
   return new Request(getAuthnUrl(baseUrl), requestOptions);
 };
 
-const authenticate = async (props: AuthnParams): Promise<AuthApiResponse> => {
+/**
+ * Authenticates the user with the provided parameters.
+ * @param props - The authentication parameters.
+ * @returns A promise that resolves to the authentication response.
+ * @throws An AsgardeoException if the authentication API call fails or the response is not OK.
+ */
+export const authenticate = async (props: AuthnParams): Promise<AuthApiResponse> => {
+  let response: Response;
   try {
-    const response: Response = await fetch(await getAuthnRequest(props));
-    if (response.ok) {
-      return (await response.json()) as AuthApiResponse;
-    }
-    throw new AsgardeoException('UI_CORE-AN-AN-SE-01', 'Authentication Response is not OK');
+    response = await fetch(await getAuthnRequest(props));
   } catch (error) {
-    throw new AsgardeoException('AN-RF-02', `Authentication Response Failed: ${error}`, error.message);
+    throw new AsgardeoException('JS_UI_CORE-AUTHN-AN-NE01', `Authentication API call Failed: ${error}`, error.message);
   }
+  if (response.ok) {
+    return (await response.json()) as AuthApiResponse;
+  }
+  throw new AsgardeoException('JS_UI_CORE-AUTHN-AN-HE02', 'Authentication Response is not OK');
 };
 
-export default authenticate;
+type ExportedForTestingType = {
+  getAuthenticateRequest: (arg: AuthnParams) => Promise<Request>;
+};
+
+export const exportedForTesting: ExportedForTestingType = {
+  getAuthenticateRequest: getAuthnRequest,
+};

@@ -17,12 +17,11 @@
  */
 
 import { AsgardeoAuthClient } from '@asgardeo/auth-js';
-import { getAuthInstance } from 'src/asgardeo-auth-js';
-import AsgardeoException from 'src/exception/exception';
-import UICoreException from 'src/exception/ui-core-exception';
-import { AuthApiResponse } from 'src/model';
+import { getAuthInstance } from '../asgardeo-auth-js';
+import AsgardeoException from '../exception/exception';
+import { AuthApiResponse } from '../model';
 
-const authorizeRequestBuilder = async (): Promise<Request> => {
+const getAuthorizePostRequest = async (): Promise<Request> => {
   const authInstace: AsgardeoAuthClient<any> = getAuthInstance();
   const data: any = await authInstace.getDataLayer().getConfigData();
   const url: string = await authInstace.getAuthorizationURL();
@@ -58,22 +57,33 @@ const authorizeRequestBuilder = async (): Promise<Request> => {
   return new Request(authorizeUri, requestOptions);
 };
 
+/**
+ * Authorizes the user and returns the authentication response.
+ * @returns {Promise<AuthApiResponse>} The authentication response.
+ * @throws {UICoreException} If the authorization API call fails.
+ * @throws {AsgardeoException} If the authorization response is not OK.
+ */
 export const authorize = async (): Promise<AuthApiResponse> => {
+  let response: Response;
   try {
     // Disable certificate verification for the duration of this request
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response: Response = await fetch(await authorizeRequestBuilder());
-
+    response = await fetch(await getAuthorizePostRequest());
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
-    if (response.ok) {
-      return (await response.json()) as AuthApiResponse;
-    }
-    throw new AsgardeoException('UI_CORE-AZ-AZ-SE-01', 'Authorization response is not OK');
   } catch (error) {
-    throw new UICoreException('UI_CORE-AZ-AZ-SE-02', 'Authorization failed', error);
+    throw new AsgardeoException('UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error);
   }
+
+  if (response.ok) {
+    return (await response.json()) as AuthApiResponse;
+  }
+  throw new AsgardeoException('UI_CORE-AUTHZ-AZ-HE02', 'Authorization response is not OK');
 };
 
-export const exportedForTesting: Object = {
-  authorizeRequestBuilder,
+type ExportedForTestingType = {
+  authorizeRequestBuilder: () => Promise<Request>;
+};
+
+export const exportedForTesting: ExportedForTestingType = {
+  authorizeRequestBuilder: getAuthorizePostRequest,
 };

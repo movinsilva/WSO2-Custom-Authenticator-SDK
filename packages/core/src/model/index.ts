@@ -18,4 +18,7 @@
 
 export * from './config';
 export * from './api-based-auth-response';
-export { default as LocalizationResponse } from './localization-response';
+export {default as LocalizationResponse} from './localization-response';
+export * from './branding-response';
+export * from './branding-text-response';
+export * from './me-response';

@@ -66,3 +66,9 @@ export interface AdditionalData {
   redirectUrl: string;
   state: string;
 }
+
+export interface AuthnParams {
+  authenticatorID: string;
+  authenticatorParametres?: any;
+  flowID: string;
+}

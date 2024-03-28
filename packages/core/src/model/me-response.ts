@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface MeAPIResponseInterface {
+export interface MeResponse {
   emails: string[];
   id: string;
   name: any;

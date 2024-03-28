@@ -16,25 +16,30 @@
  * under the License.
  */
 
-import { getAuthInstance } from 'src/asgardeo-auth-js';
-import AsgardeoException from 'src/exception/exception';
+import { getAuthInstance } from '../asgardeo-auth-js';
+import AsgardeoException from '../exception/exception';
+import { BrandingPreferenceAPIResponseInterface } from '../model';
 import { getBrandingUrl } from '../utils/url-generator';
 
-const branding = async (): Promise<Response> => {
+/**
+ * Fetches branding data from the server.
+ * @returns {Promise<Response>} The response from the server.
+ * @throws {AsgardeoException} If there is an error while fetching branding data or if the response is not ok.
+ */
+const branding = async (): Promise<BrandingPreferenceAPIResponseInterface> => {
+  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+  let response: Response;
   try {
-    const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
-
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response: Response = await fetch(getBrandingUrl(baseUrl));
+    response = await fetch(getBrandingUrl(baseUrl));
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
-
-    if (response.ok) {
-      return await response.json();
-    }
-    throw new AsgardeoException('UI_CORE-BR-BR-01', 'Branding response is not ok');
   } catch (error) {
-    throw new AsgardeoException('UI_CORE-BR-BR-02', 'Error while fetching branding data.', error);
+    throw new AsgardeoException('JS_UI_CORE-BR-BR-NE01', 'Error while fetching branding data.', error);
   }
+  if (response.ok) {
+    return (await response.json()) as Promise<BrandingPreferenceAPIResponseInterface>;
+  }
+  throw new AsgardeoException('JS_UI_CORE-BR-BR-HE02', 'Branding response is not ok');
 };
 
 export default branding;

@@ -16,19 +16,21 @@
  * under the License.
  */
 
-import { getAuthInstance } from '../asgardeo-auth-js';
-import { getMeUrl } from '../utils/url-generator';
+import {MeResponse} from '../model/me-response';
+import {getAuthInstance} from '../asgardeo-auth-js';
+import {AsgardeoException} from '../exception';
+import {getMeUrl} from '../utils/url-generator';
 
 /**
  * Builds a request object for the "me" API endpoint.
  * @param {string} meUrl - The URL of the "me" API endpoint.
  * @returns {Request} - The request object.
  */
-const meRequestBuilder = async (meUrl: string): Promise<Request> => {
+const getMeRequest = async (meUrl: string): Promise<Request> => {
   const accessToken: string = await getAuthInstance().getAccessToken();
 
   if (!accessToken) {
-    throw new Error('Access token is null');
+    throw new AsgardeoException('JS_UI_CORE-ME-GMR-IV01', 'Access token is null');
   }
 
   const headers: Headers = new Headers();
@@ -49,22 +51,27 @@ const meRequestBuilder = async (meUrl: string): Promise<Request> => {
  * @returns {Promise<Object>} - A promise that resolves to the user information.
  * @throws {Error} - If the "me" request fails.
  */
-const me = async (): Promise<Response> => {
+export const me = async (): Promise<MeResponse> => {
+  const {baseUrl} = await getAuthInstance().getDataLayer().getConfigData();
+  const request: Request = await getMeRequest(getMeUrl(baseUrl));
+  let response: Response;
   try {
-    const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
-    const request: Request = await meRequestBuilder(getMeUrl(baseUrl));
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-    const response: Response = await fetch(request);
+    response = await fetch(request);
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
-
-    if (response.ok) {
-      return await response.json();
-    }
-    throw new Error('Me request failed');
   } catch (error) {
-    // handle the error
-    throw new Error(`Me request failed: ${error}`);
+    throw new AsgardeoException('JS_UI_CORE-ME-ME-NE01', 'Me API call failed', error);
   }
+  if (response.ok) {
+    return (await response.json()) as MeResponse;
+  }
+  throw new AsgardeoException('JS_UI_CORE-ME-ME-HE02', 'Me response is not OK');
 };
 
-export default me;
+type ExportedForTestingType = {
+  getMeRequest: (url: string) => Promise<Request>;
+};
+
+export const exportedForTesting: ExportedForTestingType = {
+  getMeRequest,
+};

@@ -58,6 +58,8 @@ import {
   useConfig,
 } from "../asgardeo-provider/asgardeo-context";
 import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
+import localizationKeys from "../../localization/keys";
+import { useTranslation } from "react-i18next";
 
 /**
  * Proptypes for the login box component.
@@ -87,8 +89,10 @@ const SignIn: FunctionComponent<SignInInterface> = (
 
   const [authResponse, setAuthResponse] = useState<AuthApiResponse>();
   const authContext = useContext(AsgardeoProviderContext);
-  const { brandingPreference, textPreference } = useBrandingPreference();
+  const { brandingPreference } = useBrandingPreference();
   const [isLoading, setIsLoading] = useState(true);
+
+  const { t } = useTranslation();
 
   if (!authContext) {
     throw new Error("useAuthentication must be used within a AsgardeoProvider");
@@ -320,13 +324,13 @@ const SignIn: FunctionComponent<SignInInterface> = (
                 <div className="oxygen-sign-in-options-wrapper" />
                 {showSelfSignUp && (
                   <Grid container className="oxygen-sign-in-sign-up-link">
-                    <Grid>{textPreference.common.registerPreText} </Grid>
+                    <Grid>{t(localizationKeys.common.registerPreText)} </Grid>
                     <Grid>
                       <Link
                         href="www.google.com"
                         className="oxygen-sign-in-sign-up-link-action"
                       >
-                        {textPreference.common.registerLink}
+                        {t(localizationKeys.common.registerLink)}
                       </Link>
                     </Grid>
                   </Grid>
