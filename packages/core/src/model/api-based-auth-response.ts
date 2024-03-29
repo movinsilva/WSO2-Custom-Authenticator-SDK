@@ -58,7 +58,6 @@ export interface Authenticator {
 
 export interface Metadata {
   additionalData: AdditionalData;
-  // to do
   promptType: string;
 }
 

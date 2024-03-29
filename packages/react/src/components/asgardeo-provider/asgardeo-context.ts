@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { AuthConfig } from "@asgardeo/ui-core";
+import { AuthConfig, MeResponse } from "@asgardeo/ui-core";
 import { Context, createContext, useContext } from "react";
 import { AuthContext } from "../../models/auth";
-import { MeAPIResponseInterface } from "../../models/me";
 
 /**
  * Context for the AsgardeoProvider component.
@@ -42,7 +41,7 @@ export const useAuthentication = () => {
   };
 
   const { user } = useContext(AsgardeoProviderContext) as unknown as {
-    user: MeAPIResponseInterface;
+    user: MeResponse;
   };
 
   const signOut = (): void => {
