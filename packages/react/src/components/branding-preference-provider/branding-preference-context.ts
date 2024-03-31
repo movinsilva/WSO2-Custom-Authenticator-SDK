@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/ui-core";
-import { createContext, useContext } from "react";
+import { Context, createContext, useContext } from "react";
 import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
 import { LanguageCode } from "../../models/localization";
 
@@ -38,9 +37,9 @@ export type BrandingPreferenceContextProps = {
  * Context object for managing branding preferences.
  */
 
-export const BrandingPreferenceContext = createContext<
+export const BrandingPreferenceContext: Context<
   BrandingPreferenceContextProps | undefined
->(undefined);
+> = createContext<BrandingPreferenceContextProps | undefined>(undefined);
 
 /**
  * Display name for the BrandingPreferenceContext.
@@ -53,7 +52,7 @@ BrandingPreferenceContext.displayName = "BrandingPreferenceContext";
  * @returns {BrandingPreferenceContextProps} The branding preferences from the context.
  */
 export function useBrandingPreference(): BrandingPreferenceContextProps {
-  const context = useContext(
+  const context: BrandingPreferenceContextProps = useContext(
     BrandingPreferenceContext
   ) as BrandingPreferenceContextProps;
 

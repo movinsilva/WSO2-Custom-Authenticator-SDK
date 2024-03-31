@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { AsgardeoProvider } from '@asgardeo/react-ui';
+//import { AsgardeoProvider } from '../../../packages/react/src/index';
 
 const config = {
   baseUrl: "https://localhost:9443",

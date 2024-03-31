@@ -16,14 +16,13 @@
  * under the License.
  */
 
-import { LocalizationResponse, branding } from "@asgardeo/ui-core";
+import { branding } from "@asgardeo/ui-core";
 import { ThemeProvider } from "@oxygen-ui/react";
 import merge from "lodash.merge";
 import React, {
   FunctionComponent,
   PropsWithChildren,
   ReactElement,
-  ReactNode,
   useEffect,
   useMemo,
   useState,
@@ -33,17 +32,11 @@ import {
   BrandingPreferenceContextProps,
 } from "./branding-preference-context";
 import BrandingPreferenceMeta from "../../customization/branding-preference-meta";
-import LIGHT_THEME from "../../customization/light-theme";
+import DEFAULT_BRANDING from "../../customization/default_branding";
 import generateAsgardeoTheme from "../../customization/theme";
 import i18nInitialize from "../../localization/i18n/i18n";
-import defaultLocalization from "../../localization/keys";
-import {
-  BrandingPreferenceAPIResponseInterface,
-  PredefinedThemes,
-} from "../../models/branding-preferences";
+import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
 import { LanguageCode, Localization } from "../../models/localization";
-import DARK_THEME from "../../customization/dark-theme";
-import DEFAULT_BRANDING from "../../customization/default_branding";
 
 /**
  * Props interface for the Branding preference provider.
@@ -80,22 +73,17 @@ const BrandingPreferenceProvider: FunctionComponent<
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));
         } else {
-          console.log("b4 merge");
-
           setBrandingPreference(
             merge(
               DEFAULT_BRANDING,
               brandingProps
             ) as BrandingPreferenceAPIResponseInterface
           );
-          console.log("after merge", brandingPreference);
         }
       });
     } catch (error) {
       throw new Error(`Error while fetching branding preferences: ${error}`);
     }
-
-    console.log("brandingPreference", brandingPreference);
     i18nInitialize(localization);
   }, []);
 
@@ -120,7 +108,10 @@ const BrandingPreferenceProvider: FunctionComponent<
     <BrandingPreferenceContext.Provider value={contextValues}>
       {/* TODO - whether to use helmet or not */}
       {injectBrandingCSSSkeleton()}
-      {console.log("contextValues", contextValues.brandingPreference)}
+      {console.log(
+        "contextValues from branding-preference-provider: ",
+        contextValues.brandingPreference
+      )}
       <ThemeProvider
         theme={generateAsgardeoTheme(contextValues.brandingPreference)}
         defaultMode="light"

@@ -41,12 +41,14 @@ import React, {
   useContext,
   FunctionComponent,
 } from "react";
+import { useTranslation } from "react-i18next";
 import Footer from "./footer";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import "./sign-in.scss";
 import LoginOptionFragment from "./fragments/login-option-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
 import Header from "./header";
+import localizationKeys from "../../localization/keys";
 import {
   AuthenticatorType,
   FlowStatus,
@@ -55,11 +57,11 @@ import {
 import { BrandingPreferenceInterface } from "../../models/branding-preferences";
 import {
   AsgardeoProviderContext,
+  useAuthentication,
   useConfig,
 } from "../asgardeo-provider/asgardeo-context";
 import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
-import localizationKeys from "../../localization/keys";
-import { useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 
 /**
  * Proptypes for the login box component.
@@ -92,18 +94,28 @@ const SignIn: FunctionComponent<SignInInterface> = (
   const { brandingPreference } = useBrandingPreference();
   const [isLoading, setIsLoading] = useState(true);
 
-  const { t } = useTranslation();
+  const { isAuthenticated } = useAuthentication();
+
+  // const { t } = useTranslation();
 
   if (!authContext) {
     throw new Error("useAuthentication must be used within a AsgardeoProvider");
   }
 
   useEffect(() => {
-    authorize().then((result: AuthApiResponse) => {
-      console.log("Authorization called with result:", result);
-      setAuthResponse(result);
-      setIsLoading(false);
-    });
+    authorize()
+      .then((result: AuthApiResponse) => {
+        console.log("Authorization called with result:", result);
+        setAuthResponse(result);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        throw new AsgardeoException(
+          "REACT_UI-SIGNIN-AUTH",
+          "Authorization call failed",
+          error.message
+        );
+      });
   }, []);
 
   /**
@@ -121,11 +133,13 @@ const SignIn: FunctionComponent<SignInInterface> = (
       );
     }
     setIsLoading(true);
+    console.log("b4 calling authenticate");
     const resp: AuthApiResponse = await authenticate({
       flowID: authResponse?.flowId,
       authenticatorID: authenticatorId,
       authenticatorParametres: authParams,
     });
+    console.log("After calling authenticate");
     console.log("Authenticate response:", resp);
 
     // when the authentication is successful, generate the token
@@ -292,15 +306,21 @@ const SignIn: FunctionComponent<SignInInterface> = (
       );
     }
     return (
-      <Typography className="oxygen-sign-in-error ui sub header">
-        No Login Options available! Please check your configurations and try
-        again.
-      </Typography>
+      !isLoading && (
+        <Typography className="oxygen-sign-in-error ui sub header">
+          No Login Options available! Please check your configurations and try
+          again.
+        </Typography>
+      )
     );
   };
 
-  if (!brandingPreference && isLoading) {
-    return <CircularProgress className="circular-progress" />;
+  if (isLoading) {
+    return (
+      <div className="sign-in-box-node">
+        <CircularProgress className="circular-progress" />
+      </div>
+    );
   }
   return (
     <div>
@@ -309,37 +329,45 @@ const SignIn: FunctionComponent<SignInInterface> = (
         className="sign-in-box-node login-portal layout"
         data-componentid={`${componentId}`}
       >
-        {authResponse?.flowStatus !== FlowStatus.SUCCESS_COMPLETED && (
-          <Box
-            className="oxygen-sign-in ui form"
-            data-componentid={`${componentId}-inner`}
-          >
-            <Paper
-              className="oxygen-sign-in-box"
-              elevation={0}
-              variant="outlined"
+        {authResponse?.flowStatus !== FlowStatus.SUCCESS_COMPLETED &&
+          !isAuthenticated && (
+            <Box
+              className="oxygen-sign-in ui form"
+              data-componentid={`${componentId}-inner`}
             >
-              <Box className="oxygen-sign-in-form">
-                {generateSignInOptions()}
-                <div className="oxygen-sign-in-options-wrapper" />
-                {showSelfSignUp && (
-                  <Grid container className="oxygen-sign-in-sign-up-link">
-                    <Grid>{t(localizationKeys.common.registerPreText)} </Grid>
-                    <Grid>
-                      <Link
-                        href="www.google.com"
-                        className="oxygen-sign-in-sign-up-link-action"
-                      >
-                        {t(localizationKeys.common.registerLink)}
-                      </Link>
+              <Paper
+                className="oxygen-sign-in-box"
+                elevation={0}
+                variant="outlined"
+              >
+                <Box className="oxygen-sign-in-form">
+                  {generateSignInOptions()}
+                  <div className="oxygen-sign-in-options-wrapper" />
+                  {showSelfSignUp && (
+                    <Grid container className="oxygen-sign-in-sign-up-link">
+                      <Grid>
+                        <Trans
+                          i18nKey={localizationKeys.common.registerPreText}
+                        ></Trans>{" "}
+                      </Grid>
+                      <Grid>
+                        <Link
+                          href="www.google.com"
+                          className="oxygen-sign-in-sign-up-link-action"
+                        >
+                          <Trans
+                            i18nKey={localizationKeys.common.registerLink}
+                          ></Trans>
+                        </Link>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                )}
-              </Box>
-            </Paper>
-          </Box>
-        )}
-        {authResponse?.flowStatus === FlowStatus.SUCCESS_COMPLETED && (
+                  )}
+                </Box>
+              </Paper>
+            </Box>
+          )}
+        {(authResponse?.flowStatus === FlowStatus.SUCCESS_COMPLETED ||
+          isAuthenticated) && (
           <div style={{ padding: "1rem", backgroundColor: "white" }}>
             Successfully Authenticated
           </div>

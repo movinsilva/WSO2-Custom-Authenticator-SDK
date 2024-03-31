@@ -8,9 +8,6 @@ import { build } from 'esbuild';
 import path from 'path';
 import {sassPlugin} from 'esbuild-sass-plugin'
 import svgr from 'esbuild-plugin-svgr'
-import { dtsPlugin } from "esbuild-plugin-d.ts"
-import { polyfillNode } from "esbuild-plugin-polyfill-node";
-
 import packageJson from './package.json' assert {type: 'json'};
 
 build({
@@ -31,10 +28,10 @@ build({
     entryPoints: ['src/index.ts'],
     bundle: true,
     sourcemap: true,
-    minify: true,
     outdir: path.dirname(packageJson.module),
     format: 'esm',
     platform: 'browser',
+    external: ['react', 'react-dom'],
     plugins: [
         sassPlugin(),
         svgr(),

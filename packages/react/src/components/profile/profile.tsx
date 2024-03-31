@@ -18,7 +18,7 @@
 
 import { Box, Container, Typography } from "@oxygen-ui/react";
 import { UserIcon } from "@oxygen-ui/react-icons";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
 import "./profile.scss";
 

@@ -26,11 +26,18 @@ import { AuthContext } from "../../models/auth";
 export const AsgardeoProviderContext: Context<AuthContext | undefined> =
   createContext<AuthContext | undefined>(undefined);
 
+interface UseAuthenticationResponse {
+  accessToken: string;
+  isAuthenticated: Promise<boolean> | boolean;
+  signOut: () => void;
+  user: MeResponse;
+}
+
 /**
  * Custom hook to access authentication related information from the AsgardeoProviderContext.
  * @returns An object containing the isAuthenticated and accessToken values.
  */
-export const useAuthentication = () => {
+export const useAuthentication = (): UseAuthenticationResponse => {
   // TODO: Check whether isAuthenticated is taken from the core everytime.
   // If not call isAuthenticate function in the asgardeo provider
   const { isAuthenticated } = useContext(AsgardeoProviderContext) as {
@@ -51,11 +58,15 @@ export const useAuthentication = () => {
   return { accessToken, isAuthenticated, signOut, user };
 };
 
+interface UseConfigResponse {
+  config: AuthConfig;
+}
+
 /**
  * Custom hook to access the authentication configuration from the AsgardeoProviderContext.
  * @returns An object containing the authentication configuration.
  */
-export const useConfig = () => {
+export const useConfig = (): UseConfigResponse => {
   const { config } = useContext(AsgardeoProviderContext) as {
     config: AuthConfig;
   };

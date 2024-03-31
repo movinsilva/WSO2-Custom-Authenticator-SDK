@@ -25,7 +25,7 @@ import {
   AsgardeoAuthClient,
   MeResponse,
 } from "@asgardeo/ui-core";
-import React, {
+import {
   useState,
   FunctionComponent,
   PropsWithChildren,
@@ -33,7 +33,7 @@ import React, {
   useEffect,
 } from "react";
 import { AsgardeoProviderContext } from "./asgardeo-context";
-import { AsgardeoProviderPropsInterface } from "../../models/auth";
+import { AsgardeoProviderPropsInterface, AuthContext } from "../../models/auth";
 import SPACryptoUtils from "../../utils/crypto-utils";
 import SessionStore from "../../utils/session-store";
 import BrandingPreferenceProvider from "../branding-preference-provider/branding-preference-provider";
@@ -94,7 +94,6 @@ const AsgardeoProvider: FunctionComponent<
         setAccessToken(accessTokenFromClient);
 
         me().then((response: MeResponse) => {
-          console.log("response from user: ", response);
           setUser(response);
         });
       }
@@ -117,12 +116,12 @@ const AsgardeoProvider: FunctionComponent<
   }, []);
 
   // Value object to be passed to the AsgardeoProvider
-  const value = useMemo(
+  const value: AuthContext = useMemo(
     () => ({
-      isAuthenticated,
-      setAuthentication,
       accessToken,
       config,
+      isAuthenticated,
+      setAuthentication,
       user,
     }),
     [isAuthenticated, accessToken, user]

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren } from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 import { SignedPropsInterface } from "../../models/auth";
 import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
 

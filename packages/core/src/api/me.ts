@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import {MeResponse} from '../model/me-response';
-import {getAuthInstance} from '../asgardeo-auth-js';
-import {AsgardeoException} from '../exception';
-import {getMeUrl} from '../utils/url-generator';
+import { getAuthInstance } from '../asgardeo-auth-js';
+import { AsgardeoException } from '../exception';
+import { MeResponse } from '../model/me-response';
+import { getMeUrl } from '../utils/url-generator';
 
 /**
  * Builds a request object for the "me" API endpoint.
@@ -52,7 +52,7 @@ const getMeRequest = async (meUrl: string): Promise<Request> => {
  * @throws {Error} - If the "me" request fails.
  */
 export const me = async (): Promise<MeResponse> => {
-  const {baseUrl} = await getAuthInstance().getDataLayer().getConfigData();
+  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
   const request: Request = await getMeRequest(getMeUrl(baseUrl));
   let response: Response;
   try {

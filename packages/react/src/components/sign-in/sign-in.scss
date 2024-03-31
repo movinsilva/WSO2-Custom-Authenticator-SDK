@@ -1,12 +1,21 @@
 :root {
-  --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed var(--oxygen-palette-divider);
+  --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border: 2px dashed
+    var(--oxygen-palette-divider);
 }
 
+.circular-progress-holder {
+}
 .circular-progress {
   margin: 2rem auto;
 }
 
 .sign-in-box-node {
+  min-height: 70vh;
+  min-width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   .oxygen-sign-in {
     padding: 12px 32px;
     margin: 0 auto;
@@ -110,7 +119,9 @@
   }
 
   .basic-sign-in-option-control-fields {
-    border: var(--asg-auth-flow-builder-flows-basic-sign-in-option-controls-border);
+    border: var(
+      --asg-auth-flow-builder-flows-basic-sign-in-option-controls-border
+    );
     padding: 10px 10px 0 10px;
     margin-right: -10px;
     margin-left: -10px;
