@@ -2,11 +2,11 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 
 //import { AsgardeoProvider } from "@asgardeo/react-ui";
-import AsgardeoProvider from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-provider.tsx";
 import {
+  AsgardeoProvider,
   LanguageCode,
   Localization,
-} from "@asgardeo/react-ui/src/models/localization.ts";
+} from "../../../../packages/react/src/index.ts";
 
 const config = {
   baseUrl: "https://localhost:9443",

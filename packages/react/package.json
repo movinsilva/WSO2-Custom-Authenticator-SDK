@@ -7,11 +7,12 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
+    "esbuild": "node build&&tsc -p tsconfig.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -30,6 +31,10 @@
     "@wso2/eslint-plugin": "https://gitpkg.now.sh/brionmario/wso2-ui-configs/packages/eslint-plugin?5bf60cabe9e9a2571e8b1dd16d0c3bdc76db2c4f",
     "@wso2/prettier-config": "https://gitpkg.now.sh/brionmario/wso2-ui-configs/packages/prettier-config?5bf60cabe9e9a2571e8b1dd16d0c3bdc76db2c4f",
     "@wso2/stylelint-config": "https://gitpkg.now.sh/brionmario/wso2-ui-configs/packages/stylelint-config?5bf60cabe9e9a2571e8b1dd16d0c3bdc76db2c4f",
+    "esbuild": "^0.20.2",
+    "esbuild-plugin-polyfill-node": "^0.3.0",
+    "esbuild-plugin-svgr": "^2.1.0",
+    "esbuild-sass-plugin": "^3.2.0",
     "eslint": "^8.57.0",
     "eslint-plugin-mdx": "^3.1.5",
     "prettier": "^3.2.5",

@@ -23,6 +23,7 @@ import React, {
   FunctionComponent,
   PropsWithChildren,
   ReactElement,
+  ReactNode,
   useEffect,
   useMemo,
   useState,
@@ -36,8 +37,13 @@ import LIGHT_THEME from "../../customization/light-theme";
 import generateAsgardeoTheme from "../../customization/theme";
 import i18nInitialize from "../../localization/i18n/i18n";
 import defaultLocalization from "../../localization/keys";
-import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
+import {
+  BrandingPreferenceAPIResponseInterface,
+  PredefinedThemes,
+} from "../../models/branding-preferences";
 import { LanguageCode, Localization } from "../../models/localization";
+import DARK_THEME from "../../customization/dark-theme";
+import DEFAULT_BRANDING from "../../customization/default_branding";
 
 /**
  * Props interface for the Branding preference provider.
@@ -74,18 +80,22 @@ const BrandingPreferenceProvider: FunctionComponent<
         if (resp?.preference?.configs?.isBrandingEnabled) {
           setBrandingPreference(merge(resp, brandingProps));
         } else {
+          console.log("b4 merge");
+
           setBrandingPreference(
             merge(
-              LIGHT_THEME,
+              DEFAULT_BRANDING,
               brandingProps
             ) as BrandingPreferenceAPIResponseInterface
           );
+          console.log("after merge", brandingPreference);
         }
       });
     } catch (error) {
       throw new Error(`Error while fetching branding preferences: ${error}`);
     }
 
+    console.log("brandingPreference", brandingPreference);
     i18nInitialize(localization);
   }, []);
 
@@ -98,7 +108,7 @@ const BrandingPreferenceProvider: FunctionComponent<
     return undefined;
   }, [brandingPreference?.preference?.theme]);
 
-  const injectBrandingCSSSkeleton = () => {
+  const injectBrandingCSSSkeleton: any = (): React.ReactNode => {
     if (!brandingPreference?.preference?.theme) {
       return null;
     }
