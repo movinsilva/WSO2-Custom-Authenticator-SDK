@@ -41,7 +41,7 @@ import React, {
   useContext,
   FunctionComponent,
 } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import Footer from "./footer";
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import "./sign-in.scss";
@@ -61,7 +61,6 @@ import {
   useConfig,
 } from "../asgardeo-provider/asgardeo-context";
 import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
-import { Trans } from "react-i18next";
 
 /**
  * Proptypes for the login box component.
@@ -348,7 +347,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
                       <Grid>
                         <Trans
                           i18nKey={localizationKeys.common.registerPreText}
-                        ></Trans>{" "}
+                        />{" "}
                       </Grid>
                       <Grid>
                         <Link
@@ -357,7 +356,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
                         >
                           <Trans
                             i18nKey={localizationKeys.common.registerLink}
-                          ></Trans>
+                          />
                         </Link>
                       </Grid>
                     </Grid>
