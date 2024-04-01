@@ -1,14 +1,15 @@
 export default {
     title: "",
     description: "UI SDK for Asgardeos/IS",
+    base: ".",
     themeConfig: {
-        logo: "./logo-with-shadow.png",
+        logo: "/logo-with-shadow.png",
         siteTitle: "Asgardeo",
         nav: [
-            { text: "About", link: "./about" },
-            { text: "Contact", link: "./contact" },
-            { text: "Guide", link: "./guide" },
-            { text: "Configs", link: "./configs" },
+            { text: "About", link: "/about" },
+            { text: "Contact", link: "/contact" },
+            { text: "Guide", link: "/guide" },
+            { text: "Configs", link: "/configs" },
             { text: "Changelog", link: "https://github.com/Evavic44" },
           ],
     sidebar: [
