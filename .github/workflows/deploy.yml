@@ -42,6 +42,7 @@ jobs:
         id: build-docs
         run: |
           cd docs
+          pnpm install
           pnpm docs:build
 
       - name: 🔥 Deploy to GitHub Pages
