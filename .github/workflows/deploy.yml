@@ -40,11 +40,13 @@ jobs:
 
       - name: 📄 Build Documentation
         id: build-docs
-        run: pnpm docs:build
+        run: |
+          cd docs
+          pnpm docs:build
 
       - name: 🔥 Deploy to GitHub Pages
         id: deploy-gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/build
+          publish_dir: ./docs/.vitepress/dist
