@@ -16,25 +16,26 @@ This repository contains the source code of the set of custom UI login pages SDK
 
 | Package | Description | Version |
 | --- | --- | --- |
-| [`@asgardeo/js-ui-core`](./packages/core) | Framework agnostic content  | ![npm]() |
-| [`@asgardeo/react-ui`](./packages/react) | The React implementation of custom login pages SDK. | ![npm]() |
+| [`@asgardeo/js-ui-core`](./packages/core) | Framework agnostic content  | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) |
+| [`@asgardeo/react-ui`](./packages/react) | The React implementation of custom login pages SDK. | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) |
 
 ## Examples
 
-* [💅 Multi Brand Identity Demo](https://wso2.github.io/oxygen-ui/examples/multi-brand-identity/)
+* [💅 Fashion Mart](https://wso2.github.io/oxygen-ui/examples/multi-brand-identity/)
 
-    Sample app to showcase Oxygen Design System's multi-branding capabilities.
+    Sample app to showcase @asgardeo/react-ui's components and functionality.
 
     ✨ Features
     
-    * Ability to switch between different WSO2 brand identities. i.e. Asgardeo, Choreo, etc.
+    * Ability to implement a custom signin page by embedding the sign in component.
     * Ability to integrate with [Asgardeo Branding](https://wso2.com/asgardeo/docs/guides/branding/configure-ui-branding/) feature.
+    * Ability to display user information through profile component.
 
-    Click [here →](./examples/multi-brand-identity/) for the source code 🧑‍💻
+    Click [here →](./recipes/b2c/) for the source code 🧑‍💻
 
 ## Documentation
 
-For more information on how to use these SDKs, check out the [documentation]() website.
+For more information on how to use these SDKs, check out the [documentation](https://movinsilva.github.io/wso2-custom-login-pages-sdk) website.
 
 ## Changelog
 
