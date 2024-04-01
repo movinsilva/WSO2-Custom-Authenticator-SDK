@@ -1,8 +1,7 @@
 
 
 <p align="center" style="font-size: 1.2rem;">The
-<span style="color: #47EBD8">Custom UI Login Pages</span>
-powering <a href="https://wso2.com">WSO2</a>'s core products.</p>
+<span style="color: #47EBD8">Custom UI Login Pages</span>.</p>
 
 
 
