@@ -20,30 +20,29 @@ jobs:
         with:
           node-version: "20"
 
-      - name: 🥡 Setup pnpm
-        id: setup-pnpm
-        uses: pnpm/action-setup@v2.1.0
-        with:
-          version: latest
-          run_install: false
+      # - name: 🥡 Setup pnpm
+      #   id: setup-pnpm
+      #   uses: pnpm/action-setup@v2.1.0
+      #   with:
+      #     version: latest
+      #     run_install: false
 
-      - name: 🎈 Get pnpm store directory
-        id: get-pnpm-cache-dir
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      # - name: 🎈 Get pnpm store directory
+      #   id: get-pnpm-cache-dir
+      #   run: |
+      #     echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
 
       - name: 🧩 Install Dependencies
         id: install-dependencies
         run: |
           cd docs
-          pnpm install
+          npm install
 
       - name: 📄 Build Documentation
         id: build-docs
         run: |
           cd docs
-          pnpm install
-          pnpm docs:build
+          npm run docs:build
 
       - name: 🔥 Deploy to GitHub Pages
         id: deploy-gh-pages
