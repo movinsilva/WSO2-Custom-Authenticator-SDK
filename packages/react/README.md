@@ -1,4 +1,4 @@
-#React-UI SDK
+# REACT-UI SDK
 
 ## Error Codes
 
