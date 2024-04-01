@@ -23,12 +23,10 @@ yarn add @asgardeo/js-ui-core
 
 ## Usage
 
-To use functions from `@## Usage
-
-To use icons from `@oxygen-ui/react-icons`, simply import the function and use it in your code:
+To use functions from `@asgardeo/js-ui-core`, simply import the function and use it in your code:
 
 ```jsx
-import { authenticate } from '@oxygen-ui/react-icons';
+import { authenticate } from '@asgardeo/js-ui-core';
 
 function implementAuthn() {
   const response = await authenticate();
