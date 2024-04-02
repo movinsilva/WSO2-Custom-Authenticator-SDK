@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export { getAuthInstance, setAuthInstance } from './asgardeo-auth-js';
+export {AuthClient} from './asgardeo-auth-js';
 export {
   AsgardeoAuthException,
   CryptoUtils,

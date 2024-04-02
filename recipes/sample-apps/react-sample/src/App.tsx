@@ -46,7 +46,11 @@ function App() {
       <Hooks />
 
       <SignedOut>
-        <SignInButton />
+        <SignInButton
+          ButtonComponent={
+            <button className="custom-sign-in-button">custom passed btn</button>
+          }
+        />
       </SignedOut>
 
       <SignedIn>

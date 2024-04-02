@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import {
-  describe, test, jest, expect,
-} from '@jest/globals';
-import { SpyInstance } from 'jest-mock';
+import {describe, test, jest, expect} from '@jest/globals';
+import {SpyInstance} from 'jest-mock';
 import * as authJS from '../../asgardeo-auth-js/asgardeo-auth-js';
-import { exportedForTesting } from '../branding-text';
+import {exportedForTesting} from '../branding-text';
 
-const { getBrandingTextRequest } = exportedForTesting;
+const {getBrandingTextRequest} = exportedForTesting;
 
 describe('branding-text', () => {
   const mockBaseUrl: string = 'https://mockbaseurl:9443';

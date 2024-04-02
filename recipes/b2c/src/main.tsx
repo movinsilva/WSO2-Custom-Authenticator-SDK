@@ -19,7 +19,7 @@ const devConfig = {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AsgardeoProvider
-    config={devConfig}
+    config={config}
     customization={{
       preference: {
         theme: {

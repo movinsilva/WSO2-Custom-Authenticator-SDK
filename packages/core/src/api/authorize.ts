@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { AsgardeoAuthClient } from '@asgardeo/auth-js';
-import { getAuthInstance } from '../asgardeo-auth-js';
+import {AsgardeoAuthClient} from '@asgardeo/auth-js';
+import {AuthClient} from '../asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import { AuthApiResponse } from '../model';
+import {AuthApiResponse} from '../model';
 
 const getAuthorizePostRequest = async (): Promise<Request> => {
-  const authInstace: AsgardeoAuthClient<any> = getAuthInstance();
+  const authInstace: AsgardeoAuthClient<any> = AuthClient.getInstance();
   const data: any = await authInstace.getDataLayer().getConfigData();
   const url: string = await authInstace.getAuthorizationURL();
   const authorizeUri: string = (await authInstace.getOIDCServiceEndpoints()).authorizationEndpoint;
@@ -42,7 +42,7 @@ const getAuthorizePostRequest = async (): Promise<Request> => {
   formBody.append('state', state);
 
   /* Save the state temporarily in the data layer, this needs to be passed when token is requested */
-  await getAuthInstance().getDataLayer().setTemporaryDataParameter('state', state);
+  await authInstace.getDataLayer().setTemporaryDataParameter('state', state);
 
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');
@@ -71,7 +71,7 @@ export const authorize = async (): Promise<AuthApiResponse> => {
     response = await fetch(await getAuthorizePostRequest());
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
   } catch (error) {
-    throw new AsgardeoException('JS_UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error);
+    throw new AsgardeoException('JS_UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error.stack);
   }
 
   if (response.ok) {

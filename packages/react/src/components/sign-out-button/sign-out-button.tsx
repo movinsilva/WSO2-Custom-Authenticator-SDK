@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getAuthInstance } from "@asgardeo/ui-core";
+import { AuthClient } from "@asgardeo/ui-core";
 import { Button } from "@oxygen-ui/react";
 import React, { useContext } from "react";
 import {
@@ -27,7 +27,7 @@ import {
 const SignOutButton = () => {
   const authContext = useContext(AsgardeoProviderContext);
   const [signoutURL, setSignoutURL] = React.useState<string>("");
-  getAuthInstance()
+  AuthClient.getInstance()
     .getSignOutURL()
     .then((response) => {
       console.log("signout: ", response);

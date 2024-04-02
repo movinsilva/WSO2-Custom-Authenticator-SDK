@@ -17,8 +17,7 @@
  */
 
 import {
-  setAuthInstance,
-  getAuthInstance,
+  AuthClient,
   me,
   Store,
   CryptoUtils,
@@ -71,7 +70,11 @@ const AsgardeoProvider: FunctionComponent<
 
   const spaUtils: CryptoUtils = new SPACryptoUtils();
 
-  setAuthInstance(config, storeInstance, spaUtils);
+  const authClient: AsgardeoAuthClient<any> = AuthClient.getInstance(
+    config,
+    storeInstance,
+    spaUtils
+  );
 
   const [accessToken, setAccessToken] = useState<string>("");
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
@@ -81,7 +84,6 @@ const AsgardeoProvider: FunctionComponent<
    * Sets the authentication status and access token.
    */
   const setAuthentication = (): void => {
-    const authClient: AsgardeoAuthClient<any> = getAuthInstance();
     authClient.isAuthenticated().then((isAuth: boolean) => {
       // Update the state only if the value has changed
       if (isAuth !== isAuthenticated) {

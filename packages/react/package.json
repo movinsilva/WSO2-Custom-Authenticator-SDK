@@ -1,13 +1,13 @@
 {
   "name": "@asgardeo/react-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "React wrapper on asgardeo core",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
     "dist"
   ],
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

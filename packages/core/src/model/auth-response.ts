@@ -25,16 +25,16 @@ export interface AuthApiResponse {
   nextStep: AuthStep;
 }
 
+/* authData comes when the user is successfully authenticated */
 export interface AuthData {
   code: string;
   session_state: string;
 }
 
 export enum FlowStatus {
-  DEFAULT = 'DEFAULT', // hasn't started the flow yet
-  FAIL_INCOMPLETE = 'FAIL_INCOMPLETE',
-  INCOMPLETE = 'INCOMPLETE',
-  SUCCESS_COMPLETED = 'SUCCESS_COMPLETED',
+  FailIncomplete = 'FAIL_INCOMPLETE',
+  Incomplete = 'INCOMPLETE',
+  SuccessCompleted = 'SUCCESS_COMPLETED',
 }
 
 export interface Link {
@@ -45,7 +45,7 @@ export interface Link {
 
 export interface AuthStep {
   authenticators: Authenticator[];
-  stepType: string;
+  stepType: string; // "MULTI_OPTIONS_PROMPT"
 }
 
 export interface Authenticator {
@@ -57,8 +57,39 @@ export interface Authenticator {
 }
 
 export interface Metadata {
-  additionalData: AdditionalData;
+  additionalData?: AdditionalData;
+  i18nKey: string;
+  params?: Params;
   promptType: string;
+}
+
+/**
+ *  "params": [
+                        {
+                            "param": "username",
+                            "type": "STRING",
+                            "order": 0,
+                            "i18nKey": "username.param",
+                            "displayName": "Username",
+                            "confidential": false
+                        },
+                        {
+                            "param": "password",
+                            "type": "STRING",
+                            "order": 1,
+                            "i18nKey": "password.param",
+                            "displayName": "Password",
+                            "confidential": true
+                        }
+                    ]
+ */
+export interface Params {
+  confidential: boolean;
+  displayName: string;
+  i18nKey: string;
+  order: number;
+  param: string;
+  type: string;
 }
 
 export interface AdditionalData {
@@ -66,6 +97,7 @@ export interface AdditionalData {
   state: string;
 }
 
+// TODO
 export interface AuthnParams {
   authenticatorID: string;
   authenticatorParametres?: any;

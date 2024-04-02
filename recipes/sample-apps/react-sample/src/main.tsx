@@ -29,7 +29,7 @@ const customLocalization: Localization = {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <AsgardeoProvider
-    config={devConfig}
+    config={config}
     localization={customLocalization}
     customization={{
       preference: {

@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as AsgardeoException } from './exception';
+export {default as AsgardeoException} from './exception';

@@ -17,11 +17,15 @@
  */
 
 import { Box, Button } from "@oxygen-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import SignIn from "../sign-in/sign-in";
 import "./sign-in-button.scss";
 
-const SignInButton = () => {
+interface SignInButtonProps {
+  ButtonComponent?: ReactElement;
+}
+
+const SignInButton = ({ ButtonComponent }: SignInButtonProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const openModal = () => {
@@ -34,9 +38,15 @@ const SignInButton = () => {
 
   return (
     <div className="asgardeo" style={{ padding: "2rem" }}>
-      <Button className="ui button primary" onClick={openModal}>
-        Sign In
-      </Button>
+      {ButtonComponent ? (
+        React.cloneElement(ButtonComponent, {
+          onClick: openModal,
+        })
+      ) : (
+        <Button className="ui button primary" onClick={openModal}>
+          Sign In test
+        </Button>
+      )}
 
       {modalVisible && (
         <Box className="popup-box">

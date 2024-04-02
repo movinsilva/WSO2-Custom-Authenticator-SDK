@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { getAuthInstance } from '../asgardeo-auth-js';
+import {AuthClient} from '../asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import { AuthApiResponse, AuthnParams } from '../model';
-import { getAuthnUrl } from '../utils/url-generator';
+import {AuthApiResponse, AuthnParams} from '../model';
+import {getAuthnUrl} from '../utils/url-generator';
 
 const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
-  const { flowID, authenticatorID, authenticatorParametres } = props;
+  const {flowID, authenticatorID, authenticatorParametres} = props;
 
   const authBody: any = {
     flowId: flowID,
     selectedAuthenticator: {
       authenticatorId: authenticatorID,
-      ...(authenticatorParametres && { params: authenticatorParametres }),
+      ...(authenticatorParametres && {params: authenticatorParametres}),
     },
   };
 
@@ -44,7 +44,7 @@ const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
   };
 
   /* Getting baseURL from authClient's data layer */
-  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+  const {baseUrl} = await AuthClient.getInstance().getDataLayer().getConfigData();
 
   return new Request(getAuthnUrl(baseUrl), requestOptions);
 };

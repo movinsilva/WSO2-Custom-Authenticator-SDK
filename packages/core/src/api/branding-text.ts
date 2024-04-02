@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getAuthInstance } from '../asgardeo-auth-js/asgardeo-auth-js';
-import { AsgardeoException } from '../exception';
-import { BrandingTextResponse } from '../model';
-import { getBrandingTextUrl } from '../utils/url-generator';
+import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
+import {AsgardeoException} from '../exception';
+import {BrandingTextResponse} from '../model';
+import {getBrandingTextUrl} from '../utils/url-generator';
 
 const getBrandingTextRequest = async (locale: string, name: string, screen: string, type: string): Promise<Request> => {
   const headers: Headers = new Headers();
@@ -37,7 +37,7 @@ const getBrandingTextRequest = async (locale: string, name: string, screen: stri
   params.append('screen', screen);
   params.append('type', type);
 
-  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+  const {baseUrl} = await AuthClient.getInstance().getDataLayer().getConfigData();
   const textUrl: string = getBrandingTextUrl(baseUrl);
   const urlWithParams: string = `${textUrl}?${params.toString()}`;
 

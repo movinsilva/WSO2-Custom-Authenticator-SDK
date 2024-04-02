@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getAuthInstance } from '../asgardeo-auth-js';
-import { AsgardeoException } from '../exception';
-import { MeResponse } from '../model/me-response';
-import { getMeUrl } from '../utils/url-generator';
+import {AuthClient} from '../asgardeo-auth-js';
+import {AsgardeoException} from '../exception';
+import {MeResponse} from '../model/me-response';
+import {getMeUrl} from '../utils/url-generator';
 
 /**
  * Builds a request object for the "me" API endpoint.
@@ -27,7 +27,7 @@ import { getMeUrl } from '../utils/url-generator';
  * @returns {Request} - The request object.
  */
 const getMeRequest = async (meUrl: string): Promise<Request> => {
-  const accessToken: string = await getAuthInstance().getAccessToken();
+  const accessToken: string = await AuthClient.getInstance().getAccessToken();
 
   if (!accessToken) {
     throw new AsgardeoException('JS_UI_CORE-ME-GMR-IV01', 'Access token is null');
@@ -52,7 +52,7 @@ const getMeRequest = async (meUrl: string): Promise<Request> => {
  * @throws {Error} - If the "me" request fails.
  */
 export const me = async (): Promise<MeResponse> => {
-  const { baseUrl } = await getAuthInstance().getDataLayer().getConfigData();
+  const {baseUrl} = await AuthClient.getInstance().getDataLayer().getConfigData();
   const request: Request = await getMeRequest(getMeUrl(baseUrl));
   let response: Response;
   try {

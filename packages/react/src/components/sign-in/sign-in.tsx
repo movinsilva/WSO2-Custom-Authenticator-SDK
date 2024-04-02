@@ -19,7 +19,7 @@
 import {
   authorize,
   authenticate,
-  getAuthInstance,
+  AuthClient,
   AuthApiResponse,
   AsgardeoException,
   Metadata,
@@ -109,6 +109,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
         setIsLoading(false);
       })
       .catch((error) => {
+        console.error(error);
         throw new AsgardeoException(
           "REACT_UI-SIGNIN-AUTH",
           "Authorization call failed",
@@ -145,7 +146,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
     if (resp.flowStatus === FlowStatus.SUCCESS_COMPLETED && resp.authData) {
       console.log("successful authentication");
       setAuthResponse(resp);
-      const authInstance = getAuthInstance();
+      const authInstance = AuthClient.getInstance();
       const state: string = (
         await authInstance.getDataLayer().getTemporaryDataParameter("state")
       ).toString();

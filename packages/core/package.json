@@ -1,10 +1,25 @@
 {
-  "name": "@asgardeo/ui-core",
+  "name": "@asgardeo/js-ui-core",
   "version": "0.1.0",
-  "description": "Asgardeo/Identity Server: Framework agnostic JS UI Core",
+  "description": "Framework agnostic JS UI Core for Asgardeo or Identity Server",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
+  "umd": "dist/umd/index.js",
   "types": "dist/index.d.ts",
+  "author": "WSO2",
+  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/movinsilva/wso2-custom-login-pages-sdk/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/movinsilva/wso2-custom-login-pages-sdk/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/movinsilva/wso2-custom-login-pages-sdk",
+    "directory": "packages/core"
+  },
   "keywords": [
     "asgardeo",
     "identity",
@@ -17,8 +32,6 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@asgardeo/auth-js": "^5.0.0"
   },
@@ -40,5 +53,8 @@
     "ts-jest": "^29.1.2",
     "tslib": "^2.6.2",
     "typescript": "^5.4.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

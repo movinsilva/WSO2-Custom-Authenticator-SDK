@@ -16,21 +16,19 @@
  * under the License.
  */
 
-import {
-  describe, jest, test, expect, beforeAll,
-} from '@jest/globals';
-import { SpyInstance } from 'jest-mock';
+import {describe, jest, test, expect, beforeAll} from '@jest/globals';
+import {SpyInstance} from 'jest-mock';
 import * as AuthJS from '../../asgardeo-auth-js/asgardeo-auth-js';
-import { AuthnParams } from '../../model';
-import { exportedForTesting } from '../authenticate';
+import {AuthnParams} from '../../model';
+import {exportedForTesting} from '../authenticate';
 
-const { getAuthenticateRequest } = exportedForTesting;
+const {getAuthenticateRequest} = exportedForTesting;
 
 describe('authenticate', () => {
   beforeAll(() => {});
 
   const mockAuthenticatorID: string = 'authenticatorID';
-  const mockAuthenticatorParametres: any = { param: 'param' };
+  const mockAuthenticatorParametres: any = {param: 'param'};
   const mockBaseUrl: string = 'https://localhost:9443';
   const mockFlowID: string = 'flowID';
   const mockProps: AuthnParams = {

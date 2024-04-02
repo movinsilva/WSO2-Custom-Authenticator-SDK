@@ -15,12 +15,12 @@ This repository contains the source code of the set of custom UI login pages SDK
 
 | Package | Description | Version |
 | --- | --- | --- |
-| [`@asgardeo/js-ui-core`](./packages/core) | Framework agnostic content  | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) |
-| [`@asgardeo/react-ui`](./packages/react) | The React implementation of custom login pages SDK. | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) |
+| [`@asgardeo/js-ui-core`](./packages/core) | Framework agnostic content  | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) 0.1.0 |
+| [`@asgardeo/react-ui`](./packages/react) | The React implementation of custom login pages SDK. | ![npm](https://static.npmjs.com/da3ab40fb0861d15c83854c29f5f2962.png) 0.1.0 |
 
 ## Examples
 
-* [💅 Fashion Mart](https://wso2.github.io/oxygen-ui/examples/multi-brand-identity/)
+* [💅 Business to Customer(B2C) ](./recipes/b2c/)
 
     Sample app to showcase @asgardeo/react-ui's components and functionality.
 

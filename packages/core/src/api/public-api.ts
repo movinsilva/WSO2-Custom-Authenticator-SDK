@@ -16,8 +16,8 @@
  * under the License.
  */
 
-export { authorize } from './authorize';
-export { authenticate } from './authenticate';
-export { default as branding } from './branding';
-export { brandingText } from './branding-text';
-export { me } from './me';
+export {authorize} from './authorize';
+export {authenticate} from './authenticate';
+export {default as branding} from './branding';
+export {brandingText} from './branding-text';
+export {me} from './me';

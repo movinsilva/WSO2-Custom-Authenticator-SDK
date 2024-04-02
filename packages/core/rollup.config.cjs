@@ -18,9 +18,9 @@
 
 const commonjs = require('@rollup/plugin-commonjs');
 const nodeResolve = require('@rollup/plugin-node-resolve');
-const pkg = require('./package.json');
 const typescript = require('@rollup/plugin-typescript');
 const dts = require('rollup-plugin-dts');
+const pkg = require('./package.json');
 
 module.exports = [
   {
@@ -33,7 +33,7 @@ module.exports = [
         sourcemap: true,
       },
       {
-        file: 'dist/umd/bundle.js',
+        file: pkg.umd,
         format: 'umd',
         name: 'core',
         sourcemap: true,
@@ -44,16 +44,12 @@ module.exports = [
         sourcemap: true,
       },
     ],
-    plugins: [
-      nodeResolve(),
-      commonjs(),
-      typescript({ tsconfig: './tsconfig.lib.json'})
-    ],
+    plugins: [nodeResolve(), commonjs(), typescript({tsconfig: './tsconfig.lib.json'})],
   },
   {
     cache: false,
     input: 'dist/esm/types/index.d.ts',
     output: [{file: 'dist/index.d.ts', format: 'esm'}],
     plugins: [dts.default()],
-  }
+  },
 ];

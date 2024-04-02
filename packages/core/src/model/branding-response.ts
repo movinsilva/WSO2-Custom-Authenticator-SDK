@@ -162,7 +162,7 @@ export interface BrandingPreferenceStylesheetsInterface {
 }
 
 export type BrandingPreferenceThemeInterface = StrictBrandingPreferenceThemeInterface &
-DynamicBrandingPreferenceThemeInterface;
+  DynamicBrandingPreferenceThemeInterface;
 
 /**
  * Interface Branding preference theme.
@@ -370,7 +370,7 @@ export interface BrandingPreferencePageInterface {
   /**
    * Page Background.
    */
-  background: { border: any; font: any };
+  background: {border: any; font: any};
   /**
    * Page Body Font.
    */
@@ -474,7 +474,7 @@ export interface BrandingPreferenceLoginBoxInterface {
  * Interface Branding preference layout.
  */
 export type BrandingPreferenceLayoutInterface = StrictBrandingPreferenceLayoutInterface &
-Partial<DynamicBrandingPreferenceLayoutInterface>;
+  Partial<DynamicBrandingPreferenceLayoutInterface>;
 
 /**
  * Strict Interface Branding preference layout.
@@ -490,7 +490,7 @@ export interface StrictBrandingPreferenceLayoutInterface {
  * Interface dynamic branding preference layout.
  */
 export type DynamicBrandingPreferenceLayoutInterface = BrandingPreferenceSideImageLayoutInterface &
-BrandingPreferenceSideAlignedLayoutInterface;
+  BrandingPreferenceSideAlignedLayoutInterface;
 
 /**
  * Left Image and Right Image layouts preference interface.

@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import {
-  describe, jest, test, expect,
-} from '@jest/globals';
-import { SpyInstance } from 'jest-mock';
+import {describe, jest, test, expect} from '@jest/globals';
+import {SpyInstance} from 'jest-mock';
 import * as authJS from '../../asgardeo-auth-js/index';
-import { exportedForTesting } from '../authorize';
+import {exportedForTesting} from '../authorize';
 
-const { authorizeRequestBuilder } = exportedForTesting;
+const {authorizeRequestBuilder} = exportedForTesting;
 
 const mockBaseUrl: string = 'https://mockbaseurl:9443';
 const mockScope: string = 'mockScope';
@@ -34,7 +32,8 @@ const mockResponseMode: string = 'direct';
 
 const mock: SpyInstance = jest.spyOn(authJS, 'getAuthInstance');
 mock.mockImplementation((): any => ({
-  getAuthorizationURL: () => `${mockBaseUrl}/oauth2/authorize?scope=${mockScope}&response_type=${mockResponseType}&response_mode=${mockResponseMode}&redirect_uri=${mockRedirectUri}&client_id=${mockClientId}`,
+  getAuthorizationURL: () =>
+    `${mockBaseUrl}/oauth2/authorize?scope=${mockScope}&response_type=${mockResponseType}&response_mode=${mockResponseMode}&redirect_uri=${mockRedirectUri}&client_id=${mockClientId}`,
   getDataLayer: () => ({
     getConfigData: () => ({
       baseUrl: mockBaseUrl,
