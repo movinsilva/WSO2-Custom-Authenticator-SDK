@@ -24,6 +24,7 @@ import {
   AsgardeoException,
   Metadata,
   Authenticator,
+  FlowStatus,
 } from "@asgardeo/ui-core";
 import {
   Box,
@@ -51,7 +52,6 @@ import Header from "./header";
 import localizationKeys from "../../localization/keys";
 import {
   AuthenticatorType,
-  FlowStatus,
   IdentifiableComponentInterface,
 } from "../../models/auth";
 import { BrandingPreferenceInterface } from "../../models/branding-preferences";
@@ -143,7 +143,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
     console.log("Authenticate response:", resp);
 
     // when the authentication is successful, generate the token
-    if (resp.flowStatus === FlowStatus.SUCCESS_COMPLETED && resp.authData) {
+    if (resp.flowStatus === FlowStatus.SuccessCompleted && resp.authData) {
       console.log("successful authentication");
       setAuthResponse(resp);
       const authInstance = AuthClient.getInstance();
@@ -156,7 +156,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
         state
       );
       authContext.setAuthentication();
-    } else if (resp.flowStatus === FlowStatus.FAIL_INCOMPLETE) {
+    } else if (resp.flowStatus === FlowStatus.FailIncomplete) {
       setAuthResponse({
         ...resp,
         nextStep: authResponse.nextStep,
@@ -184,7 +184,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
     const metaData: Metadata = resp.nextStep.authenticators[0].metadata;
     if (metaData.promptType === "REDIRECTION_PROMPT") {
       window.open(
-        metaData.additionalData.redirectUrl,
+        metaData.additionalData?.redirectUrl,
         resp.nextStep.authenticators[0].authenticator,
         "width=500,height=600"
       );
@@ -329,7 +329,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
         className="sign-in-box-node login-portal layout"
         data-componentid={`${componentId}`}
       >
-        {authResponse?.flowStatus !== FlowStatus.SUCCESS_COMPLETED &&
+        {authResponse?.flowStatus !== FlowStatus.SuccessCompleted &&
           !isAuthenticated && (
             <Box
               className="oxygen-sign-in ui form"
@@ -366,7 +366,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
               </Paper>
             </Box>
           )}
-        {(authResponse?.flowStatus === FlowStatus.SUCCESS_COMPLETED ||
+        {(authResponse?.flowStatus === FlowStatus.SuccessCompleted ||
           isAuthenticated) && (
           <div style={{ padding: "1rem", backgroundColor: "white" }}>
             Successfully Authenticated

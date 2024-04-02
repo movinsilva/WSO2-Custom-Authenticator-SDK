@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js';
+import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import {BrandingPreferenceAPIResponseInterface} from '../model';
+import {BrandingPreferenceAPIResponseInterface} from '../model/public-model';
 import {getBrandingUrl} from '../utils/url-generator';
 
 /**

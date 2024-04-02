@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js';
-import {AsgardeoException} from '../exception';
+import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
+import AsgardeoException from '../exception/exception';
 import {MeResponse} from '../model/me-response';
 import {getMeUrl} from '../utils/url-generator';
 

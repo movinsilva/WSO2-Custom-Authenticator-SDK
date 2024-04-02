@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js';
+import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import {AuthApiResponse, AuthnParams} from '../model';
+import {AuthApiResponse, AuthnParams} from '../model/public-model';
 import {getAuthnUrl} from '../utils/url-generator';
 
 const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {

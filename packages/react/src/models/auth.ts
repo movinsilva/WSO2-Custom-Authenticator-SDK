@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthConfig, Store } from "@asgardeo/ui-core";
+import { AuthClientConfig, Store } from "@asgardeo/ui-core";
 import { ReactNode } from "react";
 import { BrandingPreferenceAPIResponseInterface } from "./branding-preferences";
 import { Localization } from "./localization";
@@ -36,7 +36,7 @@ export enum AuthenticatorType {
 }
 
 export interface AsgardeoProviderPropsInterface {
-  config: AuthConfig;
+  config: AuthClientConfig;
   customization?: Partial<BrandingPreferenceAPIResponseInterface>;
   localization?: Localization;
   store?: Store;
@@ -51,7 +51,7 @@ export interface EndPoints {
 
 export interface AuthContext {
   accessToken: string;
-  config: AuthConfig;
+  config: AuthClientConfig;
   customizationOptions?: any;
   isAuthenticated: boolean | undefined;
   setAuthentication: () => void;

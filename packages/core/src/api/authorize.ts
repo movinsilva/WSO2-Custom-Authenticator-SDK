@@ -17,9 +17,9 @@
  */
 
 import {AsgardeoAuthClient} from '@asgardeo/auth-js';
-import {AuthClient} from '../asgardeo-auth-js';
+import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
 import AsgardeoException from '../exception/exception';
-import {AuthApiResponse} from '../model';
+import {AuthApiResponse} from '../model/public-model';
 
 const getAuthorizePostRequest = async (): Promise<Request> => {
   const authInstace: AsgardeoAuthClient<any> = AuthClient.getInstance();

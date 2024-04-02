@@ -17,8 +17,8 @@
  */
 
 import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
-import {AsgardeoException} from '../exception';
-import {BrandingTextResponse} from '../model';
+import AsgardeoException from '../exception/exception';
+import {BrandingTextResponse} from '../model/public-model';
 import {getBrandingTextUrl} from '../utils/url-generator';
 
 const getBrandingTextRequest = async (locale: string, name: string, screen: string, type: string): Promise<Request> => {

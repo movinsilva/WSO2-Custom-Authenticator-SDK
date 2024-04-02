@@ -36,3 +36,12 @@ export class AuthClient {
     return AuthClient.instance;
   }
 }
+
+export {
+  AsgardeoAuthException,
+  CryptoUtils,
+  JWKInterface,
+  Store,
+  AsgardeoAuthClient,
+  TokenResponse,
+} from '@asgardeo/auth-js';

@@ -19,12 +19,12 @@
 const path = require('path');
 
 module.exports = {
-  plugins: ['@wso2'],
   extends: ['plugin:@wso2/typescript', 'plugin:@wso2/strict', 'plugin:@wso2/internal', 'plugin:@wso2/prettier'],
   parserOptions: {
     project: [path.resolve(__dirname, 'tsconfig.eslint.json')],
   },
-  //TODO
+  plugins: ['@wso2'],
+  // TODO
   rules: {
     'prettier/prettier': [
       'error',
@@ -32,6 +32,5 @@ module.exports = {
         endOfLine: 'auto',
       },
     ],
-    //TODO
   },
 };
