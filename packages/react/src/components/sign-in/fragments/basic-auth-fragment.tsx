@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/ui-core";
+import { LocalizationResponse } from "@asgardeo/js-ui-core";
 import { Box } from "@oxygen-ui/react";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";

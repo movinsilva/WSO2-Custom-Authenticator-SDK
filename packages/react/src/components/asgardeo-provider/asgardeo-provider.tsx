@@ -23,7 +23,7 @@ import {
   CryptoUtils,
   AsgardeoAuthClient,
   MeResponse,
-} from "@asgardeo/ui-core";
+} from "@asgardeo/js-ui-core";
 import {
   useState,
   FunctionComponent,

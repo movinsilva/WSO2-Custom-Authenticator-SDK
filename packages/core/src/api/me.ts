@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
-import AsgardeoException from '../exception/exception';
+import {AuthClient} from '../auth-client/auth-client';
+import AsgardeoUIException from '../exception/exception';
 import {MeResponse} from '../model/me-response';
 import {getMeUrl} from '../utils/url-generator';
 
@@ -30,7 +30,7 @@ const getMeRequest = async (meUrl: string): Promise<Request> => {
   const accessToken: string = await AuthClient.getInstance().getAccessToken();
 
   if (!accessToken) {
-    throw new AsgardeoException('JS_UI_CORE-ME-GMR-IV01', 'Access token is null');
+    throw new AsgardeoUIException('JS_UI_CORE-ME-GMR-IV01', 'Access token is null');
   }
 
   const headers: Headers = new Headers();
@@ -60,12 +60,12 @@ export const me = async (): Promise<MeResponse> => {
     response = await fetch(request);
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
   } catch (error) {
-    throw new AsgardeoException('JS_UI_CORE-ME-ME-NE01', 'Me API call failed', error);
+    throw new AsgardeoUIException('JS_UI_CORE-ME-ME-NE01', 'Me API call failed', error);
   }
   if (response.ok) {
     return (await response.json()) as MeResponse;
   }
-  throw new AsgardeoException('JS_UI_CORE-ME-ME-HE02', 'Me response is not OK');
+  throw new AsgardeoUIException('JS_UI_CORE-ME-ME-HE02', 'Me response is not OK');
 };
 
 type ExportedForTestingType = {

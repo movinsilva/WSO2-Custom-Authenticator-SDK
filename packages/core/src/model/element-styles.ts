@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CSSProperties } from "react";
+import type * as CSS from 'csstype';
 
 /**
  * Interface for the Primary Button Style Attributes..
@@ -29,7 +29,7 @@ export interface ButtonStyleAttributesInterface {
   /**
    * Button Border.
    */
-  border: Pick<BorderStyleAttributesInterface, "borderRadius">;
+  border: Pick<BorderStyleAttributesInterface, 'borderRadius'>;
   /**
    * Button Text.
    */
@@ -40,7 +40,7 @@ export interface ButtonStyleAttributesInterface {
  * Color styles interface.
  * @remarks Extend with contrast, alpha. whenever necessary.
  */
-export type ColorStyleAttributesInterface = Pick<CSSProperties, "color">;
+export type ColorStyleAttributesInterface = Pick<CSS.Properties, 'color'>;
 
 /**
  * Font styles interface.
@@ -52,21 +52,15 @@ export type FontStyleAttributesInterface = ColorStyleAttributesInterface;
  * Border styles interface.
  * @remarks Extend with borderStyle, etc. whenever necessary.
  */
-export type BorderStyleAttributesInterface = Pick<
-  CSSProperties,
-  "borderColor"
-> &
-  Pick<CSSProperties, "borderRadius"> &
-  Pick<CSSProperties, "borderWidth">;
+export type BorderStyleAttributesInterface = Pick<CSS.Properties, 'borderColor'> &
+  Pick<CSS.Properties, 'borderRadius'> &
+  Pick<CSS.Properties, 'borderWidth'>;
 
 /**
  * Background styles interface.
  * @remarks Extend with backgroundImage, backgroundSize, etc. whenever necessary.
  */
-export type BackgroundStyleAttributesInterface = Pick<
-  CSSProperties,
-  "backgroundColor"
->;
+export type BackgroundStyleAttributesInterface = Pick<CSS.Properties, 'backgroundColor'>;
 
 /**
  * Generic interface for element states.

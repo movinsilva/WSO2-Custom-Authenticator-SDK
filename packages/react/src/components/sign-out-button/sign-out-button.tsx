@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthClient } from "@asgardeo/ui-core";
+import { AuthClient } from "@asgardeo/js-ui-core";
 import { Button } from "@oxygen-ui/react";
 import React, { useContext } from "react";
 import {

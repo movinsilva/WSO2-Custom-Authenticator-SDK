@@ -21,7 +21,7 @@ import {
   AsgardeoAuthException,
   CryptoUtils,
   JWKInterface,
-} from "@asgardeo/ui-core";
+} from "@asgardeo/js-ui-core";
 import base64url from "base64url";
 import sha256 from "fast-sha256";
 import { createLocalJWKSet, jwtVerify } from "jose";

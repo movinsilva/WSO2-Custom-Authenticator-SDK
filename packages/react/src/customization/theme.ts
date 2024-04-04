@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { Theme } from "@oxygen-ui/react";
-import { extendTheme } from "@oxygen-ui/react/theme";
 import {
   BrandingPreferenceAPIResponseInterface,
   PredefinedThemes,
   ThemeConfigInterface,
-} from "../models/branding-preferences";
+} from "@asgardeo/js-ui-core";
+import { Theme } from "@oxygen-ui/react";
+import { extendTheme } from "@oxygen-ui/react/theme";
 
 type generateAsgardeoThemeProps =
   | Partial<BrandingPreferenceAPIResponseInterface>

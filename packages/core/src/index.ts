@@ -17,6 +17,6 @@
  */
 
 export * from './api/public-api';
-export * from './asgardeo-auth-js/asgardeo-auth-js';
+export * from './auth-client/auth-client';
 export * from './model/public-model';
-export {default as AsgardeoException} from './exception/exception';
+export {default as AsgardeoUIException} from './exception/exception';

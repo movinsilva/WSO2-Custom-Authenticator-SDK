@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ThemeConfigInterface } from "../models/branding-preferences";
+import { ThemeConfigInterface } from "@asgardeo/js-ui-core";
 
 const DARK_THEME: ThemeConfigInterface = {
   buttons: {

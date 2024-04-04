@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import DARK_THEME from "./dark-theme";
-import LIGHT_THEME from "./light-theme";
 import {
   BrandingPreferenceAPIResponseInterface,
   BrandingPreferenceTypes,
   PredefinedLayouts,
   PredefinedThemes,
-} from "../models/branding-preferences";
+} from "@asgardeo/js-ui-core";
+import DARK_THEME from "./dark-theme";
+import LIGHT_THEME from "./light-theme";
 
 const DEFAULT_BRANDING: BrandingPreferenceAPIResponseInterface = {
   preference: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthClientConfig, MeResponse } from "@asgardeo/ui-core";
+import { AuthClientConfig, MeResponse } from "@asgardeo/js-ui-core";
 import { Context, createContext, useContext } from "react";
 import { AuthContext } from "../../models/auth";
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export default class AsgardeoException extends Error {
+export default class AsgardeoUIException extends Error {
   public override name: string;
 
   public override stack: string;

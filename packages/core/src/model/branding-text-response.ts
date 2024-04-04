@@ -26,9 +26,6 @@ export interface BrandingTextResponse {
 
 export interface BrandingTextPreference {
   text: {
-    copyright: string;
-    'privacy.policy': string;
-    'site.title': string;
-    'terms.of.service': string;
+    [keys: string]: string;
   };
 }

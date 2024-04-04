@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/ui-core";
+import { LocalizationResponse } from "@asgardeo/js-ui-core";
 
 const localizationKeys: LocalizationResponse = {
   common: {

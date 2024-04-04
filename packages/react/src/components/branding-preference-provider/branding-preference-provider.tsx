@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { branding } from "@asgardeo/ui-core";
+import {
+  BrandingPreferenceAPIResponseInterface,
+  BrandingPreferenceConfigInterface,
+  BrandingPreferenceInterface,
+  BrandingPreferenceThemeInterface,
+  BrandingPreferenceTypes,
+  branding,
+} from "@asgardeo/js-ui-core";
 import { ThemeProvider } from "@oxygen-ui/react";
 import merge from "lodash.merge";
 import React, {
@@ -35,8 +42,12 @@ import BrandingPreferenceMeta from "../../customization/branding-preference-meta
 import DEFAULT_BRANDING from "../../customization/default_branding";
 import generateAsgardeoTheme from "../../customization/theme";
 import i18nInitialize from "../../localization/i18n/i18n";
-import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
 import { LanguageCode, Localization } from "../../models/localization";
+import {
+  Customization,
+  NewPreference,
+  PreferenceWithText,
+} from "../../models/customization";
 
 /**
  * Props interface for the Branding preference provider.
@@ -54,7 +65,9 @@ const BrandingPreferenceProvider: FunctionComponent<
   const { children, brandingProps, localization } = props;
 
   const [brandingPreference, setBrandingPreference] =
-    useState<Partial<BrandingPreferenceAPIResponseInterface>>();
+    useState<Partial<BrandingPreferenceAPIResponseInterface>>(DEFAULT_BRANDING);
+
+  const [customization, setCustomization] = useState<Customization>();
 
   const contextValues: BrandingPreferenceContextProps = useMemo(
     () => ({
@@ -80,6 +93,28 @@ const BrandingPreferenceProvider: FunctionComponent<
             ) as BrandingPreferenceAPIResponseInterface
           );
         }
+
+        // TEST
+        if (brandingPreference && brandingPreference.preference?.configs) {
+          setCustomization({
+            locale: brandingPreference.locale ?? "en-US",
+            name: brandingPreference.name ?? "carbon.super",
+            type: brandingPreference.type ?? BrandingPreferenceTypes.ORG,
+            preference: {
+              ...brandingPreference.preference,
+              text: {
+                "en-US": {
+                  common: {
+                    "site.title": "site title",
+                    "terms.of.service": "terms of services",
+                    "privacy.policy": "pr po",
+                  },
+                },
+              },
+            },
+          } as Customization);
+        }
+        console.log("customization: ", customization);
       });
     } catch (error) {
       throw new Error(`Error while fetching branding preferences: ${error}`);

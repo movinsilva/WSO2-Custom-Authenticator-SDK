@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/ui-core";
+import { LocalizationResponse } from "@asgardeo/js-ui-core";
 import i18n from "i18next";
 import merge from "lodash.merge";
 import { initReactI18next } from "react-i18next";

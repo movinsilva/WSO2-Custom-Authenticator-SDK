@@ -17,11 +17,11 @@
  */
 
 import {
-  AsgardeoException,
+  AsgardeoUIException,
   BrandingTextPreference,
   BrandingTextResponse,
   brandingText,
-} from "@asgardeo/ui-core";
+} from "@asgardeo/js-ui-core";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { isEmpty } from "../../utils/common";
 import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
@@ -62,7 +62,7 @@ const Footer: FunctionComponent<FooterInterface> = (
         });
       }
     } catch (error) {
-      throw new AsgardeoException(
+      throw new AsgardeoUIException(
         "REACT_UI-FOOTER-SE01",
         "Error in fetching branding text",
         error

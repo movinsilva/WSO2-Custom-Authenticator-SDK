@@ -19,8 +19,7 @@
 import {
   BrandingPreferenceThemeInterface,
   PredefinedThemes,
-} from "../models/branding-preferences";
-
+} from "@asgardeo/js-ui-core";
 import { isEmpty } from "../utils/common";
 
 /**

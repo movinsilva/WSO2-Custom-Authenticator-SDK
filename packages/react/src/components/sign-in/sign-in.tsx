@@ -21,11 +21,12 @@ import {
   authenticate,
   AuthClient,
   AuthApiResponse,
-  AsgardeoException,
+  AsgardeoUIException,
   Metadata,
   Authenticator,
   FlowStatus,
-} from "@asgardeo/ui-core";
+  BrandingPreferenceInterface,
+} from "@asgardeo/js-ui-core";
 import {
   Box,
   Link,
@@ -54,7 +55,6 @@ import {
   AuthenticatorType,
   IdentifiableComponentInterface,
 } from "../../models/auth";
-import { BrandingPreferenceInterface } from "../../models/branding-preferences";
 import {
   AsgardeoProviderContext,
   useAuthentication,
@@ -110,7 +110,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
       })
       .catch((error) => {
         console.error(error);
-        throw new AsgardeoException(
+        throw new AsgardeoUIException(
           "REACT_UI-SIGNIN-AUTH",
           "Authorization call failed",
           error.message
@@ -127,7 +127,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
     authenticatorId: string
   ) => {
     if (authResponse === undefined) {
-      throw new AsgardeoException(
+      throw new AsgardeoUIException(
         "REACT_UI-SIGNIN-HA",
         "Auth response is undefined."
       );
@@ -170,7 +170,7 @@ const SignIn: FunctionComponent<SignInInterface> = (
 
   const handleAuthenticateOther = async (authenticatorId: string) => {
     if (authResponse === undefined) {
-      throw new AsgardeoException(
+      throw new AsgardeoUIException(
         "REACT_UI-SIGNIN-HAO",
         "Auth response is undefined."
       );

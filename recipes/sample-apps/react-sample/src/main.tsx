@@ -16,7 +16,7 @@ const config = {
 };
 
 const devConfig = {
-  baseUrl: "https://dev.api.asgardeo.io/t/movinorg",
+  baseUrl: "https://dev.api.asgardeo.io/t/movinorg/u",
   clientID: "kH5OfXOvpGLOvp1iAw4zQmNvv4oa",
   scope: ["openid", "internal_login", "profile"],
   signInRedirectURL: "https://localhost:5173",

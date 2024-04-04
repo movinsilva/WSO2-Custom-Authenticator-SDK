@@ -17,8 +17,8 @@
  */
 
 import {AsgardeoAuthClient} from '@asgardeo/auth-js';
-import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
-import AsgardeoException from '../exception/exception';
+import {AuthClient} from '../auth-client/auth-client';
+import AsgardeoUIException from '../exception/exception';
 import {AuthApiResponse} from '../model/public-model';
 
 const getAuthorizePostRequest = async (): Promise<Request> => {
@@ -61,7 +61,7 @@ const getAuthorizePostRequest = async (): Promise<Request> => {
  * Authorizes the user and returns the authentication response.
  * @returns {Promise<AuthApiResponse>} The authentication response.
  * @throws {UICoreException} If the authorization API call fails.
- * @throws {AsgardeoException} If the authorization response is not OK.
+ * @throws {AsgardeoUIException} If the authorization response is not OK.
  */
 export const authorize = async (): Promise<AuthApiResponse> => {
   let response: Response;
@@ -71,13 +71,13 @@ export const authorize = async (): Promise<AuthApiResponse> => {
     response = await fetch(await getAuthorizePostRequest());
     // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '1';
   } catch (error) {
-    throw new AsgardeoException('JS_UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error.stack);
+    throw new AsgardeoUIException('JS_UI_CORE-AUTHZ-AZ-NE01', 'Authorization API call failed', error.stack);
   }
 
   if (response.ok) {
     return (await response.json()) as AuthApiResponse;
   }
-  throw new AsgardeoException('UI_CORE-AUTHZ-AZ-HE02', 'Authorization response is not OK');
+  throw new AsgardeoUIException('UI_CORE-AUTHZ-AZ-HE02', 'Authorization response is not OK');
 };
 
 type ExportedForTestingType = {

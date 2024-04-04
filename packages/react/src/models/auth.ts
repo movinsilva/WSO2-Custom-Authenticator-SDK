@@ -16,9 +16,12 @@
  * under the License.
  */
 
-import { AuthClientConfig, Store } from "@asgardeo/ui-core";
+import {
+  AuthClientConfig,
+  BrandingPreferenceAPIResponseInterface,
+  Store,
+} from "@asgardeo/js-ui-core";
 import { ReactNode } from "react";
-import { BrandingPreferenceAPIResponseInterface } from "./branding-preferences";
 import { Localization } from "./localization";
 
 export enum FlowStatus {

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
-import AsgardeoException from '../exception/exception';
+import {AuthClient} from '../auth-client/auth-client';
+import AsgardeoUIException from '../exception/exception';
 import {BrandingTextResponse} from '../model/public-model';
 import {getBrandingTextUrl} from '../utils/url-generator';
 
@@ -52,7 +52,7 @@ const getBrandingTextRequest = async (locale: string, name: string, screen: stri
  * @param screen - The screen of the branding text.
  * @param type - The type of the branding text.
  * @returns A Promise that resolves to the response from the server.
- * @throws {AsgardeoException} If the API call fails or the response is not OK.
+ * @throws {AsgardeoUIException} If the API call fails or the response is not OK.
  */
 export const brandingText = async (
   locale: string,
@@ -66,12 +66,12 @@ export const brandingText = async (
   try {
     response = await fetch(request);
   } catch (error) {
-    throw new AsgardeoException('JS_UI_CORE-BT-BT-NE01', 'Branding Text API call failed', error);
+    throw new AsgardeoUIException('JS_UI_CORE-BT-BT-NE01', 'Branding Text API call failed', error);
   }
   if (response.ok) {
     return (await response.json()) as BrandingTextResponse;
   }
-  throw new AsgardeoException('JS_UI_CORE-BT-BT-HE02', 'Branding Text response is not OK');
+  throw new AsgardeoUIException('JS_UI_CORE-BT-BT-HE02', 'Branding Text response is not OK');
 };
 
 type ExportedForTestingType = {

@@ -4,5 +4,6 @@
       },
       "search.exclude": {
         "**/node_modules": false
-      }
+      },
+      "eslint.workingDirectories": ["./packages/core"]
 }

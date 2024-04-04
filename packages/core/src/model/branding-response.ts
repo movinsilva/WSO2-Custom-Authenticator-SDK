@@ -16,6 +16,15 @@
  * under the License.
  */
 
+import {
+  BackgroundStyleAttributesInterface,
+  BorderStyleAttributesInterface,
+  ButtonStyleAttributesInterface,
+  ColorStyleAttributesInterface,
+  ElementStateInterface,
+  FontStyleAttributesInterface,
+} from './element-styles';
+
 /**
  * Interface for the Branding Preference API response.
  */
@@ -356,11 +365,11 @@ export interface BrandingPreferenceFooterInterface {
   /**
    * Page Body Font.
    */
-  border: string | number;
+  border: Pick<BorderStyleAttributesInterface, 'borderColor'>;
   /**
    * Page Body Font.
    */
-  font: any;
+  font: FontStyleAttributesInterface;
 }
 
 /**
@@ -370,11 +379,11 @@ export interface BrandingPreferencePageInterface {
   /**
    * Page Background.
    */
-  background: {border: any; font: any};
+  background: BackgroundStyleAttributesInterface;
   /**
    * Page Body Font.
    */
-  font: any;
+  font: FontStyleAttributesInterface;
 }
 
 /**
@@ -392,7 +401,7 @@ export interface BrandingPreferenceTypographyInterface {
     /**
      * Page Heading Font Preferences.
      */
-    font: any;
+    font: ColorStyleAttributesInterface;
   };
 }
 
@@ -417,15 +426,15 @@ export interface BrandingPreferenceButtonsInterface {
   /**
    * Social, External IDP Connection Button Preference.
    */
-  externalConnection: any;
+  externalConnection: ElementStateInterface<ButtonStyleAttributesInterface>;
   /**
    * Primary Button Preferences.
    */
-  primary: any;
+  primary: ElementStateInterface<Omit<ButtonStyleAttributesInterface, 'background'>>;
   /**
    * Secondary Button Preferences.
    */
-  secondary: any;
+  secondary: ElementStateInterface<Omit<ButtonStyleAttributesInterface, 'background'>>;
 }
 
 /**
@@ -435,15 +444,15 @@ export interface BrandingPreferenceInputInterface {
   /**
    * Input field background.
    */
-  background: any;
+  background: BackgroundStyleAttributesInterface;
   /**
    * Secondary Button Preferences.
    */
-  border: any;
+  border: Pick<BorderStyleAttributesInterface, 'borderRadius' | 'borderColor'>;
   /**
    * Input Field Font Preferences.
    */
-  font: any;
+  font: FontStyleAttributesInterface;
   /**
    * Input Labels Preferences.
    */
@@ -451,7 +460,7 @@ export interface BrandingPreferenceInputInterface {
     /**
      * Input Labels Font Preferences.
      */
-    font: any;
+    font: FontStyleAttributesInterface;
   };
 }
 
@@ -459,15 +468,15 @@ export interface BrandingPreferenceLoginBoxInterface {
   /**
    * Login Box Background.
    */
-  background: any;
+  background: BackgroundStyleAttributesInterface;
   /**
    * Login Box Border.
    */
-  border: any;
+  border: BorderStyleAttributesInterface;
   /**
    * Login Box Font.
    */
-  font: any;
+  font: FontStyleAttributesInterface;
 }
 
 /**
@@ -577,8 +586,3 @@ export enum PredefinedThemes {
  * to be used as a key in the theme object.
  */
 export type PredefinedThemesKeys = 'LIGHT' | 'DARK';
-
-/** TESTING */
-export interface ElementStateInterface<T> {
-  base: T;
-}

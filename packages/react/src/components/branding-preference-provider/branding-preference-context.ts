@@ -17,8 +17,8 @@
  */
 
 import { Context, createContext, useContext } from "react";
-import { BrandingPreferenceAPIResponseInterface } from "../../models/branding-preferences";
 import { LanguageCode } from "../../models/localization";
+import { BrandingPreferenceAPIResponseInterface } from "@asgardeo/js-ui-core";
 
 /**
  * Props interface for BrandingPreferenceContext.

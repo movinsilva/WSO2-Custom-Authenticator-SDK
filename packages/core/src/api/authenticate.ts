@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import {AuthClient} from '../asgardeo-auth-js/asgardeo-auth-js';
-import AsgardeoException from '../exception/exception';
+import {AuthClient} from '../auth-client/auth-client';
+import AsgardeoUIException from '../exception/exception';
 import {AuthApiResponse, AuthnParams} from '../model/public-model';
 import {getAuthnUrl} from '../utils/url-generator';
 
@@ -53,19 +53,23 @@ const getAuthnRequest = async (props: AuthnParams): Promise<Request> => {
  * Authenticates the user with the provided parameters.
  * @param props - The authentication parameters.
  * @returns A promise that resolves to the authentication response.
- * @throws An AsgardeoException if the authentication API call fails or the response is not OK.
+ * @throws An AsgardeoUIException if the authentication API call fails or the response is not OK.
  */
 export const authenticate = async (props: AuthnParams): Promise<AuthApiResponse> => {
   let response: Response;
   try {
     response = await fetch(await getAuthnRequest(props));
   } catch (error) {
-    throw new AsgardeoException('JS_UI_CORE-AUTHN-AN-NE01', `Authentication API call Failed: ${error}`, error.message);
+    throw new AsgardeoUIException(
+      'JS_UI_CORE-AUTHN-AN-NE01',
+      `Authentication API call Failed: ${error}`,
+      error.message,
+    );
   }
   if (response.ok) {
     return (await response.json()) as AuthApiResponse;
   }
-  throw new AsgardeoException('JS_UI_CORE-AUTHN-AN-HE02', 'Authentication Response is not OK');
+  throw new AsgardeoUIException('JS_UI_CORE-AUTHN-AN-HE02', 'Authentication Response is not OK');
 };
 
 type ExportedForTestingType = {

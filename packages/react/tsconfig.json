@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "dist/index.d.ts",
+    "declarationDir": "dist/types",
     "outDir": "dist",
     "sourceMap": true,
     "moduleResolution": "node",
