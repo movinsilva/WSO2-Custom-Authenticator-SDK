@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import { Box, MenuItem, Typography, UserDropdownMenu } from "@oxygen-ui/react";
-import React, { FunctionComponent } from "react";
-import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
-import "./user-button.scss";
-import { UserIcon } from "@oxygen-ui/react-icons";
+import {Box, MenuItem, Typography, UserDropdownMenu} from '@oxygen-ui/react';
+import {UserIcon} from '@oxygen-ui/react-icons';
+import React, {FunctionComponent} from 'react';
+import {useAuthentication} from '../asgardeo-provider/asgardeo-context';
+import './user-button.scss';
 
 const UserButton: FunctionComponent = () => {
-  const { signOut, user } = useAuthentication();
+  const {signOut, user} = useAuthentication();
 
   return (
     <UserDropdownMenu
@@ -35,18 +35,10 @@ const UserButton: FunctionComponent = () => {
               user.profileUrl ? (
                 <img src={user.profileUrl} alt="profile" />
               ) : user.photos ? (
-                <img
-                  src={user.photos[0].value}
-                  referrerPolicy="no-referrer"
-                  alt="federated-login"
-                />
+                <img src={user.photos[0].value} referrerPolicy="no-referrer" alt="federated-login" />
               ) : (
                 <div className="default-profile-icon-container">
-                  <UserIcon
-                    className="profile-icon"
-                    size={28}
-                    verticalAlign="middle"
-                  />
+                  <UserIcon className="profile-icon" size={28} verticalAlign="middle" />
                 </div>
               )
             ) : null}
@@ -68,14 +60,12 @@ const UserButton: FunctionComponent = () => {
                   className="user-img"
                 />
               ) : null}
-              <Typography className="profile-sub-title">{`${
-                user.name?.givenName ?? ""
-              } ${user.name?.familyName ?? ""}`}</Typography>
+              <Typography className="profile-sub-title">{`${user.name?.givenName ?? ''} ${
+                user.name?.familyName ?? ''
+              }`}</Typography>
             </div>
           ) : (
-            <Typography className="profile-no-details">
-              No profile details have been set with this account
-            </Typography>
+            <Typography className="profile-no-details">No profile details have been set with this account</Typography>
           )}
         </Box>
       )}

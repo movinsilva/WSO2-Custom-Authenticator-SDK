@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { Box, Container, Typography } from "@oxygen-ui/react";
-import { UserIcon } from "@oxygen-ui/react-icons";
-import { FunctionComponent } from "react";
-import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
-import "./profile.scss";
+import {Box, Container, Typography} from '@oxygen-ui/react';
+import {UserIcon} from '@oxygen-ui/react-icons';
+import {FunctionComponent} from 'react';
+import {useAuthentication} from '../asgardeo-provider/asgardeo-context';
+import './profile.scss';
 
 /**
  * Profile component to display user profile information.
@@ -33,7 +33,7 @@ import "./profile.scss";
  * ```
  */
 const Profile: FunctionComponent = () => {
-  const { user } = useAuthentication();
+  const {user} = useAuthentication();
 
   if (user) {
     return (
@@ -60,20 +60,14 @@ const Profile: FunctionComponent = () => {
               {user.profileUrl ? (
                 <img src={user.profileUrl} alt="profile" />
               ) : user.photos ? (
-                <img
-                  src={user.photos[0].value}
-                  referrerPolicy="no-referrer"
-                  alt="federated-login"
-                />
+                <img src={user.photos[0].value} referrerPolicy="no-referrer" alt="federated-login" />
               ) : null}
-              <Typography className="profile-sub-title">{`${
-                user.name?.givenName ?? ""
-              } ${user.name?.familyName ?? ""}`}</Typography>
+              <Typography className="profile-sub-title">{`${user.name?.givenName ?? ''} ${
+                user.name?.familyName ?? ''
+              }`}</Typography>
             </>
           ) : (
-            <Typography className="profile-no-details">
-              No profile details have been set with this account
-            </Typography>
+            <Typography className="profile-no-details">No profile details have been set with this account</Typography>
           )}
         </Box>
 
@@ -88,23 +82,15 @@ const Profile: FunctionComponent = () => {
         </Typography>
         <Container className="title-underline" />
         {user.emails ? (
-          <Typography className="profile-sub-title">
-            {user.emails[0]}
-          </Typography>
+          <Typography className="profile-sub-title">{user.emails[0]}</Typography>
         ) : (
-          <Typography className="profile-no-details">
-            No email addresses have been set with this account
-          </Typography>
+          <Typography className="profile-no-details">No email addresses have been set with this account</Typography>
         )}
       </Box>
     );
   }
 
-  return (
-    <Typography className="profile-sub-title">
-      No profile information available
-    </Typography>
-  );
+  return <Typography className="profile-sub-title">No profile information available</Typography>;
 };
 
 export default Profile;

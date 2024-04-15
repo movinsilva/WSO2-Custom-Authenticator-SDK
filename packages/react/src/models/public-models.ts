@@ -17,3 +17,5 @@
  */
 
 export * from "./localization";
+export type { AuthConfig } from "@asgardeo/js-ui-core";
+export { BrandingPreferenceTypes } from "@asgardeo/js-ui-core";

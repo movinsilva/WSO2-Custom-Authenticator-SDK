@@ -16,50 +16,32 @@
  * under the License.
  */
 
-import { Context, createContext, useContext } from "react";
-import { LanguageCode } from "../../models/localization";
-import { BrandingPreferenceAPIResponseInterface } from "@asgardeo/js-ui-core";
-
-/**
- * Props interface for BrandingPreferenceContext.
- */
-export type BrandingPreferenceContextProps = {
-  /**
-   * The branding preferences to be stored in the context.
-   */
-  brandingPreference:
-    | Partial<BrandingPreferenceAPIResponseInterface>
-    | undefined;
-  localizationLanguage: LanguageCode;
-};
+import {BrandingProp} from '@asgardeo/js-ui-core';
+import {Context, createContext, useContext} from 'react';
 
 /**
  * Context object for managing branding preferences.
  */
 
-export const BrandingPreferenceContext: Context<
-  BrandingPreferenceContextProps | undefined
-> = createContext<BrandingPreferenceContextProps | undefined>(undefined);
+export const BrandingPreferenceContext: Context<BrandingProp | undefined> = createContext<BrandingProp | undefined>(
+  undefined,
+);
 
 /**
  * Display name for the BrandingPreferenceContext.
  */
-BrandingPreferenceContext.displayName = "BrandingPreferenceContext";
+BrandingPreferenceContext.displayName = 'BrandingPreferenceContext';
 
 /**
  * Hook to access the branding preferences from the context.
  *
  * @returns {BrandingPreferenceContextProps} The branding preferences from the context.
  */
-export function useBrandingPreference(): BrandingPreferenceContextProps {
-  const context: BrandingPreferenceContextProps = useContext(
-    BrandingPreferenceContext
-  ) as BrandingPreferenceContextProps;
+export function useBrandingPreference(): BrandingProp {
+  const context: BrandingProp = useContext(BrandingPreferenceContext) as BrandingProp;
 
   if (!context) {
-    throw new Error(
-      "useBrandingPreference must be used within a BrandingPreferenceProvider"
-    );
+    throw new Error('useBrandingPreference must be used within a BrandingPreferenceProvider');
   }
 
   return context;

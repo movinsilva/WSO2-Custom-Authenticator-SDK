@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { FunctionComponent, PropsWithChildren } from "react";
-import { SignedPropsInterface } from "../../models/auth";
-import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
+import {FunctionComponent, PropsWithChildren} from 'react';
+import {SignedPropsInterface} from '../../models/auth';
+import {useAuthentication} from '../asgardeo-provider/asgardeo-context';
 
 /**
  * This component shows the child component only if the user is authenticated.
@@ -35,10 +35,10 @@ import { useAuthentication } from "../asgardeo-provider/asgardeo-context";
  * ```
  */
 const SignedIn: FunctionComponent<PropsWithChildren<SignedPropsInterface>> = (
-  props: PropsWithChildren<SignedPropsInterface>
+  props: PropsWithChildren<SignedPropsInterface>,
 ) => {
-  const { fallback, children } = props;
-  const { isAuthenticated } = useAuthentication();
+  const {fallback, children} = props;
+  const {isAuthenticated} = useAuthentication();
 
   return <>{isAuthenticated === true ? children : fallback ?? null}</>;
 };

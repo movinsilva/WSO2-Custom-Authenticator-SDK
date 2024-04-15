@@ -16,28 +16,28 @@
  * under the License.
  */
 
-import { Box, Button } from "@oxygen-ui/react";
-import React, { ReactElement, useState } from "react";
-import SignIn from "../sign-in/sign-in";
-import "./sign-in-button.scss";
+import {Box, Button} from '@oxygen-ui/react';
+import React, {ReactElement, useState} from 'react';
+import SignIn from '../sign-in/sign-in';
+import './sign-in-button.scss';
 
 interface SignInButtonProps {
   ButtonComponent?: ReactElement;
 }
 
-const SignInButton = ({ ButtonComponent }: SignInButtonProps) => {
+const SignInButton = ({ButtonComponent}: SignInButtonProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const openModal = () => {
+  const openModal = (): void => {
     setModalVisible(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setModalVisible(false);
   };
 
   return (
-    <div className="asgardeo" style={{ padding: "2rem" }}>
+    <div className="asgardeo" style={{padding: '2rem'}}>
       {ButtonComponent ? (
         React.cloneElement(ButtonComponent, {
           onClick: openModal,
@@ -54,9 +54,7 @@ const SignInButton = ({ ButtonComponent }: SignInButtonProps) => {
         </Box>
       )}
 
-      {modalVisible && (
-        <Box className="popup-box-overlay" onClick={closeModal} />
-      )}
+      {modalVisible && <Box className="popup-box-overlay" onClick={closeModal} />}
     </div>
   );
 };

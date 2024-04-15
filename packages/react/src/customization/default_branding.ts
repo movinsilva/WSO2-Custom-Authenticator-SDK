@@ -21,16 +21,16 @@ import {
   BrandingPreferenceTypes,
   PredefinedLayouts,
   PredefinedThemes,
-} from "@asgardeo/js-ui-core";
-import DARK_THEME from "./dark-theme";
-import LIGHT_THEME from "./light-theme";
+} from '@asgardeo/js-ui-core';
+import DARK_THEME from './dark-theme';
+import LIGHT_THEME from './light-theme';
 
 const DEFAULT_BRANDING: BrandingPreferenceAPIResponseInterface = {
   preference: {
     theme: {
-      activeTheme: PredefinedThemes.LIGHT,
-      LIGHT: LIGHT_THEME,
       DARK: DARK_THEME,
+      LIGHT: LIGHT_THEME,
+      activeTheme: PredefinedThemes.LIGHT,
     },
     configs: {
       isBrandingEnabled: false,
@@ -39,17 +39,17 @@ const DEFAULT_BRANDING: BrandingPreferenceAPIResponseInterface = {
       activeLayout: PredefinedLayouts.CENTERED,
     },
     organizationDetails: {
-      displayName: "",
-      supportEmail: "",
+      displayName: '',
+      supportEmail: '',
     },
     urls: {
-      cookiePolicyURL: "",
-      privacyPolicyURL: "",
-      termsOfUseURL: "",
+      cookiePolicyURL: '',
+      privacyPolicyURL: '',
+      termsOfUseURL: '',
     },
   },
-  locale: "",
-  name: "",
+  locale: '',
+  name: '',
   type: BrandingPreferenceTypes.ORG,
 };
 

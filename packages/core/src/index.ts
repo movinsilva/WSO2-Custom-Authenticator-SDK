@@ -20,3 +20,4 @@ export * from './api/public-api';
 export * from './auth-client/auth-client';
 export * from './model/public-model';
 export {default as AsgardeoUIException} from './exception/exception';
+export * from './i18n/public';

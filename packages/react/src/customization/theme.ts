@@ -18,23 +18,23 @@
 
 import {
   BrandingPreferenceAPIResponseInterface,
+  BrandingProp,
   PredefinedThemes,
   ThemeConfigInterface,
 } from "@asgardeo/js-ui-core";
 import { Theme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
+import LIGHT_THEME from "./light-theme";
 
-type generateAsgardeoThemeProps =
-  | Partial<BrandingPreferenceAPIResponseInterface>
-  | undefined;
+type generateAsgardeoThemeProps = BrandingProp | undefined;
 
 const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
   branding: generateAsgardeoThemeProps
 ) => {
   const mode: string =
-    branding?.preference?.theme?.activeTheme.toUpperCase() ?? "LIGHT";
+    branding?.preference?.theme?.activeTheme?.toUpperCase() ?? "LIGHT";
   const brandingTheme: ThemeConfigInterface | undefined =
-    branding?.preference?.theme[mode as PredefinedThemes];
+    branding?.preference?.theme?.[mode as PredefinedThemes];
 
   return extendTheme({
     colorSchemes: {

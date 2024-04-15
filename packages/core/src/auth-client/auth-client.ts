@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import {AsgardeoAuthClient, AuthClientConfig, CryptoUtils, Store} from '@asgardeo/auth-js';
+import {AsgardeoAuthClient, CryptoUtils, Store} from '@asgardeo/auth-js';
+import AuthConfig from 'src/model/auth-config';
 
 export class AuthClient {
   private static instance: AsgardeoAuthClient<any>;
@@ -24,11 +25,7 @@ export class AuthClient {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   private constructor() {}
 
-  static getInstance(
-    authClientConfig?: AuthClientConfig,
-    store?: Store,
-    cryptoUtils?: CryptoUtils,
-  ): AsgardeoAuthClient<any> {
+  static getInstance(authClientConfig?: AuthConfig, store?: Store, cryptoUtils?: CryptoUtils): AsgardeoAuthClient<any> {
     if (!AuthClient.instance) {
       AuthClient.instance = new AsgardeoAuthClient();
       AuthClient.instance.initialize(authClientConfig, store, cryptoUtils);

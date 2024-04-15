@@ -16,32 +16,26 @@
  * under the License.
  */
 
-import {
-  AuthClientConfig,
-  BrandingPreferenceAPIResponseInterface,
-  Store,
-} from "@asgardeo/js-ui-core";
-import { ReactNode } from "react";
-import { Localization } from "./localization";
+import {AuthConfig, BrandingProp, Store} from '@asgardeo/js-ui-core';
+import {ReactNode} from 'react';
 
 export enum FlowStatus {
-  DEFAULT = "DEFAULT", // hasn't started the flow yet
-  FAIL_INCOMPLETE = "FAIL_INCOMPLETE",
-  INCOMPLETE = "INCOMPLETE",
-  SUCCESS_COMPLETED = "SUCCESS_COMPLETED",
+  DEFAULT = 'DEFAULT', // hasn't started the flow yet
+  FAIL_INCOMPLETE = 'FAIL_INCOMPLETE',
+  INCOMPLETE = 'INCOMPLETE',
+  SUCCESS_COMPLETED = 'SUCCESS_COMPLETED',
 }
 
 export enum AuthenticatorType {
-  FACEBOOK = "facebook",
-  GOOGLE = "Google",
-  TOTP = "TOTP",
-  USERNAME_PASSWORD = "Username & Password",
+  FACEBOOK = 'facebook',
+  GOOGLE = 'Google',
+  TOTP = 'TOTP',
+  USERNAME_PASSWORD = 'Username & Password',
 }
 
 export interface AsgardeoProviderPropsInterface {
-  config: AuthClientConfig;
-  customization?: Partial<BrandingPreferenceAPIResponseInterface>;
-  localization?: Localization;
+  config: AuthConfig;
+  customization?: BrandingProp;
   store?: Store;
 }
 
@@ -54,7 +48,7 @@ export interface EndPoints {
 
 export interface AuthContext {
   accessToken: string;
-  config: AuthClientConfig;
+  config: AuthConfig;
   customizationOptions?: any;
   isAuthenticated: boolean | undefined;
   setAuthentication: () => void;
@@ -67,7 +61,7 @@ export interface IdentifiableComponentInterface {
   /**
    * Unique component id.
    */
-  "data-componentid"?: string;
+  'data-componentid'?: string;
 }
 
 /**
@@ -75,6 +69,7 @@ export interface IdentifiableComponentInterface {
  */
 export interface SignInFragmentPropsInterface {
   authenticatorId: string;
+  customization?: BrandingProp;
   handleAuthenticate: Function;
   isRetry?: boolean;
 }
@@ -86,8 +81,7 @@ export interface SignedPropsInterface {
   fallback?: ReactNode;
 }
 
-export interface LoginOptionFragmentPropsInterface
-  extends IdentifiableComponentInterface {
+export interface LoginOptionFragmentPropsInterface extends IdentifiableComponentInterface {
   authenticator: string;
   handleClick: Function;
 }

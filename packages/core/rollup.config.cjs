@@ -17,6 +17,7 @@
  */
 
 const commonjs = require('@rollup/plugin-commonjs');
+const dynamicImportVars = require('@rollup/plugin-dynamic-import-vars');
 const nodeResolve = require('@rollup/plugin-node-resolve');
 const typescript = require('@rollup/plugin-typescript');
 const dts = require('rollup-plugin-dts');
@@ -30,21 +31,29 @@ module.exports = [
       {
         file: pkg.main,
         format: 'cjs',
+        inlineDynamicImports: true,
         sourcemap: true,
       },
       {
         file: pkg.umd,
         format: 'umd',
+        inlineDynamicImports: true,
         name: 'core',
         sourcemap: true,
       },
       {
         file: pkg.module,
         format: 'esm',
+        inlineDynamicImports: true,
         sourcemap: true,
       },
     ],
-    plugins: [nodeResolve(), commonjs(), typescript({tsconfig: './tsconfig.lib.json'})],
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+      dynamicImportVars({include: []}),
+      typescript({tsconfig: './tsconfig.lib.json'}),
+    ],
   },
   {
     cache: false,

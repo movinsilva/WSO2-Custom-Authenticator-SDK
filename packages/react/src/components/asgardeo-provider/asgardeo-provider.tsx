@@ -16,26 +16,13 @@
  * under the License.
  */
 
-import {
-  AuthClient,
-  me,
-  Store,
-  CryptoUtils,
-  AsgardeoAuthClient,
-  MeResponse,
-} from "@asgardeo/js-ui-core";
-import {
-  useState,
-  FunctionComponent,
-  PropsWithChildren,
-  useMemo,
-  useEffect,
-} from "react";
-import { AsgardeoProviderContext } from "./asgardeo-context";
-import { AsgardeoProviderPropsInterface, AuthContext } from "../../models/auth";
-import SPACryptoUtils from "../../utils/crypto-utils";
-import SessionStore from "../../utils/session-store";
-import BrandingPreferenceProvider from "../branding-preference-provider/branding-preference-provider";
+import {AuthClient, me, Store, CryptoUtils, AsgardeoAuthClient, MeResponse} from '@asgardeo/js-ui-core';
+import {useState, FunctionComponent, PropsWithChildren, useMemo, useEffect} from 'react';
+import {AsgardeoProviderContext} from './asgardeo-context';
+import {AsgardeoProviderPropsInterface, AuthContext} from '../../models/auth';
+import SPACryptoUtils from '../../utils/crypto-utils';
+import SessionStore from '../../utils/session-store';
+import BrandingPreferenceProvider from '../branding-preference-provider/branding-preference-provider';
 
 /**
  * AsgardeoProvider component is a wrapper component that provides authentication-related
@@ -60,23 +47,19 @@ import BrandingPreferenceProvider from "../branding-preference-provider/branding
  * </AsgardeoProvider>
  * ```
  */
-const AsgardeoProvider: FunctionComponent<
-  PropsWithChildren<AsgardeoProviderPropsInterface>
-> = (props: PropsWithChildren<AsgardeoProviderPropsInterface>) => {
-  const { children, config, customization, store, localization } = props;
+const AsgardeoProvider: FunctionComponent<PropsWithChildren<AsgardeoProviderPropsInterface>> = (
+  props: PropsWithChildren<AsgardeoProviderPropsInterface>,
+) => {
+  const {children, config, customization, store} = props;
 
   // If a store instance is passed, use it. Otherwise, create a new instance of the SessionStore
   const storeInstance: Store = store || new SessionStore();
 
   const spaUtils: CryptoUtils = new SPACryptoUtils();
 
-  const authClient: AsgardeoAuthClient<any> = AuthClient.getInstance(
-    config,
-    storeInstance,
-    spaUtils
-  );
+  const authClient: AsgardeoAuthClient<any> = AuthClient.getInstance(config, storeInstance, spaUtils);
 
-  const [accessToken, setAccessToken] = useState<string>("");
+  const [accessToken, setAccessToken] = useState<string>('');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>();
   const [user, setUser] = useState<MeResponse>();
 
@@ -107,12 +90,12 @@ const AsgardeoProvider: FunctionComponent<
 
     // This script is added so that the popup window can send the code and state to the parent window
     const url: URL = new URL(window.location.href);
-    if (url.searchParams.has("code") && url.searchParams.has("state")) {
-      const code: string | null = url.searchParams.get("code");
-      const state: string | null = url.searchParams.get("state");
+    if (url.searchParams.has('code') && url.searchParams.has('state')) {
+      const code: string | null = url.searchParams.get('code');
+      const state: string | null = url.searchParams.get('state');
 
       // Send the 'code' and 'state' to the parent window and close the current window (popup)
-      window.opener.postMessage({ code, state }, config.signInRedirectURL);
+      window.opener.postMessage({code, state}, config.signInRedirectURL);
       window.close();
     }
   }, []);
@@ -126,18 +109,13 @@ const AsgardeoProvider: FunctionComponent<
       setAuthentication,
       user,
     }),
-    [isAuthenticated, accessToken, user]
+    [isAuthenticated, accessToken, user],
   );
 
   // Render the provider with the value object and the wrapped components
   return (
     <AsgardeoProviderContext.Provider value={value}>
-      <BrandingPreferenceProvider
-        brandingProps={customization}
-        localization={localization}
-      >
-        {children}
-      </BrandingPreferenceProvider>
+      <BrandingPreferenceProvider brandingProps={customization}>{children}</BrandingPreferenceProvider>
     </AsgardeoProviderContext.Provider>
   );
 };

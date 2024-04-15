@@ -18,20 +18,20 @@
 
 import {
   AsgardeoUIException,
+  BrandingProp,
   BrandingTextPreference,
   BrandingTextResponse,
   brandingText,
-} from "@asgardeo/js-ui-core";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import { isEmpty } from "../../utils/common";
-import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
-import "./footer.scss";
+} from '@asgardeo/js-ui-core';
+import React, {FunctionComponent, ReactElement, useEffect} from 'react';
+import {isEmpty} from '../../utils/common';
+import {useBrandingPreference} from '../branding-preference-provider/branding-preference-context';
+import './footer.scss';
 
-const componentId = "login-screen-skeleton-product-footer";
+const componentId: string = 'login-screen-skeleton-product-footer';
 /**
  * Proptypes for the product footer component of login screen skeleton.
  */
-interface FooterInterface {}
 
 /**
  * Product Footer Component.
@@ -40,35 +40,29 @@ interface FooterInterface {}
  *
  * @returns Product footer component.
  */
-const Footer: FunctionComponent<FooterInterface> = (
-  props: FooterInterface
-): ReactElement => {
-  const { brandingPreference, localizationLanguage } = useBrandingPreference();
+const Footer: FunctionComponent = (): ReactElement => {
+  const brandingProps: BrandingProp = useBrandingPreference();
+  const localizationLanguage: string = brandingProps?.locale ?? 'en-US';
 
-  console.log("textPreference", localizationLanguage);
-  const [brandingTextPreference, setBrandingTextPreference] =
-    React.useState<BrandingTextPreference>();
+  console.log('textPreference', localizationLanguage);
+  const [brandingTextPreference, setBrandingTextPreference] = React.useState<BrandingTextPreference>();
 
   useEffect(() => {
     try {
-      if (brandingPreference) {
+      if (brandingProps) {
         brandingText(
           localizationLanguage,
-          brandingPreference?.name ?? "carbon.super",
-          "common",
-          brandingPreference?.type ?? "ORG"
+          brandingProps?.name ?? 'carbon.super',
+          'common',
+          brandingProps?.type ?? 'ORG',
         ).then((response: BrandingTextResponse) => {
           setBrandingTextPreference(response?.preference);
         });
       }
     } catch (error) {
-      throw new AsgardeoUIException(
-        "REACT_UI-FOOTER-SE01",
-        "Error in fetching branding text",
-        error
-      );
+      throw new AsgardeoUIException('REACT_UI-FOOTER-SE01', 'Error in fetching branding text', error);
     }
-  }, [brandingPreference]);
+  }, [brandingProps]);
 
   return !brandingTextPreference ? (
     <div />
@@ -80,53 +74,45 @@ const Footer: FunctionComponent<FooterInterface> = (
             <div className="powered-by-logo">
               <div>
                 {brandingTextPreference.text.copyright &&
-                brandingTextPreference.text.copyright.includes(
-                  "{{currentYear}}"
-                )
+                brandingTextPreference.text.copyright.includes('{{currentYear}}')
                   ? brandingTextPreference.text.copyright.replace(
-                      "{{currentYear}}",
-                      new Date().getFullYear().toString()
+                      '{{currentYear}}',
+                      new Date().getFullYear().toString(),
                     )
                   : brandingTextPreference?.text.copyright}
               </div>
             </div>
           </div>
           <div className="right menu">
-            {!isEmpty(
-              brandingPreference?.preference?.urls?.privacyPolicyURL
-            ) && (
+            {!isEmpty(brandingProps?.preference?.urls?.privacyPolicyURL) && (
               <a
                 id="privacy-policy"
                 className="item"
-                href={brandingPreference?.preference?.urls.privacyPolicyURL}
+                href={brandingProps?.preference?.urls?.privacyPolicyURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
               >
-                {brandingTextPreference
-                  ? brandingTextPreference.text["privacy.policy"]
-                  : ""}
+                {brandingTextPreference ? brandingTextPreference.text['privacy.policy'] : ''}
               </a>
             )}
-            {!isEmpty(brandingPreference?.preference?.urls?.termsOfUseURL) && (
+            {!isEmpty(brandingProps?.preference?.urls?.termsOfUseURL) && (
               <a
                 id="terms-of-service"
                 className="item"
-                href={brandingPreference?.preference?.urls.termsOfUseURL}
+                href={brandingProps?.preference?.urls?.termsOfUseURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
               >
-                {brandingTextPreference
-                  ? brandingTextPreference.text["terms.of.service"]
-                  : ""}
+                {brandingTextPreference ? brandingTextPreference.text['terms.of.service'] : ''}
               </a>
             )}
-            {!isEmpty(brandingPreference?.preference?.urls?.termsOfUseURL) && (
+            {!isEmpty(brandingProps?.preference?.urls?.termsOfUseURL) && (
               <a
                 id="terms-of-service"
                 className="item"
-                href={brandingPreference?.preference?.urls.termsOfUseURL}
+                href={brandingProps?.preference?.urls?.termsOfUseURL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="login-page-privacy-policy-link"
@@ -145,7 +131,7 @@ const Footer: FunctionComponent<FooterInterface> = (
  * Default props for the component.
  */
 Footer.defaultProps = {
-  "data-componentid": "login-screen-skeleton-product-footer",
+  'data-componentid': 'login-screen-skeleton-product-footer',
 };
 
 export default Footer;

@@ -16,16 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { useBrandingPreference } from "../branding-preference-provider/branding-preference-context";
-import "./header.scss";
+import {FunctionComponent, ReactElement} from 'react';
+import './header.scss';
 
-/**
- * Proptypes for the product header component of login screen skeleton.
- */
-interface HeaderInterface {}
-
-const componentId = "login-screen-skeleton-product-header";
+const componentId: string = 'login-screen-skeleton-product-header';
 
 /**
  * Product Header Component.
@@ -33,39 +27,15 @@ const componentId = "login-screen-skeleton-product-header";
  * @param props - Props injected to the component.
  * @returns Product Header Component.
  */
-const Header: FunctionComponent<HeaderInterface> = (
-  props: HeaderInterface
-): ReactElement => {
-  const brandingData = useBrandingPreference();
-  const brandingPreference = brandingData?.brandingPreference?.preference;
-
-  return (
-    <div
-      className="theme-icon inline auto transparent product-logo portal-logo"
-      data-componentid={componentId}
-    >
-      {brandingPreference && (
-        <img
-          src={
-            brandingPreference.theme[brandingPreference.theme.activeTheme]
-              .images.logo.imgURL
-          }
-          id="product-logo"
-          alt={
-            brandingPreference.theme[brandingPreference.theme.activeTheme]
-              .images.logo.altText
-          }
-        />
-      )}
-    </div>
-  );
-};
+const Header: FunctionComponent = (): ReactElement => (
+  <div className="theme-icon inline auto transparent product-logo portal-logo" data-componentid={componentId} />
+);
 
 /**
  * Default props for the component.
  */
 Header.defaultProps = {
-  "data-componentid": componentId,
+  'data-componentid': componentId,
 };
 
 export default Header;

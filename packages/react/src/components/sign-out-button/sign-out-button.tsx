@@ -16,25 +16,23 @@
  * under the License.
  */
 
-import { AuthClient } from "@asgardeo/js-ui-core";
-import { Button } from "@oxygen-ui/react";
-import React, { useContext } from "react";
-import {
-  AsgardeoProviderContext,
-  useAuthentication,
-} from "../asgardeo-provider/asgardeo-context";
+import {AuthClient} from '@asgardeo/js-ui-core';
+import {Button} from '@oxygen-ui/react';
+import React, {useContext} from 'react';
+import {AsgardeoProviderContext, useAuthentication} from '../asgardeo-provider/asgardeo-context';
+import {AuthContext} from '../../models/auth';
 
 const SignOutButton = () => {
-  const authContext = useContext(AsgardeoProviderContext);
-  const [signoutURL, setSignoutURL] = React.useState<string>("");
+  const authContext: AuthContext | undefined = useContext(AsgardeoProviderContext);
+  const [signoutURL, setSignoutURL] = React.useState<string>('');
   AuthClient.getInstance()
     .getSignOutURL()
-    .then((response) => {
-      console.log("signout: ", response);
+    .then(response => {
+      console.log('signout: ', response);
       setSignoutURL(response);
     });
 
-  const { signOut } = useAuthentication();
+  const {signOut} = useAuthentication();
 
   return (
     <div className="asgardeo">

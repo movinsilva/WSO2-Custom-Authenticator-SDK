@@ -16,9 +16,11 @@
  * under the License.
  */
 
+export type {default as AuthConfig} from './auth-config';
 export * from './auth-response';
-export {default as LocalizationResponse} from './localization-response';
 export * from './branding-response';
 export * from './branding-text-response';
+export {default as LocalizationResponse} from './localization-response';
 export * from './me-response';
-export {AuthClientConfig} from '@asgardeo/auth-js';
+export * from './branding-prop';
+export * from './screen';

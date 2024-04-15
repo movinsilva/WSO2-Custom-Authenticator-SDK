@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Button } from "@oxygen-ui/react";
-import React, { ReactElement } from "react";
-import facebook from "../../../assets/social-logins/facebook.svg";
-import github from "../../../assets/social-logins/github.svg";
-import google from "../../../assets/social-logins/google.svg";
-import { LoginOptionFragmentPropsInterface } from "../../../models/auth";
+import {Button} from '@oxygen-ui/react';
+import {ReactElement} from 'react';
+import facebook from '../../../assets/social-logins/facebook.svg';
+import github from '../../../assets/social-logins/github.svg';
+import google from '../../../assets/social-logins/google.svg';
+import {LoginOptionFragmentPropsInterface} from '../../../models/auth';
 
-const images: { [key: string]: any } = {
-  Google: google,
+const images: {[key: string]: any} = {
   Github: github,
+  Google: google,
   facebook,
 };
 
@@ -36,19 +36,11 @@ const images: { [key: string]: any } = {
  * @param {LoginOptionFragmentPropsInterface} props The props of the component
  * @returns {ReactElement} The Login Option Fragment component
  */
-const LoginOptionFragment = (
-  props: LoginOptionFragmentPropsInterface
-): ReactElement => {
-  const { authenticator, handleClick } = props;
+const LoginOptionFragment = (props: LoginOptionFragmentPropsInterface): ReactElement => {
+  const {authenticator, handleClick} = props;
   return (
     <Button
-      startIcon={
-        <img
-          className="oxygen-sign-in-option-image"
-          src={images[authenticator]}
-          alt={authenticator}
-        />
-      }
+      startIcon={<img className="oxygen-sign-in-option-image" src={images[authenticator]} alt={authenticator} />}
       variant="contained"
       className="oxygen-sign-in-option"
       type="button"

@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/js-ui-core";
+import {LocalizationResponse} from '@asgardeo/js-ui-core';
 
 export interface Localization {
   languageCode: LanguageCode;
   languageResource?: Partial<LocalizationResponse>;
 }
 export enum LanguageCode {
-  CUSTOM = "custom",
-  ENGLISH_US = "en_Us",
-  FRENCH = "fr-FR",
-  PORTUGUESE = "pt-BR",
+  CUSTOM = 'custom',
+  ENGLISH_US = 'en_Us',
+  FRENCH = 'fr-FR',
+  PORTUGUESE = 'pt-BR',
 }

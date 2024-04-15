@@ -34,7 +34,7 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
    * @returns {string} base 64 url encoded value.
    */
   public base64URLEncode(value: Buffer | string): string {
-    console.log("base64URLEncode called with value: ", value);
+    //console.log("base64URLEncode called with value: ", value);
     return base64url
       .encode(value)
       .replace(/\+/g, "-")
@@ -45,18 +45,18 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
   }
 
   public base64URLDecode(value: string): string {
-    console.log("base64URLDecode called with value: ", value);
+    //console.log("base64URLDecode called with value: ", value);
     return base64url.decode(value).toString();
     // return atob(value);
   }
 
   public hashSha256(data: string): string | Buffer {
-    console.log("hashSha256 called with data: ", data);
+    // console.log("hashSha256 called with data: ", data);
     return Buffer.from(sha256(new TextEncoder().encode(data)));
   }
 
   public generateRandomBytes(length: number): string | Buffer {
-    console.log("generateRandomBytes called with length: ", length);
+    //console.log("generateRandomBytes called with length: ", length);
     return randombytes(length);
   }
 
@@ -70,7 +70,7 @@ export default class SPACryptoUtils implements CryptoUtils<Buffer | string> {
     clockTolerance?: number,
     validateJwtIssuer?: boolean
   ): Promise<boolean> {
-    console.log("verifyJwt called with idToken: ", idToken);
+    //console.log("verifyJwt called with idToken: ", idToken);
     const jwtVerifyOptions = {
       algorithms,
       audience: clientID,

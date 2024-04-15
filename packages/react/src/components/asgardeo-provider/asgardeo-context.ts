@@ -16,15 +16,16 @@
  * under the License.
  */
 
-import { AuthClientConfig, MeResponse } from "@asgardeo/js-ui-core";
-import { Context, createContext, useContext } from "react";
-import { AuthContext } from "../../models/auth";
+import {AuthConfig, MeResponse} from '@asgardeo/js-ui-core';
+import {Context, createContext, useContext} from 'react';
+import {AuthContext} from '../../models/auth';
 
 /**
  * Context for the AsgardeoProvider component.
  */
-export const AsgardeoProviderContext: Context<AuthContext | undefined> =
-  createContext<AuthContext | undefined>(undefined);
+export const AsgardeoProviderContext: Context<AuthContext | undefined> = createContext<AuthContext | undefined>(
+  undefined,
+);
 
 interface UseAuthenticationResponse {
   accessToken: string;
@@ -40,14 +41,14 @@ interface UseAuthenticationResponse {
 export const useAuthentication = (): UseAuthenticationResponse => {
   // TODO: Check whether isAuthenticated is taken from the core everytime.
   // If not call isAuthenticate function in the asgardeo provider
-  const { isAuthenticated } = useContext(AsgardeoProviderContext) as {
+  const {isAuthenticated} = useContext(AsgardeoProviderContext) as {
     isAuthenticated: Promise<boolean> | boolean;
   };
-  const { accessToken } = useContext(AsgardeoProviderContext) as {
+  const {accessToken} = useContext(AsgardeoProviderContext) as {
     accessToken: string;
   };
 
-  const { user } = useContext(AsgardeoProviderContext) as unknown as {
+  const {user} = useContext(AsgardeoProviderContext) as unknown as {
     user: MeResponse;
   };
 
@@ -55,11 +56,11 @@ export const useAuthentication = (): UseAuthenticationResponse => {
     sessionStorage.clear();
     window.location.reload();
   };
-  return { accessToken, isAuthenticated, signOut, user };
+  return {accessToken, isAuthenticated, signOut, user};
 };
 
 interface UseConfigResponse {
-  config: AuthClientConfig;
+  config: AuthConfig;
 }
 
 /**
@@ -67,8 +68,8 @@ interface UseConfigResponse {
  * @returns An object containing the authentication configuration.
  */
 export const useConfig = (): UseConfigResponse => {
-  const { config } = useContext(AsgardeoProviderContext) as {
-    config: AuthClientConfig;
+  const {config} = useContext(AsgardeoProviderContext) as {
+    config: AuthConfig;
   };
-  return { config };
+  return {config};
 };

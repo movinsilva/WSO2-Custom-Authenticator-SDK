@@ -10,16 +10,22 @@ module.exports = {
     'plugin:@wso2/jest',
     'plugin:@wso2/prettier',
     'plugin:mdx/recommended',
-    'plugin:react/jsx-runtime'
+    'plugin:react/jsx-runtime',
   ],
+  parserOptions: {
+    project: [
+      path.resolve(__dirname, 'tsconfig.lib.json'),
+      path.resolve(__dirname, 'tsconfig.spec.json'),
+      path.resolve(__dirname, 'tsconfig.eslint.json'),
+    ],
+  },
+  // TODO
   rules: {
-    'import/extensions': 'off',
-    'max-len': ['error', {
-      code: 120,
-      ignoreUrls: true,
-      ignoreStrings: true,
-      ignoreTemplateLiterals: true,
-      ignoreRegExpLiterals: true,
-   }],
-},
-}
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
+  },
+};

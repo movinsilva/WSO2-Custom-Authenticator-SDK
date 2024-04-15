@@ -21,9 +21,6 @@ import { Hooks } from "./Hooks.tsx";
 import "./App.scss";
 
 function App() {
-  const { isAuthenticated, user } = useAuthentication();
-  console.log("user: ", user);
-
   return (
     <div className="container">
       <SignedIn>
@@ -34,7 +31,15 @@ function App() {
       </SignedIn>
 
       <SignedOut>
-        <SignIn />
+        <SignIn
+          customization={{
+            preference: {
+              text: {
+                "en-US": { login: { "login.heading": "From component" } },
+              },
+            },
+          }}
+        />
       </SignedOut>
 
       <SignedIn>

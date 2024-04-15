@@ -16,6 +16,6 @@
  * under the License.
  */
 
-import SignInButton from "./sign-in-button";
+import SignInButton from './sign-in-button';
 
 export default SignInButton;

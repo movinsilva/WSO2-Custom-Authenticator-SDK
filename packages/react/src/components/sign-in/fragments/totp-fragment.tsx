@@ -16,11 +16,15 @@
  * under the License.
  */
 
-import { Box, Button, TextField, Typography } from "@oxygen-ui/react";
-import React, { ReactElement, useRef, useState } from "react";
-import { SignInFragmentPropsInterface } from "../../../models/auth";
+import {BrandingProp, Screen, keys} from '@asgardeo/js-ui-core';
+import {Box, Button, TextField, Typography} from '@oxygen-ui/react';
+import React, {ReactElement, useEffect, useRef, useState} from 'react';
+import {Trans} from 'react-i18next';
+import {i18nAddResources} from '../../../localization/i18n/i18n';
+import {SignInFragmentPropsInterface} from '../../../models/auth';
+import {useBrandingPreference} from '../../branding-preference-provider/branding-preference-context';
 
-const componentId: string = "totp-fragment";
+const componentId: string = 'totp-fragment';
 
 /**
  * TOTP fragment login option component with input fields.
@@ -29,71 +33,74 @@ const componentId: string = "totp-fragment";
  * @returns TOTP fragment login option as a React component.
  */
 const TOTPFragment = (props: SignInFragmentPropsInterface): ReactElement => {
-  const { handleAuthenticate, authenticatorId, isRetry } = props;
+  const brandingProps: BrandingProp = useBrandingPreference();
 
-  const [totp, setTotp] = useState(Array(6).fill("")); // Initialize a state variable for the TOTP
+  const {handleAuthenticate, authenticatorId, isRetry, customization} = props;
+
+  const [isTextLoading, setIsTextLoading] = useState<boolean>();
+
+  useEffect(() => {
+    i18nAddResources({
+      brandingProps,
+      componentProps: customization,
+      screen: Screen.Totp,
+    }).then(() => {
+      setIsTextLoading(false);
+    });
+  }, []);
+
+  const [totp, setTotp] = useState(Array(6).fill('')); // Initialize a state variable for the TOTP
 
   const refs = useRef(totp.map(() => React.createRef<HTMLInputElement>()));
 
-  const handleChange =
-    (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newTotp = [...totp];
-      newTotp[index] = event.target.value;
-      setTotp(newTotp);
+  const handleChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTotp = [...totp];
+    newTotp[index] = event.target.value;
+    setTotp(newTotp);
 
-      // If a character is entered and there's a next TextField, focus it
-      if (event.target.value && index < totp.length - 1) {
-        refs.current[index + 1].current?.focus();
+    // If a character is entered and there's a next TextField, focus it
+    if (event.target.value && index < totp.length - 1) {
+      refs.current[index + 1].current?.focus();
+    }
+  };
+
+  const handleKeyDown = (index: number) => (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // If the backspace key is pressed and the current field is empty
+    if (event.key === 'Backspace' && totp[index] === '') {
+      // Prevent the default action to stop deleting characters in the previous field
+      event.preventDefault();
+
+      // If there's a previous field, focus it
+      if (index > 0) {
+        refs.current[index - 1].current?.focus();
+
+        // Clear the value of the previous field
+        const newTotp = [...totp];
+        newTotp[index - 1] = '';
+        setTotp(newTotp);
       }
-    };
-
-  const handleKeyDown =
-    (index: number) => (event: React.KeyboardEvent<HTMLInputElement>) => {
-      // If the backspace key is pressed and the current field is empty
-      if (event.key === "Backspace" && totp[index] === "") {
-        // Prevent the default action to stop deleting characters in the previous field
-        event.preventDefault();
-
-        // If there's a previous field, focus it
-        if (index > 0) {
-          refs.current[index - 1].current?.focus();
-
-          // Clear the value of the previous field
-          const newTotp = [...totp];
-          newTotp[index - 1] = "";
-          setTotp(newTotp);
-        }
-      }
-    };
+    }
+  };
 
   const handleSubmit = () => {
-    const token = totp.join("");
-    handleAuthenticate({ token }, authenticatorId);
+    const token = totp.join('');
+    handleAuthenticate({token}, authenticatorId);
   };
 
   return (
     <div className="totp-fragment" data-componentid={componentId}>
-      <Typography
-        align="center"
-        className="oxygen-sign-in-header ui header"
-        variant="h4"
-      >
-        Verify Your Identity
+      <Typography align="center" className="oxygen-sign-in-header ui header" variant="h4">
+        <Trans i18nKey={keys.totp.heading} />
       </Typography>
       {isRetry && (
         <Box className="oxygen-sign-in-retry-header-box">
           <Typography className="oxygen-sign-in-error ui sub header">
-            Verification failed! Please check your authenticator code and try
-            again
+            Verification failed! Please check your authenticator code and try again
           </Typography>
         </Box>
       )}
-      <Typography
-        align="center"
-        className="oxygen-sign-in-sub-header ui sub header"
-        variant="subtitle1"
-      >
-        Enter the verification code generated by your authenticator app.
+      <Typography align="center" className="oxygen-sign-in-sub-header ui sub header" variant="subtitle1">
+        <Trans i18nKey={keys.totp.enter.verification.code.got.by.device} />
       </Typography>
       <div className="pin-code-input-fields">
         {[...Array(6)].map((_: number, index: number) => (
@@ -106,7 +113,7 @@ const TOTPFragment = (props: SignInFragmentPropsInterface): ReactElement => {
             value={totp[index]}
             onChange={handleChange(index)}
             inputRef={refs.current[index]}
-            inputProps={{ maxLength: 1 }}
+            inputProps={{maxLength: 1}}
             onKeyDown={handleKeyDown(index)}
           />
         ))}
@@ -119,14 +126,11 @@ const TOTPFragment = (props: SignInFragmentPropsInterface): ReactElement => {
         fullWidth
         onClick={handleSubmit}
       >
-        Continue
+        <Trans i18nKey={keys.totp.continue} />
       </Button>
-      <Typography
-        align="center"
-        className="oxygen-sign-in-sub-header ui sub header"
-        variant="subtitle2"
-      >
-        Haven&apos;t setup your TOTP authenticator yet? Contact Support
+      <Typography align="center" className="oxygen-sign-in-sub-header ui sub header" variant="subtitle2">
+        <Trans i18nKey={keys.totp.enroll.message1} />
+        <Trans i18nKey={keys.totp.enroll.message2} />
       </Typography>
     </div>
   );
@@ -136,7 +140,7 @@ const TOTPFragment = (props: SignInFragmentPropsInterface): ReactElement => {
  * Default props for the TOTP fragment component.
  */
 TOTPFragment.defaultProps = {
-  "data-componentid": componentId,
+  'data-componentid': componentId,
 };
 
 export default TOTPFragment;

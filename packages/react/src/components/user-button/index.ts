@@ -16,6 +16,6 @@
  * under the License.
  */
 
-import UserButton from "./user-button";
+import UserButton from './user-button';
 
 export default UserButton;

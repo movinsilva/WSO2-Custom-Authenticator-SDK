@@ -16,59 +16,44 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/js-ui-core";
-import i18n from "i18next";
-import merge from "lodash.merge";
-import { initReactI18next } from "react-i18next";
-import englishLocalization from "./translation/en-US.json";
-import frenchLocalization from "./translation/fr-FR.json";
-import { LanguageCode, Localization } from "../../models/localization";
+import {BrandingPreferenceText, BrandingProp, Screen, getLocalization} from '@asgardeo/js-ui-core';
+import i18n from 'i18next';
+import {initReactI18next} from 'react-i18next';
 
-const i18nInitialize = (localization: Localization | undefined): void => {
-  let languageCode: LanguageCode = LanguageCode.ENGLISH_US;
-  let languageResource: Partial<LocalizationResponse> | undefined;
-
-  if (localization) {
-    languageCode = localization.languageCode || LanguageCode.ENGLISH_US;
-    if (localization.languageResource) {
-      languageResource = localization.languageResource;
-    }
-  }
-
-  /* Assigns english localization if merging fails */
-  let mergedResource: LocalizationResponse = englishLocalization;
-  if (languageResource !== undefined) {
-    switch (languageCode) {
-      case LanguageCode.FRENCH:
-        mergedResource = merge(frenchLocalization, languageResource);
-        break;
-      default:
-        mergedResource = merge(englishLocalization, languageResource);
-    }
-    /* Assigns custom language code so that merged localization applies */
-    languageCode = LanguageCode.CUSTOM;
-  }
-
+export const i18nInitialize = (languageCode: string): void => {
   i18n.use(initReactI18next).init({
-    fallbackLng: LanguageCode.ENGLISH_US,
+    fallbackLng: 'en-US',
     interpolation: {
       escapeValue: false,
     },
     lng: languageCode,
-    resources: {
-      [LanguageCode.ENGLISH_US]: {
-        translation: englishLocalization,
-      },
-      [LanguageCode.FRENCH]: {
-        translation: frenchLocalization,
-      },
-      ...(languageResource && {
-        [languageCode]: {
-          translation: mergedResource,
-        },
-      }),
-    },
+    ns: ['ns'],
   });
 };
 
-export default i18nInitialize;
+interface I18nAddResourcesProps {
+  brandingProps?: BrandingProp;
+  componentProps?: BrandingProp;
+  screen: Screen;
+}
+
+export const i18nAddResources = async (props: I18nAddResourcesProps): Promise<boolean> => {
+  const {screen, brandingProps, componentProps} = props;
+  const locale: string = componentProps?.locale ?? brandingProps?.locale ?? 'en-US';
+
+  /* getLocalization function from core returns the merged text according to priority */
+  const resources: BrandingPreferenceText = await getLocalization({
+    componentProps,
+    locale,
+    providerProps: brandingProps,
+    screen,
+  });
+
+  i18n.addResourceBundle(locale, 'ns', {
+    [screen]: resources,
+  });
+
+  i18n.changeLanguage(locale);
+
+  return true;
+};

@@ -28,21 +28,13 @@ const getAuthorizePostRequest = async (): Promise<Request> => {
   const authorizeUri: string = (await authInstace.getOIDCServiceEndpoints()).authorizationEndpoint;
 
   // Parse the URL and extract the search parameters
-  const params: URLSearchParams = new URLSearchParams(new URL(url).search);
-  const formBody: URLSearchParams = new URLSearchParams();
+  const formBody: URLSearchParams = new URLSearchParams(new URL(url).search);
 
-  formBody.append('response_type', 'code');
-  formBody.append('response_mode', 'direct');
-  formBody.append('redirect_uri', data.signInRedirectURL);
-  formBody.append('client_id', params.get('client_id'));
-  formBody.append('scope', params.get('scope'));
-  formBody.append('code_challenge', params.get('code_challenge'));
-  formBody.append('code_challenge_method', params.get('code_challenge_method'));
-  const state: string = params.get('state');
-  formBody.append('state', state);
+  formBody.delete('response_mode');
+  formBody.set('response_mode', 'direct');
 
   /* Save the state temporarily in the data layer, this needs to be passed when token is requested */
-  await authInstace.getDataLayer().setTemporaryDataParameter('state', state);
+  await authInstace.getDataLayer().setTemporaryDataParameter('state', 'state');
 
   const headers: Headers = new Headers();
   headers.append('Accept', 'application/json');

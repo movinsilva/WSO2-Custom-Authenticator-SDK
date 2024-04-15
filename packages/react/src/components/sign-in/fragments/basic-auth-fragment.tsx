@@ -16,18 +16,20 @@
  * under the License.
  */
 
-import { LocalizationResponse } from "@asgardeo/js-ui-core";
-import { Box } from "@oxygen-ui/react";
-import Button from "@oxygen-ui/react/Button";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormGroup from "@oxygen-ui/react/FormGroup";
-import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
-import React, { ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
-import localizationKeys from "../../../localization/keys";
-import { SignInFragmentPropsInterface } from "../../../models/auth";
+import {BrandingProp, LocalizationResponse, Screen, keys} from '@asgardeo/js-ui-core';
+import {Box, CircularProgress} from '@oxygen-ui/react';
+import Button from '@oxygen-ui/react/Button';
+import Checkbox from '@oxygen-ui/react/Checkbox';
+import FormControlLabel from '@oxygen-ui/react/FormControlLabel';
+import FormGroup from '@oxygen-ui/react/FormGroup';
+import TextField from '@oxygen-ui/react/TextField';
+import Typography from '@oxygen-ui/react/Typography';
+import React, {ReactElement, useEffect, useState} from 'react';
+import {Trans, useTranslation} from 'react-i18next';
+import {i18nAddResources} from '../../../localization/i18n/i18n';
+import localizationKeys from '../../../localization/keys';
+import {SignInFragmentPropsInterface} from '../../../models/auth';
+import {useBrandingPreference} from '../../branding-preference-provider/branding-preference-context';
 
 /**
  * Basic Auth Fragment component which consists of the basic authentication form
@@ -37,28 +39,43 @@ import { SignInFragmentPropsInterface } from "../../../models/auth";
  * @param {SignInFragmentPropsInterface} props The props of the component
  * @returns {ReactElement} The Basic Auth Fragment component
  */
-const BasicAuthFragment = (
-  props: SignInFragmentPropsInterface
-): ReactElement => {
-  const { handleAuthenticate, authenticatorId, isRetry } = props;
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const BasicAuthFragment = (props: SignInFragmentPropsInterface): ReactElement => {
+  const {handleAuthenticate, authenticatorId, isRetry, customization} = props;
+  const [isTextLoading, setIsTextLoading] = useState<boolean>(true);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const brandingProps: BrandingProp = useBrandingPreference();
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    i18nAddResources({
+      brandingProps,
+      componentProps: customization,
+      screen: Screen.Login,
+    }).then(() => {
+      setIsTextLoading(false);
+    });
+  }, []);
+
+  const {t} = useTranslation();
+
+  if (isTextLoading) {
+    return (
+      <div className="circular-progress-holder">
+        <CircularProgress className="circular-progress" />
+      </div>
+    );
+  }
 
   return (
     <div className="basic-auth-fragment">
-      <Typography
-        align="center"
-        className="oxygen-sign-in-header ui header"
-        variant="h4"
-      >
-        {t(localizationKeys.login.signinHeader)}
+      <Typography align="center" className="oxygen-sign-in-header ui header" variant="h4">
+        {console.log('ui rendering happening now:)')}
+        <Trans i18nKey={keys.login.login.heading} />
       </Typography>
       {isRetry && (
         <Box className="oxygen-sign-in-retry-header-box">
           <Typography className="oxygen-sign-in-error ui sub header">
-            {t(localizationKeys.login.retryText)}
+            <Trans i18nKey={localizationKeys.login.retryText} />
           </Typography>
         </Box>
       )}
@@ -67,30 +84,27 @@ const BasicAuthFragment = (
         required
         fullWidth
         autoComplete="off"
-        label={t(localizationKeys.login.usernameLabel)}
+        label={t(keys.login.username)}
         name="text"
         value={username}
-        placeholder={t(localizationKeys.login.usernamePlaceHolder)}
+        placeholder={t(keys.login.enter.your.username)}
         className="ui input"
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={e => setUsername(e.target.value)}
       />
       <TextField
         required
         fullWidth
         name="password"
         autoComplete="new-password"
-        label={t(localizationKeys.login.passwordLabel)}
+        label={t(keys.login.password)}
         type="password"
         value={password}
-        placeholder={t(localizationKeys.login.passwordPlaceHolder)}
+        placeholder={t(keys.login.enter.your.password)}
         className="input"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
       />
       <FormGroup className="">
-        <FormControlLabel
-          control={<Checkbox color="secondary" />}
-          label={t(localizationKeys.common.rememberMe)}
-        />
+        <FormControlLabel control={<Checkbox color="secondary" />} label={t(keys.login.remember.me)} />
       </FormGroup>
       <Button
         color="primary"
@@ -99,12 +113,12 @@ const BasicAuthFragment = (
         type="submit"
         fullWidth
         onClick={() => {
-          handleAuthenticate({ username, password }, authenticatorId);
-          setUsername("");
-          setPassword("");
+          handleAuthenticate({password, username}, authenticatorId);
+          setUsername('');
+          setPassword('');
         }}
       >
-        {t(localizationKeys.login.loginButtonLabel)}
+        {t(keys.login.button)}
       </Button>
     </div>
   );
@@ -114,7 +128,7 @@ const BasicAuthFragment = (
  * Default props for the Basic Auth fragment component.
  */
 BasicAuthFragment.defaultProps = {
-  "data-componentid": "basic-auth-fragment",
+  'data-componentid': 'basic-auth-fragment',
 };
 
 export default BasicAuthFragment;
