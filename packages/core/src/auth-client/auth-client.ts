@@ -17,6 +17,7 @@
  */
 
 import {AsgardeoAuthClient, CryptoUtils, Store} from '@asgardeo/auth-js';
+import AsgardeoUIException from 'src/exception/exception';
 import AuthConfig from 'src/model/auth-config';
 
 export class AuthClient {
@@ -26,6 +27,14 @@ export class AuthClient {
   private constructor() {}
 
   static getInstance(authClientConfig?: AuthConfig, store?: Store, cryptoUtils?: CryptoUtils): AsgardeoAuthClient<any> {
+
+    try {
+      throw new AsgardeoUIException('001', 'testing msg');
+    } catch (error) {
+      console.log(typeof error);
+      console.log('instanceof AsgardeoUIException', error instanceof Error);
+    }
+
     if (!AuthClient.instance) {
       AuthClient.instance = new AsgardeoAuthClient();
       AuthClient.instance.initialize(authClientConfig, store, cryptoUtils);
