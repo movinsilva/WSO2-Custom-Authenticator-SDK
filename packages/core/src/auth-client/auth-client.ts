@@ -27,7 +27,6 @@ export class AuthClient {
   private constructor() {}
 
   static getInstance(authClientConfig?: AuthConfig, store?: Store, cryptoUtils?: CryptoUtils): AsgardeoAuthClient<any> {
-
     try {
       throw new AsgardeoUIException('001', 'testing msg');
     } catch (error) {

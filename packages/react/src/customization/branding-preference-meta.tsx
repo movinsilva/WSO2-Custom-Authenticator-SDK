@@ -152,8 +152,6 @@ export default class BrandingPreferenceMeta {
         };
     }
 
-   
-
     /*-----------------------------
             Anchor Tags
     ------------------------------*/

@@ -21,95 +21,81 @@ import {
   BrandingProp,
   PredefinedThemes,
   ThemeConfigInterface,
-} from "@asgardeo/js-ui-core";
-import { Theme } from "@oxygen-ui/react";
-import { extendTheme } from "@oxygen-ui/react/theme";
-import LIGHT_THEME from "./light-theme";
+} from '@asgardeo/js-ui-core';
+import {Theme} from '@oxygen-ui/react';
+import {extendTheme} from '@oxygen-ui/react/theme';
+import LIGHT_THEME from './light-theme';
 
 type generateAsgardeoThemeProps = BrandingProp | undefined;
 
 const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
-  branding: generateAsgardeoThemeProps
+  branding: generateAsgardeoThemeProps,
 ) => {
-  const mode: string =
-    branding?.preference?.theme?.activeTheme?.toUpperCase() ?? "LIGHT";
-  const brandingTheme: ThemeConfigInterface | undefined =
-    branding?.preference?.theme?.[mode as PredefinedThemes];
+  const mode: string = branding?.preference?.theme?.activeTheme?.toUpperCase() ?? 'LIGHT';
+  const brandingTheme: ThemeConfigInterface | undefined = branding?.preference?.theme?.[mode as PredefinedThemes];
 
   return extendTheme({
     colorSchemes: {
       dark: {
         brand: {
           logo: {
-            main:
-              brandingTheme?.images?.myAccountLogo?.imgURL ??
-              "../../assets/asgardeo-logo.svg",
+            main: brandingTheme?.images?.myAccountLogo?.imgURL ?? '../../assets/asgardeo-logo.svg',
           },
         },
         palette: {
           customComponents: {
             AppShell: {
               Main: {
-                background:
-                  brandingTheme?.colors?.background?.body?.main ??
-                  "var(--oxygen-palette-background-paper)",
+                background: brandingTheme?.colors?.background?.body?.main ?? 'var(--oxygen-palette-background-paper)',
               },
               MainWrapper: {
                 background:
-                  brandingTheme?.colors?.background?.surface?.dark ??
-                  "var(--oxygen-palette-background-paper)",
+                  brandingTheme?.colors?.background?.surface?.dark ?? 'var(--oxygen-palette-background-paper)',
               },
             },
             Navbar: {
-              background:
-                brandingTheme?.colors?.background?.surface?.dark ??
-                "var(--oxygen-palette-background-paper)",
+              background: brandingTheme?.colors?.background?.surface?.dark ?? 'var(--oxygen-palette-background-paper)',
             },
           },
           gradients: {
             primary: {
-              stop1: "#EB4F63",
-              stop2: "#FA7B3F",
+              stop1: '#EB4F63',
+              stop2: '#FA7B3F',
             },
           },
           primary: {
-            main: brandingTheme?.colors?.primary?.main ?? "#ff7300",
+            main: brandingTheme?.colors?.primary?.main ?? '#ff7300',
           },
         },
       },
       light: {
         brand: {
           logo: {
-            main:
-              brandingTheme?.images?.myAccountLogo?.imgURL ??
-              "../assets/asgardeo-logo.svg",
+            main: brandingTheme?.images?.myAccountLogo?.imgURL ?? '../assets/asgardeo-logo.svg',
           },
         },
         palette: {
           customComponents: {
             AppShell: {
               Main: {
-                background:
-                  brandingTheme?.colors?.background?.body?.main ?? "#FAF9F8",
+                background: brandingTheme?.colors?.background?.body?.main ?? '#FAF9F8',
               },
               MainWrapper: {
-                background:
-                  brandingTheme?.colors?.background?.surface?.dark ?? "#F6F4F2",
+                background: brandingTheme?.colors?.background?.surface?.dark ?? '#F6F4F2',
               },
             },
             Navbar: {
-              background:
-                brandingTheme?.colors?.background?.surface?.dark ?? "#F6F4F2",
+              background: brandingTheme?.colors?.background?.surface?.dark ?? '#F6F4F2',
             },
           },
           gradients: {
             primary: {
-              stop1: "#EB4F63",
-              stop2: "#FA7B3F",
+              stop1: '#EB4F63',
+              stop2: '#FA7B3F',
             },
           },
           primary: {
-            main: brandingTheme?.colors?.primary?.main ?? "#ff7300",
+            main: brandingTheme?.colors?.primary?.main ?? '#ff7300',
           },
         },
       },
@@ -118,33 +104,32 @@ const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundColor:
-              brandingTheme?.colors?.background?.surface?.dark ?? "#F6F4F2",
-            borderBottom: "none",
+            backgroundColor: brandingTheme?.colors?.background?.surface?.dark ?? '#F6F4F2',
+            borderBottom: 'none',
           },
         },
       },
       MuiDrawer: {
         styleOverrides: {
           paper: {
-            borderRight: "none",
-            boxShadow: "none",
+            borderRight: 'none',
+            boxShadow: 'none',
           },
         },
       },
       MuiMenu: {
         styleOverrides: {
           paper: {
-            border: "1px solid rgba(0, 0, 0, 0.08)",
-            borderRadius: "8px",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.08)",
+            border: '1px solid rgba(0, 0, 0, 0.08)',
+            borderRadius: '8px',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.08)',
           },
         },
       },
       MuiOutlinedInput: {
         styleOverrides: {
           input: {
-            padding: "0.67857143em 1em",
+            padding: '0.67857143em 1em',
           },
         },
       },
@@ -152,8 +137,8 @@ const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
     customComponents: {
       AppShell: {
         properties: {
-          mainBorderTopLeftRadius: "24px",
-          navBarTopPosition: "80px",
+          mainBorderTopLeftRadius: '24px',
+          navBarTopPosition: '80px',
         },
       },
     },
@@ -161,7 +146,7 @@ const generateAsgardeoTheme: (branding: generateAsgardeoThemeProps) => Theme = (
       borderRadius: 4,
     },
     typography: {
-      fontFamily: brandingTheme?.typography ?? "Gilmer, sans-serif",
+      fontFamily: brandingTheme?.typography ?? 'Gilmer, sans-serif',
       h1: {
         fontWeight: 700,
       },
