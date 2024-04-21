@@ -27,6 +27,7 @@ import {
   Link,
   Paper,
   TextField,
+  TextFieldProps,
 } from '@oxygen-ui/react';
 import clsx from 'clsx';
 import {FC, PropsWithChildren} from 'react';
@@ -43,7 +44,7 @@ interface SignInProps {
 }
 
 const SignIn: FC<PropsWithChildren<SignInProps>> & {
-  InputField: FC;
+  InputField: FC<TextFieldProps>;
   Option: FC<PropsWithChildren<SignInOptionProps>>;
   TitleSection: FC<SignInTitleSectionProps>;
 } = (props: PropsWithChildren<SignInProps>) => {

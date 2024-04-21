@@ -16,18 +16,26 @@
  * under the License.
  */
 
-import {BrandingProp} from '@asgardeo/js-ui-core';
 import {FC} from 'react';
 import OxygenSignIn from '../components/sign-in';
 
-interface SignInProps {
-  customization?: BrandingProp;
-}
+const SignIn: FC = () => (
+  <OxygenSignIn
+    signInOptions={
+      <>
+        <OxygenSignIn.Option optionName="Google" />
+        <OxygenSignIn.Option>
+          <div>Some Random Div</div>
+        </OxygenSignIn.Option>
+      </>
+    }
+  >
+    <OxygenSignIn.TitleSection title="Sign In" />
 
-const SignIn: FC<SignInProps> = (props: SignInProps) => {
-  const {customization} = props;
+    <OxygenSignIn.InputField label="Username" placeholder="Enter your username" fullWidth />
 
-  return <OxygenSignIn />;
-};
+    <OxygenSignIn.InputField label="Password" placeholder="Enter your password" type="password" fullWidth />
+  </OxygenSignIn>
+);
 
 export default SignIn;

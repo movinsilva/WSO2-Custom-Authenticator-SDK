@@ -16,4 +16,5 @@
  * under the License.
  */
 
+// export {default as NewSignIn} from './sample/basic-auth';
 export {default as NewSignIn} from './sample/sign-in';
