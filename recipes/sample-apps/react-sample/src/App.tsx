@@ -5,7 +5,7 @@ import SignIn from "../../../../packages/react/src/components/sign-in/sign-in.ts
 import SignOutButton from "../../../../packages/react/src/components/sign-out-button/sign-out-button.tsx";
 import Profile from "../../../../packages/react/src/components/profile/profile.tsx";
 import UserButton from "../../../../packages/react/src/components/user-button/user-button.tsx";
-import { useAuthentication } from "../../../../packages/react/src/components/asgardeo-provider/asgardeo-context.ts";
+import {NewSignIn} from "../../../../packages/react/src/new-ui-effort/public.ts";
 
 // import {
 //   SignInButton,
@@ -61,6 +61,8 @@ function App() {
       <SignedIn>
         <SignOutButton />
       </SignedIn>
+
+      <NewSignIn />
     </div>
   );
 }
