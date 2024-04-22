@@ -19,13 +19,13 @@
 import {AuthClientConfig} from '@asgardeo/auth-js';
 import {BrandingPreferenceTypes} from './branding-response';
 
-interface AuthClientConfigExtension {
+type AuthClientConfigExtension = {
   enableConsoleBranding?: boolean;
   enableConsoleTextBranding?: boolean;
   locale?: string;
   name?: string;
   type?: BrandingPreferenceTypes;
-}
+};
 
 /* configuration type that needs to be passed */
 type AuthConfig = AuthClientConfig<AuthClientConfigExtension>;

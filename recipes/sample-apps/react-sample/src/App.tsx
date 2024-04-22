@@ -34,6 +34,9 @@ function App() {
         <SignIn
           customization={{
             preference: {
+              theme: {
+                LIGHT: { loginBox: { background: { backgroundColor: "#CDC8E6" } } },
+              },
               text: {
                 "en-US": { login: { "login.heading": "From component" } },
               },

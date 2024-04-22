@@ -33,6 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       preference: {
         theme: {
           LIGHT: { loginBox: { background: { backgroundColor: "#ADC8E6" } } },
+          DARK: { colors: { primary: { main: "#000000"}}}
         },
         text: {
           "en-US": {

@@ -16,13 +16,11 @@
  * under the License.
  */
 
-import {BrandingPreferenceAPIResponseInterface, BrandingProp, branding} from '@asgardeo/js-ui-core';
+import {BrandingPreferenceAPIResponseInterface, BrandingProp, getBranding} from '@asgardeo/js-ui-core';
 import {ThemeProvider} from '@oxygen-ui/react';
-import merge from 'lodash.merge';
 import React, {FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState} from 'react';
 import {BrandingPreferenceContext} from './branding-preference-context';
 import BrandingPreferenceMeta from '../../customization/branding-preference-meta';
-import DEFAULT_BRANDING from '../../customization/default_branding';
 import generateAsgardeoTheme from '../../customization/theme';
 import {i18nInitialize} from '../../localization/i18n/i18n';
 
@@ -38,25 +36,20 @@ const BrandingPreferenceProvider: FunctionComponent<PropsWithChildren<BrandingPr
 ): ReactElement => {
   const {children, brandingProps} = props;
 
-  const [brandingPreference, setBrandingPreference] =
-    useState<Partial<BrandingPreferenceAPIResponseInterface>>(DEFAULT_BRANDING);
+  const [brandingPreference, setBrandingPreference] = useState<BrandingProp>();
 
   const contextValues: BrandingProp = useMemo(
     () => ({
-      ...brandingProps,
+      ...brandingPreference,
     }),
-    [brandingProps],
+    [brandingPreference],
   );
 
   useEffect(() => {
     try {
-      branding().then((response: any) => {
-        const resp: BrandingPreferenceAPIResponseInterface = response as BrandingPreferenceAPIResponseInterface;
-        if (resp?.preference?.configs?.isBrandingEnabled) {
-          setBrandingPreference(merge(resp, brandingProps));
-        } else {
-          setBrandingPreference(merge(DEFAULT_BRANDING, brandingProps) as BrandingPreferenceAPIResponseInterface);
-        }
+      getBranding({brandingProps}).then((response: BrandingPreferenceAPIResponseInterface) => {
+        console.log('response from getBranding: ', response);
+        setBrandingPreference(response);
       });
     } catch (error) {
       throw new Error(`Error while fetching branding preferences: ${error}`);

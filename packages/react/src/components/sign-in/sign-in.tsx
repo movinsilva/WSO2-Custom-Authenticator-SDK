@@ -28,6 +28,8 @@ import {
   Screen,
   BrandingProp,
   AsgardeoAuthClient,
+  getBranding,
+  BrandingPreferenceThemeInterface,
 } from '@asgardeo/js-ui-core';
 import {Box, Link, Paper, Grid, Divider, Typography, CircularProgress} from '@oxygen-ui/react';
 import {useEffect, useState, ReactElement, useContext, FunctionComponent, Suspense} from 'react';
@@ -42,6 +44,7 @@ import localizationKeys from '../../localization/keys';
 import {AuthContext, AuthenticatorType, IdentifiableComponentInterface} from '../../models/auth';
 import {AsgardeoProviderContext, useAuthentication, useConfig} from '../asgardeo-provider/asgardeo-context';
 import {useBrandingPreference} from '../branding-preference-provider/branding-preference-context';
+import BrandingPreferenceMeta from '../../customization/branding-preference-meta';
 
 /**
  * Proptypes for the login box component.
@@ -75,6 +78,8 @@ const SignIn: FunctionComponent<SignInInterface> = (props: SignInInterface): Rea
   const [showSelfSignUp, setShowSelfSignUp] = useState(true);
   const brandingProps: BrandingProp = useBrandingPreference();
 
+  const [localBranding, setLocalBranding] = useState<BrandingProp>();
+
   // const { t } = useTranslation();
 
   if (!authContext) {
@@ -98,6 +103,17 @@ const SignIn: FunctionComponent<SignInInterface> = (props: SignInInterface): Rea
       componentProps: customization,
       screen: Screen.Common,
     });
+
+    if (customization?.preference?.theme) {
+      getBranding({
+        brandingProps: customization?.preference?.theme,
+        merged: brandingProps.preference?.theme,
+      }).then((brandingFromCore: BrandingPreferenceThemeInterface) => {
+        console.log('branding from component: ', customization?.preference?.theme?.DARK?.colors?.primary?.main);
+        console.log('Branding from core:', brandingFromCore.DARK?.colors?.primary?.main);
+        setLocalBranding(brandingFromCore);
+      });
+    }
   }, [brandingProps, customization]);
 
   /**
@@ -278,6 +294,7 @@ const SignIn: FunctionComponent<SignInInterface> = (props: SignInInterface): Rea
   }
   return (
     <div>
+      {localBranding && <style>{BrandingPreferenceMeta.getThemeSkeleton(localBranding)}</style>}
       <Header />
       <div className="sign-in-box-node login-portal layout" data-componentid={`${componentId}`}>
         {authResponse?.flowStatus !== FlowStatus.SuccessCompleted && !isAuthenticated && (

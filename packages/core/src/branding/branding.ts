@@ -18,28 +18,34 @@
 
 import merge from 'lodash.merge';
 import {AuthClient} from 'src/auth-client/auth-client';
+import {BrandingProp} from 'src/model/branding-prop';
 import DEFAULT_BRANDING from './default-branding/default_branding';
 import branding from '../api/branding';
-import {BrandingPreferenceAPIResponseInterface, BrandingPreferenceThemeInterface} from '../model/branding-response';
+import {BrandingPreferenceAPIResponseInterface} from '../model/branding-response';
 
 interface BrandingProps {
-  componentProps?: BrandingPreferenceThemeInterface;
-  providerProps?: BrandingPreferenceThemeInterface;
+  brandingProps?: BrandingProp;
+  merged?: BrandingProp;
 }
 
-export const getBranding = async (props: BrandingProps): Promise<BrandingPreferenceThemeInterface> => {
-  const {providerProps, componentProps} = props;
-  let brandingFromConsole: BrandingPreferenceAPIResponseInterface;
-  if ((await AuthClient.getInstance().getDataLayer().getConfigData()).enableConsoleBranding) {
-    brandingFromConsole = await branding();
-  }
+export const getBranding = async (props: BrandingProps): Promise<BrandingPreferenceAPIResponseInterface> => {
+  const {brandingProps, merged} = props;
+  let mergedBranding: BrandingPreferenceAPIResponseInterface;
 
-  const mergedBranding: BrandingPreferenceThemeInterface = await merge(
-    DEFAULT_BRANDING.preference.theme,
-    providerProps,
-    componentProps,
-    brandingFromConsole.preference.theme,
-  );
+  /**
+   * If the `merged` prop is not provided, fetch the branding from the console and merge it with the default branding.
+   * If the `merged` prop is provided, merge it with the branding props.
+   */
+  if (!merged) {
+    let brandingFromConsole: BrandingPreferenceAPIResponseInterface;
+    if ((await AuthClient.getInstance().getDataLayer().getConfigData()).enableConsoleBranding ?? true) {
+      brandingFromConsole = await branding();
+    }
+
+    mergedBranding = await merge(DEFAULT_BRANDING, brandingFromConsole ?? {}, brandingProps ?? {});
+  } else {
+    mergedBranding = await merge(merged ?? {}, brandingProps ?? {});
+  }
 
   return mergedBranding;
 };
